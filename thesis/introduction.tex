@@ -1,0 +1,149 @@
+\chapter{Introduction}\label{sec:introduction}
+
+\section{Synthetic measure theory}
+
+Kock observed that it is possible to characterise measure theory abstractly by a commutative monad
+over a locally small cartesian closed category satisfying two further axioms~\cite{kock2011}.
+
+For practical purposes, it makes sense to consider models that account for traditional Lebesgue integration.
+However, function spaces are never measurable~\cite{aumann1961} so the category of measurable
+spaces is not cartesian closed. This means that conventional measure theory is not a model of synthetic measure theory.
+It is therefore interesting to find models that are close to conventional measure theory.
+
+Measurable function spaces are desirable for other reasons, e.g.\ to formalise higher-order probability
+theory, which is a problem that arises naturally when considering probabilisitic programming languages.
+It is possible to extend measurable spaces to quasi-Borel spaces in order to achieve cartesian closure~\cite{heunen2017}. While some care is required when comparing quasi-Borel spaces to measure theory
+and rephrasing probability theory in these new terms, they bring with them several convenient properties.
+In particular, quasi-Borel spaces form a model of synthetic measure theory and the associated integral
+is precisely the measure space integral~\cite{scibor2018}.
+
+Since synthetic measure theory turns out to be a practically useful tool, it is now also
+valuable to consider models that are far removed from conventional measure theory. One
+may think of this as testing the limits of the theory.
+
+A classical example of a monad from functional programming is the list monad.
+This fails to be commutative. If we forget about the ordering of elements, we
+obtain the powerset monad taking sets to their powersets. This monad may be
+endowed with a commutative strong structure that, moreover, forms a model of synthetic
+measure theory. In this model, the measures over a set $X$ are subsets
+$\mu\subseteq X$ and the integral of a function $f:X\to\cc{0,1}$ with respect
+to $\mu$ is
+\begin{align*}
+  \int_X \mu\rr{dx}f\rr{x} = \begin{cases}
+    0 & \text{if }\forall  x\in \mu. f\rr{x}=0 \\
+    1 & \text{if }\exists  x\in \mu. f\rr{x}=1
+  \end{cases}
+\end{align*}
+In other words, if we consider $f$ to be the characteristic function of a subset $B\subseteq X$
+then the integral is zero if and only if $\mu\cap B=\emptyset$.
+
+It is worth noting that Kock's synthetic measure theory is not the only attempt at
+formalising probability theory categorically. An alternative approach was taken by
+Fritz in~\cite{fritz2020} who developed Markov categories by generalising probability
+theory directly. This allows for more abstract reasoning,
+thereby improving clarity. In particular, Fritz' theory unifies different types of probability
+theory and does not rely on measure theoretic probability theory to the same degree.
+
+\section{Presheaves}
+
+Category theory has its own notion of integration: coends. A coend of a
+functor $\catop{C}\times\cat{C}\to\cat{D}$ is a particular colimit in
+$\cat{D}$. We tend to think of coends as integrals because they are denoted
+by an integral symbol and because they behave like integrals.
+
+However, as of right now there have been little to no formal developments
+relating coends to integration. The motivation for this project is to
+establish such a connection by considering a suitable model of synthetic
+measure theory. To construct this model, we require the following:
+
+\begin{enumerate}
+  \item a cartesian closed category $\cat{C}$ and
+  \item a commutative monad $T$ on $\cat{C}$ such that
+  \item the extension operation of $T$ involves coends.
+\end{enumerate}
+
+These conditions are contradictory. Coends are not unique, so defining an
+extension operation involves choosing particular coends. It is then not
+reasonable to demand that this choice is consistent in the sense that all the
+monad laws are satisfied up to equality. Thus we will not obtain a monad in the
+strict sense. Fortunately, monads have been generalised to pseudomonads to
+account for this problem~\cite{marmolejo2013}.
+
+Now the obvious candidate model is the presheaf construction, taking each small
+category $\scat{C}$ to its presheaf category $\widehat{\scat C} =
+\bb{\scatop{C}, \Set}$. This is a great choice because a functor
+$\scat{C}\to\widehat{\scat C}$ may be thought of as a functor
+$\scatop{C}\times\scat{C}\to\Set$. Thus coends are closely related to
+presheaves. Secondly, it is known that the presheaf construction exhibits
+monad-like behaviour~\cite{fiore2017}. Unfortunately, the presheaf category of
+a small category is itself not necessarily small. Thus the presheaf
+construction fails to be a pseudomonad.
+
+One way to turn the presheaf construction into a pseudomonad is by considering
+small presheaves~\cite{day2007}. This is still insufficient for our pruposes,
+as the functor category $\bb{\scat{C},\scat{D}}$ of small categories $\scat{C}$
+and $\scat{D}$ is itself not small. This violates our first requirement of
+cartesian closure. We have tried and failed to find a cartesian closed
+2-category on which the presheaf construction remains a pseudomonad.
+
+We thus opt for relative pseudomonads~\cite{fiore2017}. This generalisation
+allows for the possibility that the pseudofunctor underlying a pseudomonad is
+itself not an endomorphism. We know that the presheaf construction is a
+relative pseudomonad. Before we can extend synthetic measure theory to include
+relative pseudomonads, we need to define the corresponding notion of strength.
+This turns out to be a difficult problem that we are not able to solve
+entirely.
+
+\section{Related work}
+
+There are four pieces of work that this project builds on:
+
+\begin{itemize}
+  \item Kocks synthetic measure theory from~\cite{kock2011} is our main motivation. It
+    is therefore especially helpful in making sure what requirements our theory needs
+    to satisfy and what simplifications we are able to make.
+  \item Fiore et al.~developed the theory theory of relative pseudomonads in~\cite{fiore2017}.
+    This is our main reference point for the first part of our project.
+  \item  Paquet and Saville defined strong pseudomonads in~\cite{saville2023}. This
+    serves as a guide for the second part of our theory and will most likely be a
+    valuable reference for future work.
+  \item Uustalu outlined in~\cite{tarmo} how to construct a strong relative monad. While
+    this extended abstract does justify the correctness of the definition, it has allowed
+    us to come up with a sensible structure of a strong relative pseudomonad nonetheless.
+\end{itemize}
+
+\section{Contributions}
+
+The following developments in this report are worth noting:
+
+\begin{itemize}
+  \item We partially define strong relative pseudomonads with a particular 
+    focus on generalising synthetic measure theory.
+  \item We show that our definition coincides with relative pseudomonads
+    in the sense of~\cite{fiore2017}.
+  \item We show how our definition yields the structure of a strong
+    pseudomonad in the sense of~\cite{saville2023}.
+  \item We demonstrate how to endow the presheaf construction with the
+    necessary structure and verify that it satisfies the corresponding
+    axioms.
+\end{itemize}
+
+\section{Overview}
+
+We structure this report as follows:
+\begin{itemize}
+  \item Chapter 2 revisits introductory category theory. We define commutative
+    monads and relative monads in order to develop an intuition for later
+    developments. We then focus our attention towards coends, getting used to
+    the notation and proving results that will be useful later on.
+  \item Chapter 3 rigorously introduces 2-categories, pseudofunctors, and
+    pseudonatural transformations. We pay particular attention to the strictness
+    requirements, making sure that our definitions are not more general than required.
+  \item Chapter 4 consists entirely of novel developments: Step by step we work towards
+    the definition of a strong relative pseudomonad. Along the way we show how the
+    structures and axioms relate to previous work and to the presheaf construction.
+  \item Chapter 5 contains a critical evaluation.
+  \item Chapter 6 summarises the remaining work and lists possible extensions.
+\end{itemize}
+
+

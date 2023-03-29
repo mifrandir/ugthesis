@@ -1,0 +1,114 @@
+% UG project example file, February 2022
+% Do not change the first two lines of code, except you may delete "logo," if causing problems.
+% Understand any problems and seek approval before assuming it's ok to remove ugcheck.
+\documentclass[bsc,singlespacing,parskip,logo]{infthesis}
+\usepackage{ugcheck}
+
+% Include any packages you need below, but don't include any that change the page
+% layout or style of the dissertation. By including the ugcheck package above,
+% you should catch most accidental changes of page layout though.
+\usepackage{microtype} % recommended, but you can remove if it causes problems
+\usepackage{quiver}
+\usepackage{hyperref}
+
+\begin{document}
+\begin{preliminary}
+
+  \title{Towards Strong Relative Pseudomonads}
+
+  \author{Franz Miltz}
+
+  % CHOOSE YOUR DEGREE a):
+  % please leave just one of the following un-commented
+  %\course{Artificial Intelligence}
+  %\course{Artificial Intelligence and Computer Science}
+  %\course{Artificial Intelligence and Mathematics}
+  %\course{Artificial Intelligence and Software Engineering}
+  %\course{Cognitive Science}
+  %\course{Computer Science}
+  %\course{Computer Science and Management Science}
+  \course{Computer Science and Mathematics}
+  %\course{Computer Science and Physics}
+  %\course{Software Engineering}
+  %\course{Master of Informatics} % MInf students
+
+  % CHOOSE YOUR DEGREE b):
+  % please leave just one of the following un-commented
+  %\project{MInf Project (Part 1) Report}  % 4th year MInf students
+  %\project{MInf Project (Part 2) Report}  % 5th year MInf students
+  \project{4th Year Project Report}        % all other UG4 students
+
+  \date{\today}
+
+  \abstract{
+    Synthetic measure theory uses commutative monads to develop an entirely categorical
+    language of measures and integration. This language has proven practically useful
+    in the development of higher-order statistical programming languages.
+
+    There is another purely categorical notion of integration: coends. Certain coends
+    arise from the presheaf construction, a monad-like structure that fails to be a
+    model of synthetic measure theory for several reasons. There are multiple ways
+    in which one could attempt to fix these problems.
+
+    In this report, we make a start at defining a strong relative pseudomonad that
+    would be suitable as the backbone of an extended synthetic measure theory. At each
+    step, we show how the presheaf construction gives rise to the required structure and
+    how this structure satisfies the necessary axioms.
+
+    Unfortunately, the strength of a monad does not lend itself to being generalised
+    to relative pseudomonads. We are thus neither able to give a complete definition
+    of a strong relative pseudomonad nor do we manage to extend synthetic measure theory
+    to admit the presheaf construction as a model.
+  }
+
+  \maketitle
+
+  \newenvironment{ethics}
+  {\begin{frontenv}{Research Ethics Approval}{\LARGE}}
+  {\end{frontenv}\newpage}
+
+  \begin{ethics}
+    This project was planned in accordance with the Informatics Research
+    Ethics policy. It did not involve any aspects that required approval
+    from the Informatics Research Ethics committee.
+
+    \standarddeclaration
+  \end{ethics}
+
+
+  \begin{acknowledgements}
+    I am incredibly grateful to Dr Ohad Kammar, my supervisor, who started to
+    talk to me about category theory well before I began my work on this
+    project. Thank you for your patience, your encouragement, and the vast
+    amount of knowledge that you have been able to share with me.
+
+    Thanks should also go to Mr Matthias K\"onig. Thank you for setting me on
+    the magnificent path towards abstract mathematics. I would not be where I am
+    today without you.
+
+    Finally, I would like to express my sincerest appreciation to Mary
+    and Fred. You have never failed to put a smile on my face.
+  \end{acknowledgements}
+
+
+  \tableofcontents
+\end{preliminary}
+
+\include{thesis/introduction.tex}
+
+\include{thesis/category_theory.tex}
+
+\include{thesis/2categories.tex}
+
+\include{thesis/strong_inclusion_pseudomonads.tex}
+
+\include{thesis/conclusion.tex}
+
+\bibliographystyle{plain}
+\bibliography{sources}
+
+%\appendix
+
+%\include{thesis/symmetric_monoidal_categories.tex}
+
+\end{document}

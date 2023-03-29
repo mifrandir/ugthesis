@@ -1,0 +1,482 @@
+\chapter{2-categories}\label{sec:2categories}
+
+To account for the possibility of axioms holding only up to a specified
+isomorphism, we need to consider 2-categories. We avoid confusion by referring
+to  the usual categories as 1-categories. Since 2-categorical notions tend to
+be straightforward generalisations of their 1-categorical counterparts, many of
+the developments in this chapter are going to seem unremarkable. The difficulty
+lies in choosing which axioms we allow to hold only up to a coherent
+isomorphism. This type of problem rarely arises in 1-category theory but is a
+central to the study of 2-categories.
+
+\begin{notation}
+  It will be convenient to fix some notational conventions for the remainder of this report.
+  Unless otherwise indicated,
+  \begin{itemize}
+    \item curly upper-case letters denote 1-categories, e.g. $\cat{C}$;
+    \item blackboard bold upper-case letters denote small 1-categories, e.g. $\scat C$;
+    \item plain upper-case letters denote objects, e.g. $X$.
+  \end{itemize}
+\end{notation}
+
+
+\section{Definition}
+
+The idea of a 2-category is straightforward. In mathematics, it has proven useful
+to replace equality by different notions of isomorphisms. Commutative diagrams in
+1-categories are nothing but equalities between morphisms, so we would like to study
+isomorphisms between morphisms instead. Thus 2-categories have morphisms between morphisms.
+To disambiguate we call morphisms between objects 1-cells and morphisms between morphisms
+2-cells.
+
+The concept of morphisms between morphisms should be familiar already. The 1-category
+\CAT{} has functors as morphisms and we know that natural transformations are just
+morphisms between functors. We will make use of this and extend \CAT{} to a 2-category
+\biCAT{}.
+
+While the additional structure brings with it a lot of freedom, it comes with a price.
+Firstly, 2-categorical concepts contain more data that needs to be specified and
+more axioms that need to be verified. This makes 2-category theory more complex.
+Secondly, due to this additional complexity, it is not always desirable to state axioms up to
+isomorphism. Thus, one has to make an informed choice about the degree of strictness
+required at each step along the way.
+
+Even when defining a 2-category itself, strictness plays a role: It is possible to
+demand that the axioms hold only up to isomorphism. This consideration leads to weak
+2-categories or bicategories. (see~\cite{leinster1998}) We note that the weakness of the former
+has nothing to do with the strength of a monad as in~\ref{sec:commutative_monads}.
+We do not require the full generality of bicategories and are thus going
+to restrict our attention to (strict) 2-categories:
+
+\begin{definition}\label{def:2category}
+  A \emph{2-category} $\bicat{C}$ consists of \begin{enumerate}
+    \item a class of objects $\Obj_{\bicat{C}}$;
+    \item for all objects $X,Y$, a 1-category $\Hom_{\bicat C}\bb{X,Y}$ with
+      composition $\bullet$ whose objects $f:X\to Y$ are called 1-cells and
+      whose morphisms $\bicell u:f\Rightarrow g$ are called 2-cells;
+    \item for all $X\in\bicat{C}$, an identiy 1-cell $\text{id}_X:X\to X$;
+    \item for all $X,Y,Z\in\bicat{C}$, a composition functor
+      \begin{equation}
+        \label{eq:bicategory_composition}
+        \circ_{X,Y,Z}:\Hom_{\bicat{C}}\bb{Y,Z}\times\Hom_{\bicat{C}}\bb{X,Y}
+        \to\Hom_{\bicat{C}}\bb{X,Z};
+      \end{equation}
+  \end{enumerate}
+  such that the following hold:
+  \begin{enumerate}
+    \item for all composable 1-cells $f,g,h$,
+      $h\circ\rr{g\circ f}=\rr{h\circ g}\circ f$;
+    \item for all $f:X\to Y$, $\id_Y\circ f = f = f\circ \id_X$.
+  \end{enumerate}
+\end{definition}
+
+We note that there are two ways to compose 2-cells:
+\begin{enumerate}
+  \item For 1-cells $f,g,h:X\to Y$ and 2-cells $\bicell u: f\Rightarrow g$,
+    $\bicell v: g\Rightarrow h$ we have the vertical composite
+    $\bicell v\bullet\bicell u: f\Rightarrow h$ given by the composition in $\Hom\bb{X,Y}$. In a diagram:
+    \begin{equation*}
+      % https://q.uiver.app/?q=WzAsMixbMCwwLCJYIl0sWzIsMCwiWSJdLFswLDEsImYiLDAseyJjdXJ2ZSI6LTV9XSxbMCwxLCJoIiwyLHsiY3VydmUiOjV9XSxbMCwxLCJnIiwxXSxbMiw0LCJcXG1hdGhiZiB1IiwxLHsic2hvcnRlbiI6eyJzb3VyY2UiOjIwLCJ0YXJnZXQiOjIwfX1dLFs0LDMsIlxcbWF0aGJmIHYiLDEseyJzaG9ydGVuIjp7InNvdXJjZSI6MjAsInRhcmdldCI6MjB9fV1d
+      \begin{tikzcd}
+        X && Y
+        \arrow[""{name=0, anchor=center, inner sep=0}, "f", curve={height=-40pt}, from=1-1, to=1-3]
+        \arrow[""{name=1, anchor=center, inner sep=0}, "h"', curve={height=40pt}, from=1-1, to=1-3]
+        \arrow[""{name=2, anchor=center, inner sep=0}, "g"{description}, from=1-1, to=1-3]
+        \arrow["{\mathbf u}"{description}, shorten <=4pt, shorten >=4pt, Rightarrow, from=0, to=2]
+        \arrow["{\mathbf v}"{description}, shorten <=4pt, shorten >=4pt, Rightarrow, from=2, to=1]
+      \end{tikzcd}
+    \end{equation*}
+  \item For 1-cells $f,g:X\to Y$, $h,k:Y\to Z$ and 2-cells $\bicell
+    u:f\Rightarrow g$, $\bicell v:h\Rightarrow k$ we have the horizontal
+    composite $\bicell v\circ\bicell u:h\circ f\Rightarrow k\circ g$ given by
+    the composition functor $\circ_{X,Y,Z}$. In a diagram:
+    \begin{equation*}
+      % https://q.uiver.app/?q=WzAsMyxbMCwwLCJYIl0sWzIsMCwiWSJdLFs0LDAsIloiXSxbMCwxLCJmIiwwLHsiY3VydmUiOi00fV0sWzAsMSwiZyIsMix7ImN1cnZlIjo0fV0sWzEsMiwiaCIsMCx7ImN1cnZlIjotNH1dLFsxLDIsImsiLDIseyJjdXJ2ZSI6NH1dLFszLDQsIlxcbWF0aGJmIHUiLDEseyJzaG9ydGVuIjp7InNvdXJjZSI6MjAsInRhcmdldCI6MjB9fV0sWzUsNiwiXFxtYXRoYmYgdiIsMSx7InNob3J0ZW4iOnsic291cmNlIjoyMCwidGFyZ2V0IjoyMH19XV0=
+      \begin{tikzcd}
+        X && Y && Z
+        \arrow[""{name=0, anchor=center, inner sep=0}, "f", curve={height=-24pt}, from=1-1, to=1-3]
+        \arrow[""{name=1, anchor=center, inner sep=0}, "g"', curve={height=24pt}, from=1-1, to=1-3]
+        \arrow[""{name=2, anchor=center, inner sep=0}, "h", curve={height=-24pt}, from=1-3, to=1-5]
+        \arrow[""{name=3, anchor=center, inner sep=0}, "k"', curve={height=24pt}, from=1-3, to=1-5]
+        \arrow["{\mathbf u}"{description}, shorten <=6pt, shorten >=6pt, Rightarrow, from=0, to=1]
+        \arrow["{\mathbf v}"{description}, shorten <=6pt, shorten >=6pt, Rightarrow, from=2, to=3]
+      \end{tikzcd}
+    \end{equation*}
+\end{enumerate}
+
+\begin{notation}
+  We adopt similar conventions as for 1-categories:
+  \begin{itemize}
+    \item $X\in\bicat{C}$ means $X\in\Obj_{\bicat{C}}$;
+    \item We drop the 1-cell composition and therefore the horizontal
+      composition of 2-cells. Thus $\bicell v\bicell u:hf\Rightarrow kg$ means
+      $\bicell v\circ\bicell u:h\circ f\Rightarrow k\circ g$.
+    \item To avoid unnecessary subscripts we identify objects and 1-cells with their
+      respective identities. Thus we might write $h\bicell uX:hfX\Rightarrow hgX$
+      to mean
+      \begin{align*}
+        \textbf{id}_h\circ\bicell u\circ\textbf{id}_{\id_X}:h\circ f\circ\id_X\Rightarrow h\circ g\circ\id_X.
+      \end{align*}
+      Note how we identify $\textbf{id}_{\id_X}$ with $\id_X$ and thus with $X$.
+  \end{itemize}
+\end{notation}
+
+
+\begin{example}
+  The most important 2-category that we will consider is $\biCAT$ which has as
+  objects all categories, as 1-cells all functors, and as 2-cells all natural transformations.
+  That is, for all $\cat{C},\cat{D}\in\biCAT$, $\Hom\bb{\cat{C},\cat{D}}$ is the functor
+  category $\bb{\cat{C},\cat{D}}$. Composition of 1-cells is the usual composition of functors.
+\end{example}
+
+Given two 2-categories, we obtain the product 2-category which is entirely analogous to the
+product 1-category:
+
+\begin{definition}\label{def:product_2category}
+  Let $\bicat{C},\bicat{D}$ be 2-categories. The \emph{product 2-category} $\bicat{C}\times\bicat{D}$ has
+  \begin{enumerate}
+    \item as objects all pairs $(X,X')$ with $X\in\bicat{C}$ and $X'\in\bicat{D}$;
+    \item for all objects $(X,X')$ and $(Y,Y')$, the hom-category
+      \begin{align*}
+        \Hom\bb{(X,Y),(X',Y')} = \Hom\bb{X,Y}\times\Hom\bb{X',Y'};
+      \end{align*}
+    \item for all objects $(X,X')$, the identity 1-cell $(\text{id}_X,\text{id}_{X'})$;
+    \item the composition functor given by pointwise composition in the respective
+      2-categories, i.e. $(g,g')(f,f')=(gf,g'f')$.
+  \end{enumerate}
+\end{definition}
+
+\section{Cartesian structure}\label{sec:bicartesian_2categories}
+
+Kock's commutative monads are strong with respect to the cartesian structure
+of a 1-category. In order to formalise commutative relative pseudomonads, we require
+a similar structure on 2-categories. We are fortunate in that our main 2-category
+of interest, \biCAT, admits strict products. That is, the required 1-cell equations
+hold up to equality and not merely up to isomorphism.
+
+While it is straightforward to define larger product structures
+(e.g.~\cite{saville2020}), the notion of strength of a monad only
+requires binary products and a terminal object which serves as the
+identity.
+
+The standard definition of a 1-categorical product that we outlined in
+\ref{sec:cartesian_categories} requires an alternative formulation
+before we may generalise it elegantly. We invite the reader to verify
+that adapting the following definition to 1-categories in the obvious
+way does indeed yields a product in the usual sense.
+
+\begin{definition}\label{def:bicategories_products}
+  A \emph{cartesian structure for a 2-category $\bicat{C}$} consists of
+  \begin{enumerate}
+    \item an object $1\in\bicat{C}$;
+    \item for all $W\in\bicat{C}$, an isomorphism of categories
+      $\Hom\bb{W,1}\cong\mathbb 1$;
+    \item for all $X,Y\in\bicat{C}$:
+      \begin{enumerate}
+        \item an object $X\times Y\in\bicat{C}$;
+        \item 1-cells $\pi_1:X\times Y\to X$ and $\pi_2:X\times Y\to Y$ called projections;
+        \item for all $W\in\bicat{C}$, an isomorphism of categories
+          \begin{equation}\label{eq:cartesian_isomorphism}
+            % https://q.uiver.app/?q=WzAsMixbMCwwLCJcXHRleHR7SG9tfVtXLFhcXHRpbWVzIFldIl0sWzIsMCwiXFx0ZXh0e0hvbX1bVyxYXVxcdGltZXNcXHRleHR7SG9tfVtXLFldIl0sWzAsMSwiKFxccGlfMVxcY2lyYy0sXFxwaV8yXFxjaXJjIC0pIiwwLHsiY3VydmUiOi0zfV0sWzEsMCwiXFxsYW5nbGUtXFxyYW5nbGUiLDAseyJjdXJ2ZSI6LTN9XSxbMiwzLCJcXGNvbmciLDEseyJzaG9ydGVuIjp7InNvdXJjZSI6MjAsInRhcmdldCI6MjB9LCJzdHlsZSI6eyJib2R5Ijp7Im5hbWUiOiJub25lIn0sImhlYWQiOnsibmFtZSI6Im5vbmUifX19XV0=
+            \begin{tikzcd}
+              {\text{Hom}[W,X\times Y]} && {\text{Hom}[W,X]\times\text{Hom}[W,Y]}
+              \arrow[""{name=0, anchor=center, inner sep=0}, "{(\pi_1\circ-,\pi_2\circ -)}", curve={height=-18pt}, from=1-1, to=1-3]
+              \arrow[""{name=1, anchor=center, inner sep=0}, "{\langle-\rangle}", curve={height=-18pt}, from=1-3, to=1-1]
+              \arrow["\cong"{description}, draw=none, from=0, to=1]
+            \end{tikzcd}
+          \end{equation}
+          The functor $\aa{-}$ is called tupling.
+      \end{enumerate}
+  \end{enumerate}
+\end{definition}
+
+\begin{example}
+  Let $\cat{C},\cat{D}$ be 1-categories. It is known that the product of categories
+  $\cat{C}\times\cat{D}$ is a product in $\CAT$. Let $\pi_1,\pi_2$ denote the corresponding
+  projections in $\CAT$. These are 1-cells in $\biCAT$. Define the tupling functor by
+  \begin{align*}
+    \aa{F,G} &=  \rr{F-,G-} \\
+    \aa{\phi,\psi}_X &= \rr{\phi_X,\psi_X}
+  \end{align*}
+  By using the universal properties of the 1-categorical product it is straightforward to
+  verify that this is indeed an inverse to $\rr{\pi_1\circ-,\pi_2,\circ -}$. Thus the
+  1-categorical cartesian structure of $\CAT$ extends to a 2-categorical cartesian
+  structure of $\biCAT$.
+\end{example}
+
+\section{Pseudofunctors}\label{sec:inclusions}
+
+Category theory is in many ways about studying morphisms rather than objects.
+We are therefore interested in defining the notion of a morphism between 2-categories which we
+call pseudofunctors.
+Just as a functor specifies where objects and morphisms are mapped to,
+a pseudofunctor is a map on objects, 1-cells, and 2-cells.
+
+There is an important difference, however: pseudofunctors are not the
+most strict morphism between 2-categories. In particular, we allow for
+the possibility that the functor axioms hold only up to a canonical
+isomorphism. This is achieved by specifying these isomorphisms as part
+of the structure: preservation of identities is witnessed by $\bicell i$
+and distributivity is witnessed by $\bicell d$.
+
+Now that the functoriality axioms are part of the structure, the axioms of a
+pseudofunctor serve a different purpose entirely. While the structural 2-cells
+ensure that certain 1-cells are isomorphic, we want to avoid the possibility of
+deriving multiple different isomorphisms between the same 1-cells from this
+structure. This is referred to as coherence. While proving coherence directly
+is hard in general, many structures come with a sufficient set of conditions
+that lead to coherence.
+
+\begin{definition}\label{def:pseudofunctor}
+  Let $\bicat{C},\bicat{D}$ be 2-categories. Then a \emph{pseudofunctor $F:\bicat{C}\to\bicat{D}$} consists of
+  \begin{enumerate}
+    \item for all $X\in\bicat{C}$, an object $FX\in\bicat{D}$;
+    \item for all $X,Y\in{\bicat{C}}$, a functor
+      $F_{X,Y}:\Hom\bb{X,Y}\to\Hom\bb{FX,FY}$;
+    \item for all $X\in\bicat{C}$, an invertible 2-cell
+      \begin{equation}\label{eq:pseudofunctor_identity}
+        % https://q.uiver.app/?q=WzAsMixbMCwwLCJGWCJdLFswLDEsIkZYIl0sWzAsMSwiIiwwLHsiY3VydmUiOi01LCJsZXZlbCI6Miwic3R5bGUiOnsiaGVhZCI6eyJuYW1lIjoibm9uZSJ9fX1dLFswLDEsIkZfe1gsWH0oXFx0ZXh0e2lkfV9YKSIsMix7ImN1cnZlIjo1fV0sWzMsMiwiXFxiaWNlbGwgaV9YIiwwLHsic2hvcnRlbiI6eyJzb3VyY2UiOjIwLCJ0YXJnZXQiOjIwfX1dXQ==
+        \begin{tikzcd}
+          FX \\
+          FX
+          \arrow[""{name=0, anchor=center, inner sep=0}, curve={height=-30pt}, Rightarrow, no head, from=1-1, to=2-1]
+          \arrow[""{name=1, anchor=center, inner sep=0}, "{F_{X,X}(\text{id}_X)}"', curve={height=30pt}, from=1-1, to=2-1]
+          \arrow["{\bicell i_X}", shorten <=12pt, shorten >=12pt, Rightarrow, from=1, to=0]
+        \end{tikzcd}
+      \end{equation}
+    \item for all $f:X\to Y$ and $g:Y\to Z$ in $\bicat{C}$, an invertible 2-cell
+      \begin{equation}\label{eq:pseudofunctor_distributivity}
+        % https://q.uiver.app/?q=WzAsMyxbMCwwLCJGWCJdLFsyLDAsIkZZIl0sWzEsMSwiRloiXSxbMCwxLCJGZiJdLFsxLDIsIkZnIl0sWzAsMiwiRihnZikiLDJdLFs1LDQsIlxcbWF0aGJmIGRfe2YsZ30iLDAseyJzaG9ydGVuIjp7InNvdXJjZSI6MjAsInRhcmdldCI6MjB9fV1d
+        \begin{tikzcd}
+          FX && FY \\
+             & FZ
+             \arrow["Ff", from=1-1, to=1-3]
+             \arrow[""{name=0, anchor=center, inner sep=0}, "Fg", from=1-3, to=2-2]
+             \arrow[""{name=1, anchor=center, inner sep=0}, "{F(gf)}"', from=1-1, to=2-2]
+             \arrow["{\mathbf d_{f,g}}", shorten <=6pt, shorten >=6pt, Rightarrow, from=1, to=0]
+        \end{tikzcd}
+      \end{equation}
+  \end{enumerate}
+  such that
+  \begin{enumerate}
+    \item for all composable 1-cells $f,g,h$,
+      \begin{equation}\label{eq:pseudofunctor_coherence_associativity}
+        % https://q.uiver.app/?q=WzAsNCxbMCwwLCJGKGhnZikiXSxbMCwxLCJGKGhnKSBGZiJdLFsxLDAsIkZoRihnZikiXSxbMSwxLCJGaEZnRmYiXSxbMCwxLCJcXG1hdGhiZiBkIiwyXSxbMCwyLCJcXG1hdGhiZiBkIl0sWzIsMywiRmhcXG1hdGhiZiBkIl0sWzEsMywiXFxtYXRoYmYgZEZmIiwyXV0=
+        \begin{tikzcd}
+          {F(hgf)} & {FhF(gf)} \\
+          {F(hg) Ff} & FhFgFf
+          \arrow["{\mathbf d}"', from=1-1, to=2-1]
+          \arrow["{\mathbf d}", from=1-1, to=1-2]
+          \arrow["{Fh\mathbf d}", from=1-2, to=2-2]
+          \arrow["{\mathbf dFf}"', from=2-1, to=2-2]
+        \end{tikzcd}
+      \end{equation}
+    \item for all 1-cells $f$,
+      \begin{equation}\label{eq:pseudofunctor_coherence_identity}
+        % https://q.uiver.app/?q=WzAsNCxbMCwwLCJGZkYoXFx0ZXh0e2lkfSkiXSxbMCwxLCJGKGZcXHRleHR7aWR9KSJdLFsyLDAsIkZmXFx0ZXh0e2lkfSJdLFsyLDEsIkZmIl0sWzAsMSwiXFxtYXRoYmYgZF57LTF9IiwyXSxbMCwyLCJGZlxcbWF0aGJmIGkiXSxbMiwzLCIiLDIseyJsZXZlbCI6Miwic3R5bGUiOnsiaGVhZCI6eyJuYW1lIjoibm9uZSJ9fX1dLFsxLDMsIiIsMCx7ImxldmVsIjoyLCJzdHlsZSI6eyJoZWFkIjp7Im5hbWUiOiJub25lIn19fV1d
+        \begin{tikzcd}
+          {FfF(\text{id})} && {Ff\text{id}} \\
+          {F(f\text{id})} && Ff
+          \arrow["{\mathbf d^{-1}}"', from=1-1, to=2-1]
+          \arrow["{Ff\mathbf i}", from=1-1, to=1-3]
+          \arrow[Rightarrow, no head, from=1-3, to=2-3]
+          \arrow[Rightarrow, no head, from=2-1, to=2-3]
+        \end{tikzcd}\hs
+        % https://q.uiver.app/?q=WzAsNCxbMCwwLCJGKFxcdGV4dHtpZH0pRmYiXSxbMCwxLCJGKFxcdGV4dHtpZH1mKSJdLFsyLDAsIlxcdGV4dHtpZH1GZiJdLFsyLDEsIkZmIl0sWzAsMSwiXFxtYXRoYmYgZF57LTF9IiwyXSxbMCwyLCJcXG1hdGhiZiBpIEZmIl0sWzIsMywiIiwyLHsibGV2ZWwiOjIsInN0eWxlIjp7ImhlYWQiOnsibmFtZSI6Im5vbmUifX19XSxbMSwzLCIiLDAseyJsZXZlbCI6Miwic3R5bGUiOnsiaGVhZCI6eyJuYW1lIjoibm9uZSJ9fX1dXQ==
+        \begin{tikzcd}
+          {F(\text{id})Ff} && {\text{id}Ff} \\
+          {F(\text{id}f)} && Ff
+          \arrow["{\mathbf d^{-1}}"', from=1-1, to=2-1]
+          \arrow["{\mathbf i Ff}", from=1-1, to=1-3]
+          \arrow[Rightarrow, no head, from=1-3, to=2-3]
+          \arrow[Rightarrow, no head, from=2-1, to=2-3]
+        \end{tikzcd}
+      \end{equation}
+  \end{enumerate}
+  A 2-functor is a pseudofunctor whose 2-cells $\bicell i$ and $\bicell d$ are identities.
+\end{definition}
+
+As we will be dealing with at most one pseudofunctor with non-identity 2-cells, our
+notation is unambiguous. One 2-functor that will be of interest is the product 2-functor
+that allows us to take products not just of objects but also of 1-cells and 2-cells:
+
+\begin{example}\label{ex:product_2functor}
+  Analogously to the 1-categorical case (see \ref{sec:cartesian_categories}),
+  we observe that taking binary products in a cartesian 2-category yields a
+  2-functor $\bicat{C}\times\bicat{C}\to\bicat{C}$, given by the following
+  structure:
+  \begin{enumerate}
+    \item for all $(X,Y)\in\bicat{C}\times\bicat{C}$, we have the object $X\times Y\in\bicat{C}$;
+    \item for all $X,X',Y,Y'\in\bicat{C}$, the functor on hom-categories is given
+      by the composite
+      \begin{equation}
+        % https://q.uiver.app/?q=WzAsMyxbMCwwLCJcXHRleHR7SG9tfVtYLFldXFx0aW1lc1xcdGV4dHtIb219W1gnLFknXSJdLFsyLDEsIlxcdGV4dHtIb219W1hcXHRpbWVzIFgnLFlcXHRpbWVzIFknXSJdLFsyLDAsIlxcdGV4dHtIb219W1hcXHRpbWVzIFgnLFldXFx0aW1lc1xcdGV4dHtIb219W1hcXHRpbWVzIFgnLFknXSJdLFsyLDEsIlxcbGFuZ2xlLV9rXFxyYW5nbGUiXSxbMCwyLCIoLVxcY2lyY1xccGlfMSwtXFxjaXJjXFxwaV8yKSJdLFswLDEsIihcXHRpbWVzKV97KFgsWCcpLChZLFknKX0iLDJdXQ==
+        \begin{tikzcd}
+          {\text{Hom}[X,Y]\times\text{Hom}[X',Y']} && {\text{Hom}[X\times X',Y]\times\text{Hom}[X\times X',Y']} \\
+                                                   && {\text{Hom}[X\times X',Y\times Y']}
+                                                   \arrow["{\langle-_k\rangle}", from=1-3, to=2-3]
+                                                   \arrow["{(-\circ\pi_1,-\circ\pi_2)}", from=1-1, to=1-3]
+                                                   \arrow["{(\times)_{(X,X'),(Y,Y')}}"', from=1-1, to=2-3]
+        \end{tikzcd}
+      \end{equation}
+  \end{enumerate}
+  We need to verify that \ref{eq:pseudofunctor_identity} and \ref{eq:pseudofunctor_distributivity}
+  are identities. We verify, for all $X,X'\in\bicat{C}$,
+  \begin{align*}
+    \text{id}_X\times \text{id}_{X'} = \aa{\pi_1,\pi_2} = \text{id}_{X\times X'}
+  \end{align*}
+  where the last equality follows by the universal property of the product category.
+  Similarly, for 1-cells $(f,f'):(X,X')\to (Y,Y')$ and $(g,g'):(Y,Y')\to (Z,Z')$ in
+  $\bicat{C}\times\bicat{C}$, we notice $gf\times g'f' = \aa{gf\pi_1,g'f'\pi_2}$.
+  In the diagram
+  \begin{equation}
+    % https://q.uiver.app/?q=WzAsOSxbMiwwLCJYXFx0aW1lcyBYJyJdLFsyLDEsIllcXHRpbWVzIFknIl0sWzIsMiwiWlxcdGltZXMgWiciXSxbNCwyLCJaJyJdLFs0LDEsIlknIl0sWzQsMCwiWCciXSxbMCwwLCJYIl0sWzAsMSwiWSJdLFswLDIsIloiXSxbNyw4LCJnIiwyXSxbNiw3LCJmIiwyXSxbNSw0LCJmJyJdLFs0LDMsImcnIl0sWzEsMiwiXFxsYW5nbGUgZ1xccGlfMSxnJ1xccGlfMlxccmFuZ2xlIiwyXSxbMCwxLCJcXGxhbmdsZSBmXFxwaV8xLGYnXFxwaV8yXFxyYW5nbGUiLDJdLFswLDYsIlxccGlfMSIsMl0sWzAsNSwiXFxwaV8yIl0sWzEsNywiXFxwaV8xIiwyXSxbMSw0LCJcXHBpXzIiXSxbMiw4LCJcXHBpXzEiLDJdLFsyLDMsIlxccGlfMiJdXQ==
+    \begin{tikzcd}
+      X && {X\times X'} && {X'} \\
+      Y && {Y\times Y'} && {Y'} \\
+      Z && {Z\times Z'} && {Z'}
+      \arrow["g"', from=2-1, to=3-1]
+      \arrow["f"', from=1-1, to=2-1]
+      \arrow["{f'}", from=1-5, to=2-5]
+      \arrow["{g'}", from=2-5, to=3-5]
+      \arrow["{\langle g\pi_1,g'\pi_2\rangle}"', from=2-3, to=3-3]
+      \arrow["{\langle f\pi_1,f'\pi_2\rangle}"', from=1-3, to=2-3]
+      \arrow["{\pi_1}"', from=1-3, to=1-1]
+      \arrow["{\pi_2}", from=1-3, to=1-5]
+      \arrow["{\pi_1}"', from=2-3, to=2-1]
+      \arrow["{\pi_2}", from=2-3, to=2-5]
+      \arrow["{\pi_1}"', from=3-3, to=3-1]
+      \arrow["{\pi_2}", from=3-3, to=3-5]
+    \end{tikzcd}
+  \end{equation}
+  each tile commutes by definition of the product. Thus the whole square
+  commutes, proving the claim.
+\end{example}
+
+There are two functors corresponding to a particular relative monad: on the one hand there
+is the functor that the monad is relative to and on the other we have the functor induced
+by the monad~\cite{altenkirch2015}. Similarly, a relative pseudomonad has two corresponding
+pseudofunctors. It is for this reason that we require two degrees of strictness: while
+the inclusion $\biCat\to\biCAT$ is a 2-functor, the pseudofunctor induced by the presheaf
+construction is not. To limit complexity, we aim to make use of the strictness of the former
+while allowing for the non-strictness of the latter.
+
+The presheaf construction gives rise to a pseudofunctor. We will show this in
+the next chapter (see \ref{prop:induced_pseudofunctor}). For now, let us
+briefly investigate what this structure looks like without spelling out the
+details:
+
+\begin{example}\label{ex:presheaf_pseudofunctor}
+  Consider the pseudofunctor structure $\widehat{-} : \biCat\to\biCAT$:
+  \begin{enumerate}
+    \item for all $\scat X\in\biCat$, $\widehat{\scat X}=\bb{\scatop X,\Set}$;
+    \item for all $F:\scat X\to\scat Y$ and $P\in\widehat{\scat X}$,
+      \begin{align*}
+        \widehat{F}P = \int^X PX\times\Hom\rr{-,FX};
+      \end{align*}
+    \item the natural isomorphism $\bicell i$ has as components natural isomorphisms
+      \begin{align*}
+        \int^X PX\times\Hom(-,X) \cong P;
+      \end{align*}
+    \item for all composable functors $F$ and $G$, the natural isomorphism $\bicell d_{F,G}$
+      has as components isomorphisms
+      \begin{align*}
+        \int^X PX\times\Hom(-,(GF)X) \cong \int^Y\rr{\int^X PX\times\Hom(Y,FX)}\times\Hom(-,GY).
+      \end{align*}
+  \end{enumerate}
+\end{example}
+
+\section{Inclusions of cartesian 2-categories}
+
+Before we can endow the presheaf construction with a strength, we need to
+capture some of the additional properties of the inclusion. It only makes sense
+to define a strong pseudomonad relative to a 2-functor $\bicat J\to\bicat C$ if
+both its domain and codomain are cartesian and the cartesian structures agree.
+We could treat this in full generality by considering monoidal pseudofunctors,
+similar to~\cite{tarmo}. However, the inclusion $\biCat\to\biCAT$ preserves
+products and terminal objects we are able to impose and satisfy much stricter
+conditions.
+
+An inclusion functor is injective on objects and morphisms. Similarly, we demand an
+inclusion pseudofunctor be injective on objects, 1-cells, and 2-cells. Moreover,
+we require inclusions to preserve the cartesian structure.
+
+\begin{definition}
+  An \emph{inclusion of cartesian 2-categories} consists of
+  \begin{enumerate}
+    \item cartesian 2-categories $\bicat{J}$ and $\bicat{C}$;
+    \item a 2-functor $J:\bicat{J}\to\bicat{C}$;
+  \end{enumerate}
+  such that
+  \begin{enumerate}
+    \item $J$ is injective on objects, 1-cells, and 2-cells;
+    \item for all $X,Y\in\bicat{J}$,
+      \begin{align*}
+        J1=1,\hs
+        J\rr{X\times Y}=JX\times JY,\hs
+        J(\pi_1) = \pi_1,\hs J(\pi_2)=\pi_2.
+      \end{align*}
+  \end{enumerate}
+\end{definition}
+
+\begin{example}
+  Define $\biCat$ as the 2-category with objects all small categories and, for all
+  $\scat{C},\scat D\in\biCat$, the hom-category $\Hom\bb{\scat C,\scat D}=\bb{\scat C,\scat D}$.
+  We now have the obvious inclusion $J:\biCat\to\biCAT$ that is the identity
+  on objects and hom-categories. Define the cartesian structure
+  on $\biCat$ in the same way that we defined it for $\biCAT$. This is justified as the
+  product of small categories is itself small. Thus $J$ forms an inclusion of cartesian
+  2-categories.
+\end{example}
+
+\section{Pseudonatural transformations}
+
+Naturally, we have morphisms between pseudofunctors. The naturality of a
+pseudonatural transformation is witnessed by a structural 2-cell which obeys a
+coherence axiom. Once again, we have two levels of strictness. It is worth
+noting, however, that these are not related to the strictness of the underlying
+pseudofunctors.
+
+\begin{definition}
+  Let $F,G:\bicat{C}\to\bicat{D}$ be pseudofunctors. A \emph{pseudonatural transformation}
+  $\phi:F\Rightarrow G$ consists of
+  \begin{enumerate}
+    \item for all $X\in\bicat C$, a 1-cell $\phi_X : FX\to GX$;
+    \item for all $f:X\to Y$ in $\bicat C$, a naturality 2-cell
+      \begin{equation}\label{eq:naturality_2cell}
+        % https://q.uiver.app/?q=WzAsNCxbMCwwLCJGWCJdLFsyLDAsIkZZIl0sWzAsMSwiR1giXSxbMiwxLCJHWSJdLFswLDEsIkZmIiwxXSxbMCwyLCJcXHBoaSIsMl0sWzIsMywiR2YiLDFdLFsxLDMsIlxccGhpIl0sWzUsNywiXFxtYXRoYmYgbl9mIiwxLHsic2hvcnRlbiI6eyJzb3VyY2UiOjIwLCJ0YXJnZXQiOjIwfX1dXQ==
+        \begin{tikzcd}
+          FX && FY \\
+          GX && GY
+          \arrow["Ff"{description}, from=1-1, to=1-3]
+          \arrow[""{name=0, anchor=center, inner sep=0}, "\phi"', from=1-1, to=2-1]
+          \arrow["Gf"{description}, from=2-1, to=2-3]
+          \arrow[""{name=1, anchor=center, inner sep=0}, "\phi", from=1-3, to=2-3]
+          \arrow["{\mathbf n_f}"{description}, shorten <=13pt, shorten >=13pt, Rightarrow, from=0, to=1]
+        \end{tikzcd}
+      \end{equation}
+  \end{enumerate}
+  such that, for all composable 1-cells $f,g\in\bicat C$,
+  \begin{equation}
+    % https://q.uiver.app/?q=WzAsNSxbMCwwLCJHZ0dmXFxwaGkiXSxbMiwwLCJHZ1xccGhpIEZmIl0sWzQsMCwiXFxwaGkgRmcgRmYiXSxbNCwxLCJcXHBoaSBGKGdmKSJdLFswLDEsIkcoZ2YpXFxwaGkiXSxbMCw0LCJcXG1hdGhiZiBkXnstMX1cXHBoaSIsMl0sWzAsMSwiR2dcXG1hdGhiZiBuIl0sWzEsMiwiXFxtYXRoYmYgbiBGZiJdLFsyLDMsIlxccGhpXFxtYXRoYmYgZF57LTF9Il0sWzQsMywiXFxtYXRoYmYgbiIsMl1d
+    \begin{tikzcd}
+      GgGf\phi && {Gg\phi Ff} && {\phi Fg Ff} \\
+      {G(gf)\phi} &&&& {\phi F(gf)}
+      \arrow["{\mathbf d^{-1}\phi}"', from=1-1, to=2-1]
+      \arrow["{Gg\mathbf n}", from=1-1, to=1-3]
+      \arrow["{\mathbf n Ff}", from=1-3, to=1-5]
+      \arrow["{\phi\mathbf d^{-1}}", from=1-5, to=2-5]
+      \arrow["{\mathbf n}"', from=2-1, to=2-5]
+    \end{tikzcd}
+  \end{equation}
+  A 2-natural transformation is a pseudonatural transformation whose naturality 2-cell
+  $\bicell n$ is the identity.
+\end{definition}
+
+\begin{example}\label{ex:cartesian_monoidal_structure}
+  Let $\bicat{C}$ be a cartesian 2-category. We saw that the product 2-functor is merely
+  an extension of the usual product functor. Because $\bicell n$ is the identity,
+  each natural transformation between product functors yields a 2-natural transformation
+  between product 2-functors. Thus the usual isomorphisms $\lambda,\alpha,\gamma$ are
+  in fact 2-natural transformations.
+\end{example}

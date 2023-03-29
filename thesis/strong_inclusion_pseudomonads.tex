@@ -1,0 +1,875 @@
+\chapter{Strong inclusion pseudomonads}\label{sec:strong_relative_pseudomonads}
+
+We have now developed all the theory required to present our approach to defining
+a generalisation of strong monads that admits the presheaf construction as a model.
+We do so in three major steps, each of which we will justify by applying it to the
+presheaf construction and comparing it to related work
+
+Firstly, we present a structure that is similar to that of a relative
+pseudomonad. We justify the differences and show how the presheaf construction
+gives rise to such a structure. Secondly, we state the axioms that this
+structure is required to satisfy in order to induce a relative pseudomonad.
+Finally, we extend the structure in a way that induces a strong pseudomonad
+structure in the case where the inclusion is the identity. Unfortunately, we
+are not able to postulate axioms that are sufficient to show that this induced
+structure satsifies the axioms of a strong pseudomonad.
+
+Fix an inclusion of cartesian 2-categories $J:\bicat{J}\to\bicat{C}$.
+
+\section{Prestrong structure}
+
+A strong monad is a monad equipped with a suitable natural transformation.
+Hence the obvious way to define a strong relative pseudomonad is by equipping a relative
+pseudomonad with a suitable pseudonatural transformation.
+This approach would have two notable benefits: Firstly, it would allow us to leverage already
+existing results about relative pseudomonads without any overhead. Secondly, it would
+provide us with an intuitive connection to strong pseudomonads that would, presumably,
+make some of the axioms easier to postulate.
+
+We investigate another approach. Rather than adding the strength as additional structure,
+we choose to build it in to the extension operator. That is, we only allow
+1-cells $f:W\times JX\to TY$ to be extended to $f^\dagger:W\times TX\to TY$.
+This relates the extension to the cartesian structure directly. Another reason why we
+believe that this idea is worth entertaining is because it becomes very pleasant to
+describe commutativity of such a structure.
+One can demand the existence of the following natural isomorphism:
+
+\begin{equation*}
+  % https://q.uiver.app/?q=WzAsOCxbMCwwLCJcXHRleHR7SG9tfVtKWFxcdGltZXMgSlksVFpdIl0sWzEsMCwiXFx0ZXh0e0hvbX1bSlhcXHRpbWVzIFRZLFRaXSJdLFsyLDAsIlxcdGV4dHtIb219W1RZXFx0aW1lcyBKWCxUWl0iXSxbMiwxLCJcXHRleHR7SG9tfVtUWVxcdGltZXMgVFgsVFpdIl0sWzIsMiwiXFx0ZXh0e0hvbX1bVFhcXHRpbWVzIFRZLFRaXSJdLFsxLDIsIlxcdGV4dHtIb219W1RYXFx0aW1lcyBKWSxUWl0iXSxbMCwyLCJcXHRleHR7SG9tfVtKWVxcdGltZXMgVFgsVFpdIl0sWzAsMSwiXFx0ZXh0e0hvbX1bSllcXHRpbWVzIEpYLFRaXSJdLFswLDcsIi1cXGNpcmNcXGdhbW1hIiwyXSxbNyw2LCIoLSleXFxkYWdnZXIiLDJdLFs2LDUsIi1cXGNpcmNcXGdhbW1hIiwyLHsiY3VydmUiOjJ9XSxbNSw0LCIoLSleXFxkYWdnZXIiLDIseyJjdXJ2ZSI6Mn1dLFswLDEsIigtKV5cXGRhZ2dlciIsMCx7ImN1cnZlIjotMn1dLFsxLDIsIi1cXGNpcmNcXGdhbW1hIiwwLHsiY3VydmUiOi0yfV0sWzIsMywiKC0pXlxcZGFnZ2VyIl0sWzMsNCwiLVxcY2lyY1xcZ2FtbWEiXSxbNywzLCJcXGNvbmciLDEseyJzaG9ydGVuIjp7InNvdXJjZSI6MjAsInRhcmdldCI6MjB9LCJsZXZlbCI6Miwic3R5bGUiOnsiYm9keSI6eyJuYW1lIjoibm9uZSJ9LCJoZWFkIjp7Im5hbWUiOiJub25lIn19fV1d
+  \begin{tikzcd}
+    {\text{Hom}[JX\times JY,TZ]} & {\text{Hom}[JX\times TY,TZ]} & {\text{Hom}[TY\times JX,TZ]} \\
+    {\text{Hom}[JY\times JX,TZ]} && {\text{Hom}[TY\times TX,TZ]} \\
+    {\text{Hom}[JY\times TX,TZ]} & {\text{Hom}[TX\times JY,TZ]} & {\text{Hom}[TX\times TY,TZ]}
+    \arrow["{-\circ\gamma}"', from=1-1, to=2-1]
+    \arrow["{(-)^\dagger}"', from=2-1, to=3-1]
+    \arrow["{-\circ\gamma}"', curve={height=12pt}, from=3-1, to=3-2]
+    \arrow["{(-)^\dagger}"', curve={height=12pt}, from=3-2, to=3-3]
+    \arrow["{(-)^\dagger}", curve={height=-12pt}, from=1-1, to=1-2]
+    \arrow["{-\circ\gamma}", curve={height=-12pt}, from=1-2, to=1-3]
+    \arrow["{(-)^\dagger}", from=1-3, to=2-3]
+    \arrow["{-\circ\gamma}", from=2-3, to=3-3]
+    \arrow["\cong"{description}, draw=none, from=2-1, to=2-3]
+  \end{tikzcd}
+\end{equation*}
+
+Given that synthetic measure theory requires a commutative monad, it is possible that
+this alternative structure is more convenient in the context of a generalised synthetic
+measure theory.
+
+\begin{definition}\label{def:prestrong_inclusion_pseudomonad_structure}
+  A \emph{strong $J$-pseudomonad structure} consists of
+  \begin{enumerate}
+    \item for all $X\in\bicat{J}$, an object $TX\in\bicat{C}$;
+    \item for all $X\in\bicat{J}$, a 1-cell $\eta_X:JX\to TX$ in $\bicat{C}$;
+    \item for all $X,Y\in\bicat{J}$ and $W\in\bicat{C}$, a functor
+      \begin{align}\label{eq:strong_pseudomonad_extension}
+        \extend{\rr{-}}{\dagger}_{X,Y,W}:\Hom\bb{W\times JX,TY}\to\Hom\bb{W\times TX,TY};
+      \end{align}
+    \item for all $f:JW\times JX\to TY$ in $\bicat{C}$, an invertible 2-cell
+      \begin{equation}\label{eq:strong_pseudomonad_r}
+        % https://q.uiver.app/?q=WzAsMyxbMCwwLCJXXFx0aW1lcyBKWCJdLFsxLDEsIlRZIl0sWzIsMCwiV1xcdGltZXMgVFgiXSxbMiwxLCJmXlxcZGFnZ2VyIl0sWzAsMSwiZiIsMl0sWzAsMiwiV1xcdGltZXNcXGV0YSJdLFs0LDMsIlxcYmljZWxsIHJfZiIsMCx7InNob3J0ZW4iOnsic291cmNlIjoyMCwidGFyZ2V0IjoyMH19XV0=
+        \begin{tikzcd}
+          {W\times JX} && {W\times TX} \\
+                       & TY
+                       \arrow[""{name=0, anchor=center, inner sep=0}, "{f^\dagger}", from=1-3, to=2-2]
+                       \arrow[""{name=1, anchor=center, inner sep=0}, "f"', from=1-1, to=2-2]
+                       \arrow["W\times\eta", from=1-1, to=1-3]
+                       \arrow["{\bicell r_f}", shorten <=7pt, shorten >=7pt, Rightarrow, from=1, to=0]
+        \end{tikzcd}
+      \end{equation}
+    \item for all $X\in\bicat{J}$, an invertible 2-cell
+      \begin{equation}\label{eq:strong_pseudomonad_l}
+        % https://q.uiver.app/?q=WzAsMixbMCwwLCIxXFx0aW1lcyBUWCJdLFswLDIsIlRYIl0sWzAsMSwiXFxsYW1iZGEiLDIseyJjdXJ2ZSI6NX1dLFswLDEsIihcXGV0YVxcbGFtYmRhKV5cXGRhZ2dlciIsMCx7ImN1cnZlIjotNX1dLFsyLDMsIlxcbWF0aGJmIGxfWCIsMCx7InNob3J0ZW4iOnsic291cmNlIjoyMCwidGFyZ2V0IjoyMH19XV0=
+        \begin{tikzcd}
+          {1\times TX} \\
+          \\
+          TX
+          \arrow[""{name=0, anchor=center, inner sep=0}, "\lambda"', curve={height=30pt}, from=1-1, to=3-1]
+          \arrow[""{name=1, anchor=center, inner sep=0}, "{(\eta\lambda)^\dagger}", curve={height=-30pt}, from=1-1, to=3-1]
+          \arrow["{\mathbf l_X}", shorten <=12pt, shorten >=12pt, Rightarrow, from=0, to=1]
+        \end{tikzcd}
+      \end{equation}
+    \item for all $i:V\to W$, $f:JX\to TY$, and $g:W\times JY\to TZ$ in $\bicat{C}$,
+      an invertible 2-cell
+      \begin{equation}\label{eq:strong_pseudomonad_c}
+        % https://q.uiver.app/?q=WzAsMyxbMCwwLCJWXFx0aW1lcyBUWCJdLFsyLDEsIlRaIl0sWzQsMCwiV1xcdGltZXMgVFkiXSxbMiwxLCJnXlQiXSxbMCwxLCIoZ15UKGlcXHRpbWVzIGYpKV5UIiwyXSxbMCwyLCJpXFx0aW1lcyAoZlxcbGFtYmRhKV5cXGRhZ2dlclxcbGFtYmRhXnstMX0iXSxbNCwzLCJcXG1hdGhiZiBjX3tmLGcsaX0iLDAseyJzaG9ydGVuIjp7InNvdXJjZSI6MjAsInRhcmdldCI6MjB9fV1d
+        \begin{tikzcd}
+          {V\times TX} &&&& {W\times TY} \\
+                       && TZ
+                       \arrow[""{name=0, anchor=center, inner sep=0}, "{g^T}", from=1-5, to=2-3]
+                       \arrow[""{name=1, anchor=center, inner sep=0}, "{(g^T(i\times f))^T}"', from=1-1, to=2-3]
+                       \arrow["{i\times (f\lambda)^\dagger\lambda^{-1}}", from=1-1, to=1-5]
+                       \arrow["{\mathbf c_{f,g,i}}", shorten <=13pt, shorten >=13pt, Rightarrow, from=1, to=0]
+        \end{tikzcd}
+      \end{equation}
+  \end{enumerate}
+\end{definition}
+
+We note that this extension operator is defined on a narrower selection of 1-cells
+than the extension operator of a relative pseudomonad. This is only a temporary limitation.
+Using the left unitor $\lambda$, we obtain the usual extension functor
+\begin{align}\label{eq:relative_pseudomonad_extension}
+  \extend{\rr{-}}{*}_{X,Y} = \extend{\rr{-\lambda_{JX}}}{\dagger}\inv\lambda_{JX};
+\end{align}
+as in the diagram
+\begin{equation}
+  % https://q.uiver.app/?q=WzAsNCxbMCwwLCJcXHRleHR7SG9tfVtKWCxUWV0iXSxbMiwwLCJcXHRleHR7SG9tfVtUWCxUWV0iXSxbMCwxLCJcXHRleHR7SG9tfVsxXFx0aW1lcyBKWCxUWV0iXSxbMiwxLCJcXHRleHR7SG9tfVsxXFx0aW1lcyBUWCxUWV0iXSxbMywxLCItXFxjaXJjXFxsYW1iZGFeey0xfSIsMl0sWzIsMywiKC0pXlxcZGFnZ2VyIiwyXSxbMCwyLCItXFxjaXJjXFxsYW1iZGEiLDJdLFswLDEsIigtKV4qIl1d
+  \begin{tikzcd}
+    {\text{Hom}[JX,TY]} && {\text{Hom}[TX,TY]} \\
+    {\text{Hom}[1\times JX,TY]} && {\text{Hom}[1\times TX,TY]}
+    \arrow["{-\circ\lambda^{-1}}"', from=2-3, to=1-3]
+    \arrow["{(-)^\dagger}"', from=2-1, to=2-3]
+    \arrow["{-\circ\lambda}"', from=1-1, to=2-1]
+    \arrow["{(-)^*}", from=1-1, to=1-3]
+  \end{tikzcd}
+\end{equation}
+This will help us state the axioms in the following section more cleanly.
+
+The purpose of \ref{def:prestrong_inclusion_pseudomonad_structure} is to define a theory that admits
+the presheaf construction as a model. While one might expect this result to be a straightforward
+statement, some work is required to define the structure itself. One must pay special
+attention when working with several layers of indirection.
+For example, we have a natural transformation whose components are functors
+$\lambda_{\scat X}:1\times\scat X\to\scat X$. This problem is amplified by the fact that
+our main point of study are objects $[\scatop X,\Set]$ which are themselves categories
+with functors as objects and natural transformations as morphisms.
+
+Nonetheless, we define the entire structure in detail:
+
+\begin{example}\label{ex:prestrong_presheaves}
+  The \emph{prestrong presheaf construction} consists of:
+  \begin{enumerate}
+    \item for all $\scat X\in\biCat$, the object $\widehat{\scat X}=\bb{\scatop X,\Set}$;
+    \item for all $\scat X\in\biCat$, the unit functor $\eta_{\scat X}$ given by
+      $\eta_{\scat X}(X) = \Hom\rr{-,X}$;
+    \item for all $\scat X,\scat Y\in\biCat$ and $\cat W\in\biCAT$, the extension functor
+      $\extend{\rr{-}}{\dagger}_{\scat X,\scat Y,\cat W}$ given by
+      \begin{enumerate}
+        \item for all $F:\cat W\times\scat X\to \widehat{\scat Y}$, $W\in\cat W$,
+          and $P\in\widehat{\scat X}$
+          \begin{align}
+            \extend{F}{\dagger}\rr{W,P} = \int^{X} PX\times F\rr{W,X}\rr{-}
+          \end{align}
+          and, for all morphisms $f$ in $\cat W$ and $\phi$ in $\widehat{\scat X}$,
+          \begin{equation}
+            \extend{F}{\dagger}\rr{f,\phi} = \int^{X} \phi_X\times F\rr{f,X}\rr{-};
+          \end{equation}
+        \item for all $F,G:\cat W\times\scat X\to\widehat{\scat Y}$,
+          $\phi:F\Rightarrow G$, $W\in\cat W$, and $P\in\widehat{\scat X}$,
+          \begin{align}
+            \extend{\phi}{\dagger}_{W,P} = \int^{X} PX \times \rr{\phi_{W,P}}_{(-)};
+          \end{align}
+      \end{enumerate}
+    \item for all $F:\cat W\times\scat X\to\widehat{\scat Y}$, $W\in\cat W$, and $X\in\scat X$,
+      the natural transformation $(\bicell r_F)_{W,X}$ has the components
+      \begin{equation}\label{eq:strong_presheaf_r}
+        % https://q.uiver.app/?q=WzAsMyxbMCwwLCJGKFcsWClZIl0sWzIsMCwiXFx0ZXh0e0hvbX0oWCxYKVxcdGltZXMgRihXLFgpWSJdLFsyLDEsIlxcaW50XntYJ31cXHRleHR7SG9tfShYJyxYKVxcdGltZXMgRihXLFgnKVkiXSxbMCwxLCJcXGxhbmdsZSBcXERlbHRhXFx0ZXh0e2lkfSxGKFcsWClZXFxyYW5nbGUiXSxbMSwyLCJxIl0sWzAsMiwiKChcXG1hdGhiZiByX0YpX3tXLFh9KV9ZIiwyXV0=
+        \begin{tikzcd}
+          {F(W,X)Y} && {\text{Hom}(X,X)\times F(W,X)Y} \\
+                    && {\int^{X'}\text{Hom}(X',X)\times F(W,X')Y}
+                    \arrow["{\langle \Delta\text{id},F(W,X)Y\rangle}", from=1-1, to=1-3]
+                    \arrow["q", from=1-3, to=2-3]
+                    \arrow["{((\mathbf r_F)_{W,X})_Y}"', from=1-1, to=2-3]
+        \end{tikzcd}
+      \end{equation}
+    \item for all $P\in\widehat{\scat X}$, the natural transformation $\rr{\bicell l_{\scat X}}_P$ has the components
+      \begin{equation}\label{eq:strong_presheaf_l}
+        % https://q.uiver.app/?q=WzAsMyxbMCwwLCJQWCJdLFsyLDEsIlxcaW50XntYJ30gUFgnXFx0aW1lc1xcdGV4dHtIb219KFgsWCcpIl0sWzIsMCwiUFhcXHRpbWVzXFx0ZXh0e0hvbX0oWCxYKSJdLFswLDIsIlxcbGFuZ2xlIFBYLFxcRGVsdGFcXHRleHR7aWR9XFxyYW5nbGUiXSxbMiwxLCJxIl0sWzAsMSwiKChcXG1hdGhiZiBsX3tcXG1hdGhiYiBYfSlfUClfWCIsMl1d
+        \begin{tikzcd}
+          PX && {PX\times\text{Hom}(X,X)} \\
+             && {\int^{X'} PX'\times\text{Hom}(X,X')}
+             \arrow["{\langle PX,\Delta\text{id}\rangle}", from=1-1, to=1-3]
+             \arrow["q", from=1-3, to=2-3]
+             \arrow["{((\mathbf l_{\mathbb X})_P)_X}"', from=1-1, to=2-3]
+        \end{tikzcd}
+      \end{equation}
+    \item for all $F:\scat X\to\widehat{\scat Y}$, $G:\cat W\times\scat Y\to\widehat{\scat Z}$,
+      $I:\cat V\to\scat W$, $P\in\widehat{\scat X}$, and $V\in\cat V$, the natural isomorphism
+      $\rr{\bicell c_{F,G,I}}_{V,P}$ has as components the canonical cowedge
+      isomorphisms given by
+      \begin{equation*}
+        % https://q.uiver.app/?q=WzAsNixbMCwyLCJcXGludF5YIFBYXFx0aW1lc1xcaW50XlkgKEZYKVlcXHRpbWVzIEcoSVYsWSlaIl0sWzEsMiwiXFxpbnReWVxcbGVmdChcXGludF5YIFBYXFx0aW1lcyAoRlgpWVxccmlnaHQpXFx0aW1lcyBHKElWLFkpWiJdLFswLDEsIlBYXFx0aW1lcyBcXGludF5ZIChGWClZXFx0aW1lcyBHKElWLFkpWiJdLFswLDAsIlBYXFx0aW1lc1xcbGVmdCgoRlgpWVxcdGltZXMgRyhJVixZKVpcXHJpZ2h0KSJdLFsxLDAsIihQWFxcdGltZXMgKEZYKVkpXFx0aW1lcyBHKElWLFkpWiJdLFsxLDEsIlxcbGVmdChcXGludF5YIFBYXFx0aW1lcyAoRlgpWVxccmlnaHQpXFx0aW1lcyBHKElWLFkpWiJdLFswLDEsIigoXFxtYXRoYmYgY197RixHLEl9KV97VixQfSlfWiIsMSx7ImN1cnZlIjozfV0sWzIsMCwicSIsMl0sWzUsMSwicSJdLFszLDIsIlBYXFx0aW1lcyBxIiwyXSxbNCw1LCJxXFx0aW1lcyBHKElWLFkpKC0pIl0sWzMsNCwiXFxjb25nIiwxLHsiY3VydmUiOi0zfV1d
+        \begin{tikzcd}
+          {PX\times\left((FX)Y\times G(IV,Y)Z\right)} & {(PX\times (FX)Y)\times G(IV,Y)Z} \\
+          {PX\times \int^Y (FX)Y\times G(IV,Y)Z} & {\left(\int^X PX\times (FX)Y\right)\times G(IV,Y)Z} \\
+          {\int^X PX\times\int^Y (FX)Y\times G(IV,Y)Z} & {\int^Y\left(\int^X PX\times (FX)Y\right)\times G(IV,Y)Z}
+          \arrow["{((\mathbf c_{F,G,I})_{V,P})_Z}"{description}, curve={height=18pt}, from=3-1, to=3-2]
+          \arrow["q"', from=2-1, to=3-1]
+          \arrow["q", from=2-2, to=3-2]
+          \arrow["{PX\times q}"', from=1-1, to=2-1]
+          \arrow["{q\times G(IV,Y)(-)}", from=1-2, to=2-2]
+          \arrow["\cong"{description}, curve={height=-18pt}, from=1-1, to=1-2]
+        \end{tikzcd}
+      \end{equation*}
+  \end{enumerate}
+\end{example}
+
+Even from this detailed description it is not clear that we have provided the
+necessary structure: we have to make sure that the structural 2-cells are in fact
+invertible. For $\bicell c$, this is immediate and we already showed the result for
+$\bicell l$ in \ref{ex:coend}. For $\bicell r$, the proof is similar:
+
+\begin{lemma}\label{lemma:strong_presheaf_r_is_iso}
+  The function (\ref{eq:strong_presheaf_r}) is an isomorphism.
+  \begin{proof}
+    For each $X'\in\scat X$, consider the function
+    \begin{align*}
+      w\rr{X'}:\Hom(X',X)\times F(W,X')Y&\to F(W,X)Y
+    \end{align*}
+    given by $\rr{f,u}\mapsto (F(W,f)Y)u$. We note that, for all 1-cells $f:X_1\to X_2$
+    in $\scat X$,
+    the following commutes:
+    \begin{equation*}
+      % https://q.uiver.app/?q=WzAsNCxbMSwxLCJGKFcsWClZIl0sWzAsMCwiXFx0ZXh0e0hvbX0oWF8yLFgpXFx0aW1lcyBGKFcsWF8xKVkiXSxbMSwwLCJcXHRleHR7SG9tfShYXzEsWClcXHRpbWVzIEYoVyxYXzEpWSJdLFswLDEsIlxcdGV4dHtIb219KFhfMixYKVxcdGltZXMgRihXLFhfMilZIl0sWzEsMywiXFx0ZXh0e0hvbX0oWF8yLFgpXFx0aW1lcyBGKFcsZilZIiwyXSxbMSwyLCJcXHRleHR7SG9tfShmLFgpXFx0aW1lcyBGKFcsWF8xKVkiLDAseyJjdXJ2ZSI6LTJ9XSxbMywwLCJ3KFhfMikiLDIseyJjdXJ2ZSI6Mn1dLFsyLDAsIncoWF8xKSJdXQ==
+      \begin{tikzcd}
+        {\text{Hom}(X_2,X)\times F(W,X_1)Y} & {\text{Hom}(X_1,X)\times F(W,X_1)Y} \\
+        {\text{Hom}(X_2,X)\times F(W,X_2)Y} & {F(W,X)Y}
+        \arrow["{\text{Hom}(X_2,X)\times F(W,f)Y}"', from=1-1, to=2-1]
+        \arrow["{\text{Hom}(f,X)\times F(W,X_1)Y}", curve={height=-12pt}, from=1-1, to=1-2]
+        \arrow["{w(X_2)}"', curve={height=12pt}, from=2-1, to=2-2]
+        \arrow["{w(X_1)}", from=1-2, to=2-2]
+      \end{tikzcd}
+    \end{equation*}
+    Thus $F(W,X)Y$ and $w$ define a cowedge. Consider the diagram
+    \begin{equation}\label{eq:r_iso_proof}
+      % https://q.uiver.app/?q=WzAsNCxbMSwwLCJGKFcsWClZIl0sWzAsMCwiXFx0ZXh0e0hvbX0oWCcsWClcXHRpbWVzIEYoVyxYJylZIl0sWzEsMiwiXFxpbnRee1gnfVxcdGV4dHtIb219KFgnLFgpXFx0aW1lcyBGKFcsWCcpWSJdLFsxLDEsIlxcdGV4dHtIb219KFgsWClcXHRpbWVzIEYoVyxYKVkiXSxbMSwwLCJ3KFgnKSJdLFsxLDIsInEiLDIseyJjdXJ2ZSI6NX1dLFszLDIsInEiLDJdLFswLDMsIlxcbGFuZ2xlIFxcRGVsdGFcXHRleHR7aWR9LEYoVyxYKVlcXHJhbmdsZSIsMl0sWzAsMiwiKChcXG1hdGhiZiByX0YpX3tXLFh9KV9ZIiwwLHsiY3VydmUiOi01fV1d
+      \begin{tikzcd}
+        {\text{Hom}(X',X)\times F(W,X')Y} & {F(W,X)Y} \\
+                                          & {\text{Hom}(X,X)\times F(W,X)Y} \\
+                                          & {\int^{X'}\text{Hom}(X',X)\times F(W,X')Y}
+                                          \arrow["{w(X')}", from=1-1, to=1-2]
+                                          \arrow["q"', curve={height=30pt}, from=1-1, to=3-2]
+                                          \arrow["q"', from=2-2, to=3-2]
+                                          \arrow["{\langle \Delta\text{id},F(W,X)Y\rangle}"', from=1-2, to=2-2]
+                                          \arrow["{((\mathbf r_F)_{W,X})_Y}", curve={height=-100pt}, from=1-2, to=3-2]
+      \end{tikzcd}
+    \end{equation}
+    Let $g:X'\to X$ and let $u\in F(W,X')Y$. Chasing elements we find
+    \begin{align*}
+      (q_X\circ\aa{\Delta\id, F(W,X)Y}\circ w(X'))(g,u)
+      &= (q_X\circ\aa{\Delta\id, F(W,X)Y})((F(W,g)Y)u) \\
+      &= q_X(\id, (F(W,g)Y)u)\\
+      &= q_{X'}(g,u)
+    \end{align*}
+    where the last step follows from the cowedge property of the coend. Thus
+    (\ref{eq:r_iso_proof}) commutes, making (\ref{eq:strong_presheaf_r}) into a
+    cowedge morphism. By universality of the coend it follows that this must
+    be an isomorphism.
+  \end{proof}
+\end{lemma}
+
+\section{Induced relative pseudomonad structure}\label{sec:relative_pseudomonads}
+
+For our generalisation to make sense, we require a strong $J$-pseudomonad to induce a
+relative pseudomonad over $J$. The structure \ref{def:prestrong_inclusion_pseudomonad_structure}
+already resembles that of a relative pseudomonad so it is straightforward to see
+how the former gives rise to the latter.
+
+\begin{definition}\label{def:induced_relative_pseudomonad_structure}
+  Let $T$ be a strong $J$-pseudomonad. The \emph{relative pseudomonad structure induced
+  by $T$} consists of
+  \begin{itemize}
+    \item for all $X,Y\in\bicat{J}$, the extension functor $\extend{\rr{-}}{*}$ as in
+      \ref{eq:relative_pseudomonad_extension};
+    \item for all 1-cells $f:JX\to TY$ and $g:JY\to TZ$, the 2-cell
+      \begin{align*}
+        \bicell m_{f,g}=\bicell c_{f,g\lambda}\inv\lambda_{TX}
+      \end{align*}
+      as in the diagram
+      \begin{equation}
+        % https://q.uiver.app/?q=WzAsNSxbNiwwLCJUWSJdLFswLDAsIlRYIl0sWzEsMCwiMVxcdGltZXMgVFgiXSxbMywxLCJUWiJdLFs1LDAsIjFcXHRpbWVzIFRZIl0sWzEsMiwiXFxsYW1iZGFeey0xfSIsMl0sWzIsMywiKChnXFxsYW1iZGEpXlxcZGFnZ2VyKDFcXHRpbWVzIGYpKV5cXGRhZ2dlciIsMl0sWzQsMywiKGdcXGxhbWJkYSleXFxkYWdnZXIiXSxbMCw0LCJcXGxhbWJkYV57LTF9Il0sWzIsNCwiMVxcdGltZXMgZl4qIl0sWzEsMCwiZl4qIiwwLHsiY3VydmUiOi01fV0sWzEsMywiKGdeKmYpXioiLDIseyJjdXJ2ZSI6NX1dLFswLDMsImdeKiIsMCx7ImN1cnZlIjotNX1dLFs2LDcsIlxcbWF0aGJmIGMiLDAseyJzaG9ydGVuIjp7InNvdXJjZSI6MjAsInRhcmdldCI6MjB9fV1d
+        \begin{tikzcd}
+          TX & {1\times TX} &&&& {1\times TY} & TY \\
+             &&& TZ
+             \arrow["{\lambda^{-1}}"', from=1-1, to=1-2]
+             \arrow[""{name=0, anchor=center, inner sep=0}, "{((g\lambda)^\dagger(1\times f))^\dagger}"', from=1-2, to=2-4]
+             \arrow[""{name=1, anchor=center, inner sep=0}, "{(g\lambda)^\dagger}", from=1-6, to=2-4]
+             \arrow["{\lambda^{-1}}", from=1-7, to=1-6]
+             \arrow["{1\times f^*}", from=1-2, to=1-6]
+             \arrow["{f^*}", curve={height=-30pt}, from=1-1, to=1-7]
+             \arrow["{(g^*f)^*}"', curve={height=30pt}, from=1-1, to=2-4]
+             \arrow["{g^*}", curve={height=-30pt}, from=1-7, to=2-4]
+             \arrow["{\mathbf c}", shorten <=13pt, shorten >=13pt, Rightarrow, from=0, to=1]
+        \end{tikzcd}
+      \end{equation}
+    \item for all $f:JX\to TY$, the 2-cell
+      \begin{align*}
+        \bicell e_f = \mathbf r_{f\lambda}\inv\lambda_{JX}
+      \end{align*}
+      as in the diagram
+      \begin{equation}
+        % https://q.uiver.app/?q=WzAsNSxbMCwwLCJKWCJdLFsyLDEsIlRZIl0sWzQsMCwiVFgiXSxbMywwLCIxXFx0aW1lcyBUWCJdLFsxLDAsIjFcXHRpbWVzIEpYIl0sWzAsMiwiXFxldGEiLDAseyJjdXJ2ZSI6LTV9XSxbMiwzLCJcXGxhbWJkYV57LTF9Il0sWzMsMSwiKGZcXGxhbWJkYSleXFxkYWdnZXIiXSxbMCw0LCJcXGxhbWJkYV57LTF9IiwyXSxbNCwzLCIxXFx0aW1lcyBcXGV0YSJdLFs0LDEsImZcXGxhbWJkYSIsMl0sWzIsMSwiZl4qIiwwLHsiY3VydmUiOi0zfV0sWzAsMSwiZiIsMix7ImN1cnZlIjozfV0sWzEwLDcsIlxcbWF0aGJmIHIiLDAseyJzaG9ydGVuIjp7InNvdXJjZSI6MjAsInRhcmdldCI6MjB9fV1d
+        \begin{tikzcd}
+          JX & {1\times JX} && {1\times TX} & TX \\
+             && TY
+             \arrow["\eta", curve={height=-30pt}, from=1-1, to=1-5]
+             \arrow["{\lambda^{-1}}", from=1-5, to=1-4]
+             \arrow[""{name=0, anchor=center, inner sep=0}, "{(f\lambda)^\dagger}", from=1-4, to=2-3]
+             \arrow["{\lambda^{-1}}"', from=1-1, to=1-2]
+             \arrow["{1\times \eta}", from=1-2, to=1-4]
+             \arrow[""{name=1, anchor=center, inner sep=0}, "f\lambda"', from=1-2, to=2-3]
+             \arrow["{f^*}", curve={height=-18pt}, from=1-5, to=2-3]
+             \arrow["f"', curve={height=18pt}, from=1-1, to=2-3]
+             \arrow["{\mathbf r}", shorten <=7pt, shorten >=7pt, Rightarrow, from=1, to=0]
+        \end{tikzcd}
+      \end{equation}
+    \item for all $X\in\bicat{J}$, the 2-cell
+      \begin{align*}
+        \bicell t_X=\mathbf l_{\eta_X}\inv\lambda_{TX}
+      \end{align*}
+      as in the diagram
+      \begin{equation}
+        % https://q.uiver.app/?q=WzAsMyxbMCwwLCJUWCJdLFsyLDIsIlRYIl0sWzIsMCwiMVxcdGltZXMgVFgiXSxbMCwxLCJcXGV0YV57VFxcbGFtYmRhfSIsMix7ImN1cnZlIjoyfV0sWzAsMiwiXFxsYW1iZGFeey0xfSJdLFsyLDEsIihcXGV0YVxcbGFtYmRhKV5UIiwyLHsiY3VydmUiOjN9XSxbMiwxLCJcXGxhbWJkYSIsMCx7ImN1cnZlIjotM31dLFs1LDYsIlxcbWF0aGJmIGwiLDAseyJzaG9ydGVuIjp7InNvdXJjZSI6MjAsInRhcmdldCI6MjB9fV1d
+        \begin{tikzcd}
+          TX && {1\times TX} \\
+          \\
+             && TX
+             \arrow["{\eta^{T\lambda}}"', curve={height=12pt}, from=1-1, to=3-3]
+             \arrow["{\lambda^{-1}}", from=1-1, to=1-3]
+             \arrow[""{name=0, anchor=center, inner sep=0}, "{(\eta\lambda)^T}"', curve={height=18pt}, from=1-3, to=3-3]
+             \arrow[""{name=1, anchor=center, inner sep=0}, "\lambda", curve={height=-18pt}, from=1-3, to=3-3]
+             \arrow["{\mathbf l}", shorten <=7pt, shorten >=7pt, Rightarrow, from=0, to=1]
+        \end{tikzcd}
+      \end{equation}
+  \end{itemize}
+\end{definition}
+
+When considering the presheaf construction, the induced relative pseudomonad structure
+consists of several isomorphisms that may be familiar from coend calculus.
+While we are not concerned with the details, it is worth investigating the structure
+nonetheless:
+
+\begin{example}
+  For the presheaf construction, we obtain the following relative pseudomonad structure:
+  \begin{enumerate}
+    \item for all $F,G:\scat X\to\widehat{\scat Y}$, $\phi : F\Rightarrow G$,
+      and $P\in\widehat{\scat X}$,
+      \begin{align*}
+        \extend{F}{*}(P) = \int^X PX\times FX(-), \hs
+        \rr{\extend{\phi}{*}}_P = \int^X PX\times \phi_X;
+      \end{align*}
+    \item for all $X\in\scat X$, $\eta_{\scat X}(X) = \Hom\rr{-,X}$;
+    \item for all $F:\scat X\to\widehat{\scat Y}$ and $X\in\scat X$, there is a
+      natural isomorphism with components
+      \begin{align*}
+        \rr{\bicell e_F}_X:FX\to\int^{X'} \Hom(X',X)\times FX';
+      \end{align*}
+    \item for all $F:\scat X\to\widehat{\scat Y}$, $G:\scat Y\to\widehat{\scat
+      Z}$, and $P\in\widehat{\scat X}$, $(\bicell m_{F,G})_P$ is a natural
+      isomorphism with components
+      \begin{align*}
+        \int^X PX\times\int^Y (FX)Y\times (GY)Z
+        \to\int^Y \rr{\int^X PX\times (FX)Y}\times (GY)Z;
+      \end{align*}
+    \item for all $P\in\widehat{\scat X}$, $\bicell t$ has as components isomorphisms
+      \begin{align*}
+        \rr{\rr{\bicell t_{\scat X}}_P}_X: \int^{X'} \Hom(X,X')\times PX'\to PX
+      \end{align*}
+  \end{enumerate}
+\end{example}
+
+\section{Prestrong axioms}
+
+A prestrong $J$-pseudomonad should induce a relative pseudomonad over $J$. It is therefore
+not surprising that the conditions which we impose are entirely analogous to those
+stated in~\cite{fiore2017}.
+
+\begin{definition}\label{def:prestrong_inclusion_pseudomonad_axioms}
+  A \emph{prestrong $J$-pseudomonad} is a prestrong $J$-pseudomonad structure such that
+  \begin{enumerate}
+    \item $\bicell r_f$ is natural in $f$;
+    \item $\bicell c_{f,g,i}$ is natural in $f$, $g$, and $i$;
+    \item for all $f:W\times JX\to TY$,
+      \begin{equation}\label{eq:strong_pseudomonad_square}
+        % https://q.uiver.app/?q=WzAsNCxbMCwwLCJmXlxcZGFnZ2VyIl0sWzAsMSwiZl5cXGRhZ2dlciJdLFsyLDAsIihmXlxcZGFnZ2VyKDFcXHRpbWVzXFxldGEpKV5cXGRhZ2dlciJdLFsyLDEsImZeXFxkYWdnZXIoMVxcdGltZXNcXGV0YV4qKSJdLFswLDIsIlxcbWF0aGJmIHIiXSxbMiwzLCJcXG1hdGhiZiBjIl0sWzMsMSwiZl5cXGRhZ2dlcigxXFx0aW1lc1xcbWF0aGJmIGxcXGxhbWJkYV57LTF9KSJdLFswLDEsIiIsMix7ImxldmVsIjoyLCJzdHlsZSI6eyJoZWFkIjp7Im5hbWUiOiJub25lIn19fV1d
+        \begin{tikzcd}
+          {f^\dagger} && {(f^\dagger(1\times\eta))^\dagger} \\
+          {f^\dagger} && {f^\dagger(1\times\eta^*)}
+          \arrow["{\mathbf r}", from=1-1, to=1-3]
+          \arrow["{\mathbf c}", from=1-3, to=2-3]
+          \arrow["{f^\dagger(1\times\mathbf l\lambda^{-1})}", from=2-3, to=2-1]
+          \arrow[Rightarrow, no head, from=1-1, to=2-1]
+        \end{tikzcd}
+      \end{equation}
+    \item for all suitable 1-cells $f,g,h,i,j$,
+      \begin{equation}\label{eq:strong_pseudomonad_house}
+        % https://q.uiver.app/?q=WzAsNSxbMSwwLCIoKGheXFxkYWdnZXIoalxcdGltZXMgZykpXlxcZGFnZ2VyKGlcXHRpbWVzIGYpKV5cXGRhZ2dlciJdLFswLDEsIihoXlxcZGFnZ2VyKGppXFx0aW1lcyBnXipmKSleXFxkYWdnZXIiXSxbMCwzLCJoXlxcZGFnZ2VyKGppXFx0aW1lcyhnXipmKV5cXGRhZ2dlcikiXSxbMiwxLCIoaF5cXGRhZ2dlcihqXFx0aW1lcyBnKSleXFxkYWdnZXIoaVxcdGltZXMgZl4qKSJdLFsyLDMsImheXFxkYWdnZXIoamlcXHRpbWVzIGdeKmZeKikiXSxbMSwyLCJcXG1hdGhiZiBjIiwxXSxbMCwzLCJcXG1hdGhiZiBjIiwxXSxbMiw0LCJoXlxcZGFnZ2VyKGppXFx0aW1lc1xcbWF0aGJmIGNcXGxhbWJkYV57LTF9KSIsMV0sWzMsNCwiXFxtYXRoYmYgYyhpXFx0aW1lcyBmXiopIiwxXSxbMCwxLCIoXFxtYXRoYmYgYyhpXFx0aW1lcyBmKSleXFxkYWdnZXIiLDFdXQ==
+        \begin{tikzcd}
+  & {((h^\dagger(j\times g))^\dagger(i\times f))^\dagger} \\
+          {(h^\dagger(ji\times g^*f))^\dagger} && {(h^\dagger(j\times g))^\dagger(i\times f^*)} \\
+          \\
+          {h^\dagger(ji\times(g^*f)^\dagger)} && {h^\dagger(ji\times g^*f^*)}
+          \arrow["{\mathbf c}"{description}, from=2-1, to=4-1]
+          \arrow["{\mathbf c}"{description}, from=1-2, to=2-3]
+          \arrow["{h^\dagger(ji\times\mathbf c\lambda^{-1})}"{description}, from=4-1, to=4-3]
+          \arrow["{\mathbf c(i\times f^*)}"{description}, from=2-3, to=4-3]
+          \arrow["{(\mathbf c(i\times f))^\dagger}"{description}, from=1-2, to=2-1]
+        \end{tikzcd}
+      \end{equation}
+  \end{enumerate}
+\end{definition}
+
+Now that we have stated some axioms, we need to make sure that they are sensible. The first
+step is to verify that the presheaf construction remains a model.
+
+\begin{proposition}
+  The prestrong presheaf construction in \ref{ex:prestrong_presheaves} is a prestrong $J$-pseudomonad.
+  \begin{proof}
+    We verify the axioms:
+    \begin{enumerate}
+      \item We note that
+        \begin{equation*}
+          % https://q.uiver.app/?q=WzAsNixbMCwwLCJGKFcsWClZIl0sWzEsMCwiRyhXLFgpWSJdLFswLDIsIlxcdGV4dHtIb219KFgsWClcXHRpbWVzIEYoVyxYKVkiXSxbMSwyLCJcXHRleHR7SG9tfShYLFgpXFx0aW1lcyBHKFcsWClZIl0sWzAsNCwiXFxpbnRee1gnfVxcdGV4dHtIb219KFgnLFgpXFx0aW1lcyBGKFcsWCcpWSJdLFsxLDQsIlxcaW50XntYJ30gXFx0ZXh0e0hvbX0oWCcsWClcXHRpbWVzIEYoVyxYJylZIl0sWzAsMSwiXFxsZWZ0KFxccGhpX3tXLFh9XFxyaWdodClfWSIsMV0sWzIsMywiXFx0ZXh0e0hvbX0oWCxYKVxcdGltZXMgXFxsZWZ0KFxccGhpX3tXLFh9XFxyaWdodClfWSIsMix7ImN1cnZlIjoyfV0sWzAsMiwiXFxsYW5nbGUgXFxEZWx0YVxcdGV4dHtpZH0sRihXLFgpWVxccmFuZ2xlIiwxXSxbMSwzLCJcXGxhbmdsZSBcXERlbHRhXFx0ZXh0e2lkfSxHKFcsWClZXFxyYW5nbGUiLDFdLFsyLDQsInEiLDFdLFszLDUsInEiLDFdLFs0LDUsIlxcaW50XntYJ31cXHRleHR7SG9tfShYJyxYKVxcdGltZXMgXFxsZWZ0KFxccGhpX3tXLFh9XFxyaWdodClfWSIsMix7ImN1cnZlIjoyfV0sWzEsNSwiXFxtYXRoYmYgciIsMSx7ImN1cnZlIjotNX1dLFswLDQsIlxcbWF0aGJmIHIiLDEseyJjdXJ2ZSI6NX1dLFs2LDcsIlxcbGFuZ2xlXFxEZWx0YVxcdGV4dHtpZH0sLVxccmFuZ2xlXFx0ZXh0ey1uYXR9IiwxLHsic2hvcnRlbiI6eyJzb3VyY2UiOjIwLCJ0YXJnZXQiOjIwfSwic3R5bGUiOnsiYm9keSI6eyJuYW1lIjoibm9uZSJ9LCJoZWFkIjp7Im5hbWUiOiJub25lIn19fV0sWzcsMTIsIiIsMSx7InNob3J0ZW4iOnsic291cmNlIjoyMCwidGFyZ2V0IjoyMH0sInN0eWxlIjp7ImJvZHkiOnsibmFtZSI6Im5vbmUifSwiaGVhZCI6eyJuYW1lIjoibm9uZSJ9fX1dLFsxMCwxNCwiXFxtYXRoYmYgclxcdGV4dHstZGVmfSIsMSx7InNob3J0ZW4iOnsic291cmNlIjoyMH0sInN0eWxlIjp7ImJvZHkiOnsibmFtZSI6Im5vbmUifSwiaGVhZCI6eyJuYW1lIjoibm9uZSJ9fX1dLFsxMywxMSwiXFxtYXRoYmYgclxcdGV4dHstZGVmfSIsMSx7InNob3J0ZW4iOnsidGFyZ2V0IjoyMH0sInN0eWxlIjp7ImJvZHkiOnsibmFtZSI6Im5vbmUifSwiaGVhZCI6eyJuYW1lIjoibm9uZSJ9fX1dXQ==
+\begin{tikzcd}
+	{F(W,X)Y} & {G(W,X)Y} \\
+	\\
+	{\text{Hom}(X,X)\times F(W,X)Y} & {\text{Hom}(X,X)\times G(W,X)Y} \\
+	\\
+	{\int^{X'}\text{Hom}(X',X)\times F(W,X')Y} & {\int^{X'} \text{Hom}(X',X)\times F(W,X')Y}
+	\arrow[""{name=0, anchor=center, inner sep=0}, "{\left(\phi_{W,X}\right)_Y}"{description}, from=1-1, to=1-2]
+	\arrow[""{name=1, anchor=center, inner sep=0}, "{\text{Hom}(X,X)\times \left(\phi_{W,X}\right)_Y}"', curve={height=20pt}, from=3-1, to=3-2]
+	\arrow["{\langle \Delta\text{id},F(W,X)Y\rangle}"{description}, from=1-1, to=3-1]
+	\arrow["{\langle \Delta\text{id},G(W,X)Y\rangle}"{description}, from=1-2, to=3-2]
+	\arrow[""{name=2, anchor=center, inner sep=0}, "q"{description}, from=3-1, to=5-1]
+	\arrow[""{name=3, anchor=center, inner sep=0}, "q"{description}, from=3-2, to=5-2]
+	\arrow[""{name=4, anchor=center, inner sep=0}, "{\int^{X'}\text{Hom}(X',X)\times \left(\phi_{W,X}\right)_Y}"', curve={height=20pt}, from=5-1, to=5-2]
+	\arrow[""{name=5, anchor=center, inner sep=0}, "{\mathbf r}"{description}, curve={height=-100pt}, from=1-2, to=5-2]
+	\arrow[""{name=6, anchor=center, inner sep=0}, "{\mathbf r}"{description}, curve={height=100pt}, from=1-1, to=5-1]
+	\arrow["{\langle\Delta\text{id},-\rangle\text{-nat}}"{description}, draw=none, from=0, to=1]
+	\arrow[draw=none, from=1, to=4]
+	\arrow["{\mathbf r\text{-def}}"{description}, draw=none, from=2, to=6]
+	\arrow["{\mathbf r\text{-def}}"{description}, draw=none, from=5, to=3]
+\end{tikzcd}
+        \end{equation*}
+        commutes due to (\ref{eq:coend_natural_transformation}) on the right. This shows naturality
+        of $\bicell r$.
+      \item Naturality of $\bicell c$ follows from naturality of the
+        underlying isomorphism.\footnote{
+          Full diagram of naturality of $\bicell c_{F,G,I}$ in $F$ and $G$ in
+        \href{https://q.uiver.app/?q=WzAsMTIsWzAsMCwiXFxpbnReWCBQWFxcdGltZXNcXGludF5ZKEZYKVlcXHRpbWVzIEcoSVYsWSlaIl0sWzUsMCwiXFxpbnReWVxcbGVmdChcXGludF5YIFBYXFx0aW1lcyAoRlgpWVxccmlnaHQpXFx0aW1lcyBHKElWLFkpWiJdLFswLDksIlxcaW50XlggUFhcXHRpbWVzXFxpbnReWShIWClZXFx0aW1lcyBLKElWLFkpWiJdLFs1LDksIlxcaW50XllcXGxlZnQoXFxpbnReWCBQWFxcdGltZXMoSFgpWVxccmlnaHQpXFx0aW1lcyBLKElWLFkpWiJdLFsxLDEsIlBYXFx0aW1lc1xcaW50XlkoRlgpWVxcdGltZXMgRyhJVixZKVoiXSxbNCwxLCJcXGxlZnQoXFxpbnReWCBQWFxcdGltZXMoRlgpWVxccmlnaHQpXFx0aW1lcyBHKElWLFkpWiJdLFsxLDgsIlBYXFx0aW1lc1xcaW50XlkoSFgpWVxcdGltZXMgSyhJVixZKVoiXSxbNCw4LCJcXGxlZnQoXFxpbnReWCBQWFxcdGltZXMoSFgpWVxccmlnaHQpXFx0aW1lcyBLKElWLFkpWiJdLFsyLDIsIlBYXFx0aW1lcygoRlgpWVxcdGltZXMgRyhJVixZKVopIl0sWzIsNywiUFhcXHRpbWVzKChIWClZXFx0aW1lcyBLKElWLFkpWikiXSxbMyw3LCIoUFhcXHRpbWVzIChIWClZKVxcdGltZXMgSyhJVixZKVoiXSxbMywyLCIoUFhcXHRpbWVzKEZYKVkpXFx0aW1lcyBHKElWLFkpWiJdLFsyLDMsIlxcbWF0aGJmIGMiXSxbMCwxLCJcXG1hdGhiZiBjIl0sWzAsMiwiXFxpbnReWCBQWFxcdGltZXNcXGludF5ZKFxccGhpX1gpX1lcXHRpbWVzKFxccHNpX3tJVixZfSlfWiIsMV0sWzcsMywicSIsMV0sWzYsMiwicSIsMV0sWzQsMCwicSIsMV0sWzUsMSwicSIsMl0sWzksMTAsIlxcY29uZyIsMSx7ImN1cnZlIjotMn1dLFs4LDExLCJcXGNvbmciLDEseyJjdXJ2ZSI6Mn1dLFs4LDQsIlBYXFx0aW1lcyBxIiwxXSxbMTEsNSwicVxcdGltZXMgRyhJVixZKVoiLDFdLFs5LDYsIlBYXFx0aW1lcyBxIiwxXSxbMTAsNywicVxcdGltZXMgSyhJVixZKVoiLDFdLFsxLDMsIlxcaW50XllcXGxlZnQoXFxpbnReWCBQWFxcdGltZXMgKFxccGhpX1gpX1lcXHJpZ2h0KVxcdGltZXMoXFxwc2lfe0lWLFl9KV9aIiwxXSxbOCw5LCJQWFxcdGltZXMoKFxccGhpX1gpX1lcXHRpbWVzKFxccHNpX3tJVixZfSlfWikiLDFdLFsxMSwxMCwiKFBYXFx0aW1lcyhcXHBoaV9YKV9ZKVxcdGltZXMoXFxwc2lfe0lWLFl9KV9aIiwxXV0=}{quiver}.}
+      \item We note that the following commutes:
+        \begin{equation*}
+          % https://q.uiver.app/?q=WzAsNixbMCwwLCJQWFxcdGltZXMgRihXLFgpWSJdLFsxLDAsIlBYXFx0aW1lc1xcaW50XntYJ31cXHRleHR7SG9tfShYJyxYKVxcdGltZXMgRihXLFgnKVkiXSxbMSwyLCJQWFxcdGltZXMoXFx0ZXh0e0hvbX0oWCxYKVxcdGltZXMgRihXLFgpWSkiXSxbMSw1LCJcXGxlZnQoXFxpbnReWCBQWFxcdGltZXNcXHRleHR7SG9tfShYJyxYKVxccmlnaHQpXFx0aW1lcyBGKFcsWClZIl0sWzEsMywiKFBYXFx0aW1lc1xcdGV4dHtIb219KFgsWCkpXFx0aW1lcyBGKFcsWClZIl0sWzAsNSwiUFhcXHRpbWVzIEYoVyxYKVkiXSxbMiwxLCJQWFxcdGltZXMgcSIsMSx7ImN1cnZlIjozfV0sWzAsMSwiUFhcXHRpbWVzXFxtYXRoYmYgciIsMSx7ImN1cnZlIjotM31dLFswLDIsIlBYXFx0aW1lc1xcbGFuZ2xlXFxEZWx0YVxcdGV4dHtpZH0sRihXLFgpWVxccmFuZ2xlIiwxXSxbNCwzLCJxXFx0aW1lcyBGKFcsWClZIiwxLHsiY3VydmUiOi0zfV0sWzIsNCwiXFxhbHBoYSIsMV0sWzUsMywiXFxtYXRoYmYgbFxcdGltZXMgRihXLFgnKVkiLDEseyJjdXJ2ZSI6M31dLFswLDUsIiIsMSx7ImxldmVsIjoyLCJzdHlsZSI6eyJoZWFkIjp7Im5hbWUiOiJub25lIn19fV0sWzUsNCwiXFxsYW5nbGUgUFgsXFxEZWx0YVxcdGV4dHtpZH1cXHJhbmdsZVxcdGltZXMgRihXLFgpWSIsMV0sWzgsMSwiXFxtYXRoYmYgclxcdGV4dHstZGVmfSIsMSx7InNob3J0ZW4iOnsic291cmNlIjoyMH0sInN0eWxlIjp7ImJvZHkiOnsibmFtZSI6Im5vbmUifSwiaGVhZCI6eyJuYW1lIjoibm9uZSJ9fX1dLFsxMywzLCJcXG1hdGhiZiByXFx0ZXh0ey1kZWZ9IiwxLHsic2hvcnRlbiI6eyJzb3VyY2UiOjIwfSwic3R5bGUiOnsiYm9keSI6eyJuYW1lIjoibm9uZSJ9LCJoZWFkIjp7Im5hbWUiOiJub25lIn19fV1d
+          \begin{tikzcd}
+            {PX\times F(W,X)Y} & {PX\times\int^{X'}\text{Hom}(X',X)\times F(W,X')Y} \\
+            \\
+                               & {PX\times(\text{Hom}(X,X)\times F(W,X)Y)} \\
+                               & {(PX\times\text{Hom}(X,X))\times F(W,X)Y} \\
+                               \\
+            {PX\times F(W,X)Y} & {\left(\int^X PX\times\text{Hom}(X',X)\right)\times F(W,X)Y}
+            \arrow["{PX\times q}"{description}, curve={height=18pt}, from=3-2, to=1-2]
+            \arrow["{PX\times\mathbf r}"{description}, curve={height=-18pt}, from=1-1, to=1-2]
+            \arrow[""{name=0, anchor=center, inner sep=0}, "{PX\times\langle\Delta\text{id},F(W,X)Y\rangle}"{description}, from=1-1, to=3-2]
+            \arrow["{q\times F(W,X)Y}"{description}, curve={height=-18pt}, from=4-2, to=6-2]
+            \arrow["\alpha"{description}, from=3-2, to=4-2]
+            \arrow["{\mathbf l\times F(W,X')Y}"{description}, curve={height=18pt}, from=6-1, to=6-2]
+            \arrow[Rightarrow, no head, from=1-1, to=6-1]
+            \arrow[""{name=1, anchor=center, inner sep=0}, "{\langle PX,\Delta\text{id}\rangle\times F(W,X)Y}"{description}, from=6-1, to=4-2]
+            \arrow["{\mathbf r\text{-def}}"{description}, draw=none, from=0, to=1-2]
+            \arrow["{\mathbf r\text{-def}}"{description}, draw=none, from=1, to=6-2]
+          \end{tikzcd}
+        \end{equation*}
+        Postcomposition with the appropriate canonical morphisms yields
+        (\ref{eq:strong_pseudomonad_square}).\footnote{
+          Full diagram for proof of (\ref{eq:strong_pseudomonad_square}) in
+          \href{https://q.uiver.app/?q=WzAsMTAsWzEsMSwiUFhcXHRpbWVzIEYoVyxYKVkiXSxbMiwxLCJQWFxcdGltZXNcXGludF57WCd9XFx0ZXh0e0hvbX0oWCcsWClcXHRpbWVzIEYoVyxYJylZIl0sWzIsMywiUFhcXHRpbWVzKFxcdGV4dHtIb219KFgsWClcXHRpbWVzIEYoVyxYKVkpIl0sWzIsNiwiXFxsZWZ0KFxcaW50XlggUFhcXHRpbWVzXFx0ZXh0e0hvbX0oWCcsWClcXHJpZ2h0KVxcdGltZXMgRihXLFgpWSJdLFsyLDQsIihQWFxcdGltZXNcXHRleHR7SG9tfShYLFgpKVxcdGltZXMgRihXLFgpWSJdLFsxLDYsIlBYXFx0aW1lcyBGKFcsWClZIl0sWzMsNywiXFxpbnRee1gnfSBcXGxlZnQoXFxpbnReWCBQWFxcdGltZXNcXHRleHR7SG9tfShYJyxYKVxccmlnaHQpXFx0aW1lcyBGKFcsWCcpWSJdLFszLDAsIlxcaW50XlhQWFxcdGltZXNcXGludF57WCd9XFx0ZXh0e0hvbX0oWCcsWClcXHRpbWVzIEYoVyxYJylZIl0sWzAsMCwiXFxpbnReWCBQWFxcdGltZXMgRihXLFgpWSJdLFswLDcsIlxcaW50XlggUFhcXHRpbWVzIEYoVyxYKVkiXSxbMiwxLCJQWFxcdGltZXMgcSIsMSx7ImN1cnZlIjo1fV0sWzAsMSwiUFhcXHRpbWVzXFxtYXRoYmYgciIsMSx7ImN1cnZlIjotM31dLFswLDIsIlBYXFx0aW1lc1xcbGFuZ2xlXFxEZWx0YSBYLEYoVyxYKVlcXHJhbmdsZSIsMV0sWzQsMywicVxcdGltZXMgRihXLFgpWSIsMSx7ImN1cnZlIjotNX1dLFsyLDQsIlxcYWxwaGEiLDFdLFs1LDMsIlxcbWF0aGJmIGxcXHRpbWVzIEYoVyxYJylZIiwxLHsiY3VydmUiOjN9XSxbMCw1LCIiLDEseyJsZXZlbCI6Miwic3R5bGUiOnsiaGVhZCI6eyJuYW1lIjoibm9uZSJ9fX1dLFs1LDQsIlxcbGFuZ2xlIFBYLFxcRGVsdGEgWFxccmFuZ2xlXFx0aW1lcyBGKFcsWClZIiwxXSxbMyw2LCJxIiwxXSxbNyw2LCJcXG1hdGhiZiBjIiwxXSxbMSw3LCJxIiwxXSxbOCw3LCJcXGludF5YUFhcXHRpbWVzXFxtYXRoYmYgciIsMV0sWzAsOCwicSIsMV0sWzYsOSwiXFxpbnRee1gnfVxcbWF0aGJmIGxeey0xfVxcdGltZXMgRihXLFgnKSIsMV0sWzgsOSwiIiwwLHsibGV2ZWwiOjIsInN0eWxlIjp7ImhlYWQiOnsibmFtZSI6Im5vbmUifX19XSxbNSw5LCJxIiwxXV0=}
+        {quiver}.}
+      \item The proof of (\ref{eq:strong_pseudomonad_house}) is similar to the above.\footnote{
+          Full diagram for proof of (\ref{eq:strong_pseudomonad_house}) in \href{https://q.uiver.app/?q=WzAsMjAsWzAsMCwiXFxpbnReVyBQV1xcdGltZXMgXFxpbnReWChGVylYXFx0aW1lcyBcXGludF5ZIChHWClZXFx0aW1lcyBIKEpJVixZKVoiXSxbNywwLCJcXGludF5XIFBXXFx0aW1lcyBcXGludF5ZXFxsZWZ0KFxcaW50XlgoRlcpWFxcdGltZXMgKEdYKVlcXHJpZ2h0KVxcdGltZXMgSChKSVYsWSlaIl0sWzcsNSwiXFxpbnReWVxcbGVmdChcXGludF5XIFBXXFx0aW1lc1xcbGVmdChcXGludF5YKEZXKVhcXHRpbWVzIChHWClZXFxyaWdodClcXHJpZ2h0KVxcdGltZXMgSChKSVYsWSlaIl0sWzcsMTAsIlxcaW50XllcXGxlZnQoXFxpbnReWFxcbGVmdChcXGludF5XIFBXXFx0aW1lcyhGVylYXFxyaWdodClcXHRpbWVzIChHWClZXFxyaWdodClcXHRpbWVzIEgoSklWLFkpWiJdLFsxLDEsIlBXXFx0aW1lc1xcaW50XlgoRlcpWFxcdGltZXNcXGludF5ZKEdYKVlcXHRpbWVzIEgoSklWLFkpWiJdLFsyLDIsIlBXXFx0aW1lcyBcXGxlZnQoKEZXKVhcXHRpbWVzIFxcaW50XlkoR1gpWVxcdGltZXMgSChKSVYsWSlaXFxyaWdodCkiXSxbMCwxMCwiXFxpbnReWFxcbGVmdChcXGludF5XIFBXXFx0aW1lcyAoRlcpWFxccmlnaHQpXFx0aW1lcyBcXGludF5ZIChHWClZXFx0aW1lcyBIKEpJVixZKVoiXSxbMSw5LCJcXGxlZnQoXFxpbnReVyBQV1xcdGltZXMgKEZXKVhcXHJpZ2h0KVxcdGltZXMgXFxpbnReWSAoR1gpWVxcdGltZXMgSChKSVYsWSlaIl0sWzIsOCwiXFxsZWZ0KFBXXFx0aW1lcyAoRlcpWFxccmlnaHQpXFx0aW1lc1xcaW50XlkoR1gpWVxcdGltZXMgSChKSVYsWSlaIl0sWzQsMywiUFdcXHRpbWVzXFxsZWZ0KFxcbGVmdCgoRldYXFx0aW1lcyAoR1gpWVxccmlnaHQpXFx0aW1lcyBIKEpJVixZKVpcXHJpZ2h0KSJdLFs2LDEsIlBXXFx0aW1lcyBcXGludF5ZXFxsZWZ0KFxcaW50XlgoRlcpWFxcdGltZXMgKEdYKVlcXHJpZ2h0KVxcdGltZXMgSChKSVYsWSlaIl0sWzUsMiwiUFdcXHRpbWVzIFxcbGVmdChcXGxlZnQoXFxpbnReWChGVylYXFx0aW1lcyAoR1gpWVxccmlnaHQpXFx0aW1lcyBIKEpJVixZKVpcXHJpZ2h0KSJdLFszLDMsIlBXXFx0aW1lc1xcbGVmdCgoRlcpWFxcdGltZXNcXGxlZnQoKEdYKVlcXHRpbWVzIEgoSklWLFkpWlxccmlnaHQpXFxyaWdodCkiXSxbNiw5LCJcXGxlZnQoXFxpbnReWFxcbGVmdChcXGludF5XIFBXXFx0aW1lcyhGVylYXFxyaWdodClcXHRpbWVzIChHWClZXFxyaWdodClcXHRpbWVzIEgoSklWLFkpWiJdLFs1LDgsIlxcbGVmdChcXGxlZnQoXFxpbnReVyBQV1xcdGltZXMoRlcpWFxccmlnaHQpXFx0aW1lcyAoR1gpWVxccmlnaHQpXFx0aW1lcyBIKEpJVixZKVoiXSxbNCw3LCJcXGxlZnQoXFxsZWZ0KFBXXFx0aW1lcyhGVylYXFxyaWdodClcXHRpbWVzIChHWClZXFxyaWdodClcXHRpbWVzIEgoSklWLFkpWiJdLFs2LDUsIlxcbGVmdChcXGludF5XIFBXXFx0aW1lc1xcbGVmdChcXGludF5YKEZXKVhcXHRpbWVzIChHWClZXFxyaWdodClcXHJpZ2h0KVxcdGltZXMgSChKSVYsWSlaIl0sWzUsNSwiXFxsZWZ0KFBXXFx0aW1lc1xcbGVmdChcXGludF5YKEZXKVhcXHRpbWVzIChHWClZXFxyaWdodClcXHJpZ2h0KVxcdGltZXMgSChKSVYsWSlaIl0sWzQsNSwiXFxsZWZ0KFBXXFx0aW1lc1xcbGVmdCgoRlcpWFxcdGltZXMgKEdYKVlcXHJpZ2h0KVxccmlnaHQpXFx0aW1lcyBIKEpJVixZKVoiXSxbMyw3LCIoUFdcXHRpbWVzIChGVylYKVxcdGltZXMoKEdYKVlcXHRpbWVzIEgoSklWLFkpWikiXSxbMCwxLCJcXGludF5XIFBXXFx0aW1lc1xcbWF0aGJmIGMiLDFdLFsxLDIsIlxcbWF0aGJmIGMiLDFdLFsyLDMsIlxcaW50XllcXG1hdGhiZiBjXFx0aW1lcyBIKEpJVixZKVoiLDFdLFs0LDAsInEiXSxbNSw0LCJQV1xcdGltZXMgcSJdLFs2LDMsIlxcaW50XllcXG1hdGhiZiBjXFx0aW1lcyBIKEpJVixZKVoiLDFdLFswLDYsIlxcbWF0aGJmIGMiLDFdLFs3LDYsInEiXSxbOCw3LCJxIl0sWzUsOCwiXFxjb25nIiwxXSxbMTAsMSwicSIsMV0sWzExLDEwLCJQV1xcdGltZXMgcSIsMV0sWzksMTEsIlBXXFx0aW1lcyAocVxcdGltZXMgSChKSVYsWSlaKSIsMV0sWzQsMTAsIlBXXFx0aW1lc1xcbWF0aGJmIGMiLDFdLFsxMiw1LCJQV1xcdGltZXMoKEZXKVhcXHRpbWVzIHEpIiwxXSxbMTIsOSwiXFxjb25nIiwxLHsiY3VydmUiOi0yfV0sWzE1LDE0LCIocVxcdGltZXMoR1gpWSlcXHRpbWVzIEgoSklWLFkpWiIsMV0sWzE0LDEzLCJxXFx0aW1lcyBIKEpJVixZKVoiLDFdLFsxMywzLCJxIiwxXSxbMTgsMTcsIihQV1xcdGltZXMgcSlcXHRpbWVzIEgoSklWLFkpWiIsMSx7ImN1cnZlIjotM31dLFsxNywxNiwicVxcdGltZXMgSChKSVYsWSlaIiwxLHsiY3VydmUiOi0zfV0sWzE2LDIsInEiLDFdLFsxOCwxNSwiXFxjb25nIiwxXSxbMTYsMTMsIlxcbWF0aGJmIGMiLDFdLFsxMSwxNywiXFxjb25nIiwxXSxbMTksOCwiKFBXXFx0aW1lcyAoRlcpWClcXHRpbWVzIHEiLDFdLFsxOSwxNSwiXFxjb25nIiwxLHsiY3VydmUiOi0yfV0sWzEyLDE5LCJcXGNvbmciLDFdLFs5LDE4LCJcXGNvbmciLDFdLFs3LDEzLCJcXG1hdGhiZiBjIiwxXV0=}
+        {quiver}.}
+    \end{enumerate}
+  \end{proof}
+\end{proposition}
+
+Only a little more work is required to make sure that a prestrong $J$-pseudomonad
+does indeed correspond to a relative pseudomonad over $J$.
+
+\begin{theorem}\label{thm:prestrong_inclusion_pseudomonads_are_relative_pseudomonads}
+  Let $T$ be a strong $J$-pseudomonad. Then the relative pseudomonad structure induced
+  by $T$ is a relative pseudomonad in the sense of~\cite[Definition 3.1]{fiore2017}.
+  \begin{proof}
+    We have the obvious correspondence between the structure in~\cite{fiore2017} and
+    \ref{def:induced_relative_pseudomonad_structure}:
+    $\extend{\rr{-}}{*}_{X,Y}$ is identical,
+    $i_X$ is $\eta_X$,
+    $\mu_{g,f}$ is $\bicell m_{f,g}$,
+    $\eta_f$ is $\bicell e_f$,
+    $\theta_X$ is $\bicell t_X$.
+    We now verify the axioms:
+    \begin{itemize}
+      \item naturality of $\bicell e$ is just naturality of $\bicell r$;
+      \item naturality of $\bicell m$ is just naturality of $\bicell c$;
+      \item \cite[{(3.2)}]{fiore2017} holds by postcomposing (\ref{eq:strong_pseudomonad_square})
+        with $\inv\lambda$ as in the diagram
+        \begin{equation*}
+          % https://q.uiver.app/?q=WzAsOCxbMCwwLCJmXioiXSxbNCwwLCIoZl4qXFxldGEpXioiXSxbNCwzLCJmXipcXGV0YV4qIl0sWzAsMywiZl4qIl0sWzEsMSwiKGZcXGxhbWJkYSleXFxkYWdnZXIiXSxbMywxLCIoKGZcXGxhbWJkYSleXFxkYWdnZXIoMVxcdGltZXNcXGV0YSkpXlxcZGFnZ2VyIl0sWzMsMiwiKGZcXGxhbWJkYSleXFxkYWdnZXIoMVxcdGltZXMoXFxldGFcXGxhbWJkYSleXFxkYWdnZXIpIl0sWzEsMiwiKGZcXGxhbWJkYSleXFxkYWdnZXIiXSxbMCwxLCIoXFxtYXRoYmYgZV9mKV4qIl0sWzEsMiwiXFxtYXRoYmYgbSJdLFswLDMsIiIsMix7ImxldmVsIjoyLCJzdHlsZSI6eyJoZWFkIjp7Im5hbWUiOiJub25lIn19fV0sWzIsMywiZl4qXFxtYXRoYmYgdCJdLFs3LDMsIi1cXGNpcmNcXGxhbWJkYV57LTF9IiwxXSxbMCw0LCItXFxjaXJjXFxsYW1iZGEiLDFdLFsxLDUsIi1cXGNpcmNcXGxhbWJkYSIsMV0sWzIsNiwiLVxcY2lyY1xcbGFtYmRhIiwxXSxbNSw2LCJcXG1hdGhiZiBjIl0sWzQsNSwiXFxtYXRoYmYgciJdLFs2LDcsIihmXFxsYW1iZGEpXlxcZGFnZ2VyKDFcXHRpbWVzXFxtYXRoYmYgbCkiXSxbNCw3LCIiLDEseyJsZXZlbCI6Miwic3R5bGUiOnsiaGVhZCI6eyJuYW1lIjoibm9uZSJ9fX1dXQ==
+          \begin{tikzcd}
+            {f^*} &&&& {(f^*\eta)^*} \\
+                  & {(f\lambda)^\dagger} && {((f\lambda)^\dagger(1\times\eta))^\dagger} \\
+                  & {(f\lambda)^\dagger} && {(f\lambda)^\dagger(1\times(\eta\lambda)^\dagger)} \\
+            {f^*} &&&& {f^*\eta^*}
+            \arrow["{(\mathbf e_f)^*}", from=1-1, to=1-5]
+            \arrow["{\mathbf m}", from=1-5, to=4-5]
+            \arrow[Rightarrow, no head, from=1-1, to=4-1]
+            \arrow["{f^*\mathbf t}", from=4-5, to=4-1]
+            \arrow["{-\circ\lambda^{-1}}"{description}, from=3-2, to=4-1]
+            \arrow["{-\circ\lambda}"{description}, from=1-1, to=2-2]
+            \arrow["{-\circ\lambda}"{description}, from=1-5, to=2-4]
+            \arrow["{-\circ\lambda}"{description}, from=4-5, to=3-4]
+            \arrow["{\mathbf c}", from=2-4, to=3-4]
+            \arrow["{\mathbf r}", from=2-2, to=2-4]
+            \arrow["{(f\lambda)^\dagger(1\times\mathbf l)}", from=3-4, to=3-2]
+            \arrow[Rightarrow, no head, from=2-2, to=3-2]
+          \end{tikzcd}
+        \end{equation*}
+      \item \cite[{(3.1)}]{fiore2017} holds by postcomposing (\ref{eq:strong_pseudomonad_house}) with
+        $\lambda^{-1}$ just like above.
+    \end{itemize}
+  \end{proof}
+\end{theorem}
+
+We may thus conclude that the definitions that we have stated so far fit in with already
+established work.
+
+\section{Induced pseudofunctor}
+
+Before we move on to the strong structure of a $J$-pseudomonad, we take some time to
+appreciate what we have developed so far. Relative monads induce functors~\cite{altenkirch2015}.
+It is therefore desirable that relative pseudomonads induce pseudofunctors. This was
+not explicitly proven in~\cite{fiore2017}. We will show how to obtain the pseudofunctor
+induced by a prestrong $J$-pseudomonad.
+
+Fix a prestrong $J$-pseudomonad $T$. Analogous to \ref{def:pseudofunctor}, we define the following:
+
+\begin{definition}
+  The \emph{pseudofunctor structure induced by $T$} consists of
+  \begin{enumerate}
+    \item for all $X\in\bicat{J}$, the object $TX\in\bicat{C}$;
+    \item for all $X,Y\in\bicat{J}$, the functor $T_{X,Y}$ is the composite
+      \begin{equation}
+        % https://q.uiver.app/?q=WzAsNCxbMCwwLCJcXHRleHR7SG9tfVtYLFldIl0sWzAsMSwiXFx0ZXh0e0hvbX1bSlgsSlldIl0sWzIsMSwiXFx0ZXh0e0hvbX1bSlgsVFldIl0sWzIsMCwiXFx0ZXh0e0hvbX1bVFgsVFldIl0sWzIsMywiKC0pXntUXFxsYW1iZGF9IiwyXSxbMSwyLCJcXGV0YVxcY2lyYy0iLDJdLFswLDEsIkpfe1gsWX0iLDJdLFswLDMsIlRfe1gsWX0iXV0=
+        \begin{tikzcd}
+          {\text{Hom}[X,Y]} && {\text{Hom}[TX,TY]} \\
+          {\text{Hom}[JX,JY]} && {\text{Hom}[JX,TY]}
+          \arrow["{(-)^{T\lambda}}"', from=2-3, to=1-3]
+          \arrow["{\eta\circ-}"', from=2-1, to=2-3]
+          \arrow["{J_{X,Y}}"', from=1-1, to=2-1]
+          \arrow["{T_{X,Y}}", from=1-1, to=1-3]
+        \end{tikzcd}
+      \end{equation}
+    \item for all $X\in\bicat{J}$, the 2-cell $\bicell i_X = \inv{\bicell l_X}\inv\lambda$;
+    \item for all $f:X\to Y$ and $g:Y\to Z$ in $\bicat{J}$, the 2-cell
+      \begin{align*}
+        \bicell d_{f,g} = \bicell m_{\eta Jf,\eta Jg}\bullet\extend{\rr{\bicell e_{\eta Jg}Jf}}{T\lambda}
+      \end{align*}
+      as in the diagram
+      \begin{equation}
+        % https://q.uiver.app/?q=WzAsNCxbMCwwLCJUWCJdLFs3LDAsIlRZIl0sWzcsMiwiVFoiXSxbMCwyLCJUWiJdLFswLDEsIihcXGV0YSBKZileKiIsMV0sWzEsMiwiKFxcZXRhIEpnKV4qIiwxXSxbMCwyLCIoKFxcZXRhIEpnKV4qXFxldGEgSmYpXioiLDFdLFszLDIsIiIsMSx7ImxldmVsIjoyLCJzdHlsZSI6eyJoZWFkIjp7Im5hbWUiOiJub25lIn19fV0sWzAsMywiKFxcZXRhIEpnSmYpXioiLDFdLFswLDEsIlRmIiwwLHsiY3VydmUiOi01fV0sWzEsMiwiVGciLDAseyJjdXJ2ZSI6LTV9XSxbMCwzLCJUKGdmKSIsMix7ImN1cnZlIjo1fV0sWzYsMSwiXFxtYXRoYmYgbSIsMix7InNob3J0ZW4iOnsic291cmNlIjozMCwidGFyZ2V0IjozMH19XSxbMyw2LCIoXFxtYXRoYmYgZUpmKV4qIiwwLHsic2hvcnRlbiI6eyJzb3VyY2UiOjMwLCJ0YXJnZXQiOjMwfX1dXQ==
+        \begin{tikzcd}
+          TX &&&&&&& TY \\
+          \\
+          TZ &&&&&&& TZ
+          \arrow["{(\eta Jf)^*}"{description}, from=1-1, to=1-8]
+          \arrow["{(\eta Jg)^*}"{description}, from=1-8, to=3-8]
+          \arrow[""{name=0, anchor=center, inner sep=0}, "{((\eta Jg)^*\eta Jf)^*}"{description}, from=1-1, to=3-8]
+          \arrow[Rightarrow, no head, from=3-1, to=3-8]
+          \arrow["{(\eta JgJf)^*}"{description}, from=1-1, to=3-1]
+          \arrow["Tf", curve={height=-30pt}, from=1-1, to=1-8]
+          \arrow["Tg", curve={height=-30pt}, from=1-8, to=3-8]
+          \arrow["{T(gf)}"', curve={height=30pt}, from=1-1, to=3-1]
+          \arrow["{\mathbf m}"', shorten <=31pt, shorten >=31pt, Rightarrow, from=0, to=1-8]
+          \arrow["{(\mathbf eJf)^*}", shorten <=31pt, shorten >=31pt, Rightarrow, from=3-1, to=0]
+        \end{tikzcd}
+      \end{equation}
+  \end{enumerate}
+\end{definition}
+
+\begin{example}
+  The prestrong presheaf construction induces a pseudofunctor structure
+  $\widehat{-} : \biCat\to\biCAT$ as described in \ref{ex:presheaf_pseudofunctor}.
+\end{example}
+
+Similar to the induced relative pseudomonad structure, we can prove a general
+statement and no additional work is required to show that the presheaf
+construction induces a pseudofunctor:
+
+\begin{proposition}\label{prop:induced_pseudofunctor}
+  The pseudofunctor structure induced by $T$ is a pseudofunctor.
+  \begin{proof}
+    We verify the axioms:
+    \begin{enumerate}
+      \item We have the commuting diagram
+        \begin{equation}
+          % https://q.uiver.app/?q=WzAsMTAsWzAsMCwiVChoZ2YpIl0sWzAsMiwiVChoZylUZiJdLFswLDUsIlRoIFRnIFRmIl0sWzIsMCwiVGggVChnZikiXSxbMCw0LCIoVGhcXGV0YSBKZyleKlRmIl0sWzAsMSwiKFQoaGcpXFxldGEgSmYpXntUXFxsYW1iZGF9Il0sWzEsMCwiKFRoXFxldGEgSihnZikpXioiXSxbMiw1LCJUaCgoXFxldGEgSmcpXipcXGV0YSBKZileKiJdLFsxLDMsIigoXFxldGEgSmgpXiooXFxldGEgSmcpXipcXGV0YSBKZileKiJdLFsxLDEsIigoVGhcXGV0YSBKZyleKlxcZXRhIEpmKV4qIl0sWzEsNCwiKFxcbWF0aGJmIGUgSmcpXipUZiIsMl0sWzQsMiwiXFxtYXRoYmYgbVRmIiwyXSxbMCw1LCIoXFxtYXRoYmYgZUpmKV4qIiwyXSxbNSwxLCJcXG1hdGhiZiBtIiwyXSxbMCw2LCIoXFxtYXRoYmYgZUooZ2YpKV4qIl0sWzYsMywiXFxtYXRoYmYgbSJdLFszLDcsIlRoKFxcbWF0aGJmIGVKZileKiIsMV0sWzcsMiwiKFxcZXRhIEpoKV4qXFxtYXRoYmYgbSJdLFs2LDgsIigoXFxldGEgSmgpXipcXG1hdGhiZiBlIEpmKV4qIiwxLHsiY3VydmUiOi01fV0sWzgsNywiXFxtYXRoYmYgbSJdLFs5LDQsIlxcbWF0aGJmIG0iLDJdLFs1LDksIigoXFxtYXRoYmYgZUpnKV4qIFxcZXRhIEpmKV4qIiwxLHsiY3VydmUiOjN9XSxbOSw4LCIoXFxtYXRoYmYgbVxcZXRhIEpmKV4qIiwxXSxbNiw5LCIoXFxtYXRoYmYgZSBKZileKiIsMl0sWzIsOCwiKFxccmVme2VxOnN0cm9uZ19wc2V1ZG9tb25hZF9ob3VzZX0pIiwxLHsic3R5bGUiOnsiYm9keSI6eyJuYW1lIjoibm9uZSJ9LCJoZWFkIjp7Im5hbWUiOiJub25lIn19fV0sWzEyLDIzLCJcXG1hdGhiZiBlXFx0ZXh0ey1uYXR9IiwyLHsic2hvcnRlbiI6eyJzb3VyY2UiOjIwLCJ0YXJnZXQiOjIwfSwic3R5bGUiOnsiYm9keSI6eyJuYW1lIjoibm9uZSJ9LCJoZWFkIjp7Im5hbWUiOiJub25lIn19fV0sWzQsMjEsIlxcbWF0aGJmIG5cXHRleHR7LW5hdH0iLDEseyJzaG9ydGVuIjp7InRhcmdldCI6MjB9LCJzdHlsZSI6eyJib2R5Ijp7Im5hbWUiOiJub25lIn0sImhlYWQiOnsibmFtZSI6Im5vbmUifX19XSxbMTUsMTYsIlxcbWF0aGJmIG1cXHRleHR7LW5hdH0iLDEseyJzaG9ydGVuIjp7InNvdXJjZSI6MjAsInRhcmdldCI6MjB9LCJzdHlsZSI6eyJib2R5Ijp7Im5hbWUiOiJub25lIn0sImhlYWQiOnsibmFtZSI6Im5vbmUifX19XV0=
+          \begin{tikzcd}
+            {T(hgf)} & {(Th\eta J(gf))^*} & {Th T(gf)} \\
+            {(T(hg)\eta Jf)^{T\lambda}} & {((Th\eta Jg)^*\eta Jf)^*} \\
+            {T(hg)Tf} \\
+                                        & {((\eta Jh)^*(\eta Jg)^*\eta Jf)^*} \\
+                                        {(Th\eta Jg)^*Tf} \\
+            {Th Tg Tf} && {Th((\eta Jg)^*\eta Jf)^*}
+            \arrow["{(\mathbf e Jg)^*Tf}"', from=3-1, to=5-1]
+            \arrow["{\mathbf mTf}"', from=5-1, to=6-1]
+            \arrow[""{name=0, anchor=center, inner sep=0}, "{(\mathbf eJf)^*}"', from=1-1, to=2-1]
+            \arrow["{\mathbf m}"', from=2-1, to=3-1]
+            \arrow["{(\mathbf eJ(gf))^*}", from=1-1, to=1-2]
+            \arrow[""{name=1, anchor=center, inner sep=0}, "{\mathbf m}", from=1-2, to=1-3]
+            \arrow[""{name=2, anchor=center, inner sep=0}, "{Th(\mathbf eJf)^*}"{description}, from=1-3, to=6-3]
+            \arrow["{(\eta Jh)^*\mathbf m}", from=6-3, to=6-1]
+            \arrow["{((\eta Jh)^*\mathbf e Jf)^*}"{description}, curve={height=-70pt}, from=1-2, to=4-2]
+            \arrow["{\mathbf m}", from=4-2, to=6-3]
+            \arrow["{\mathbf m}"', from=2-2, to=5-1]
+            \arrow[""{name=3, anchor=center, inner sep=0}, "{((\mathbf eJg)^* \eta Jf)^*}"{description}, curve={height=18pt}, from=2-1, to=2-2]
+            \arrow["{(\mathbf m\eta Jf)^*}"{description}, from=2-2, to=4-2]
+            \arrow[""{name=4, anchor=center, inner sep=0}, "{(\mathbf e Jf)^*}"', from=1-2, to=2-2]
+            \arrow["{(\ref{eq:strong_pseudomonad_house})}"{description}, draw=none, from=6-1, to=4-2]
+            \arrow["{\mathbf e\text{-nat}}"', draw=none, from=0, to=4]
+            \arrow["{\mathbf n\text{-nat}}"{description}, draw=none, from=5-1, to=3]
+            \arrow["{\mathbf m\text{-nat}}"{description}, draw=none, from=1, to=2]
+          \end{tikzcd}
+        \end{equation}
+        where the remaining face follows from~\cite[Lemma 3.2 (i)]{fiore2017}.
+        We have shown \ref{eq:pseudofunctor_coherence_associativity}.
+      \item The conditions \ref{eq:pseudofunctor_coherence_identity} are just~\cite[(3.1)]{fiore2017}.
+    \end{enumerate}
+  \end{proof}
+\end{proposition}
+
+\section{Strong structure}
+
+We are now ready for our final step towards the definition of a strong relative pseudomonad.
+As we are not be able to prove all the results that we would have liked, we provide
+some additional insight into how one might come up with the definition of a strong $J$-pseudomonad
+structure.
+
+Firstly, we notice that the prestrong structure already gives rise to a
+1-cell $X\times TY\to T(X\times Y)$ by extending the unit $\eta_{X\times Y}$. We will
+therefore think of $\eta^\dagger$ as the strength. Secondly, we observe that of the four
+structural 2-cells in~\cite[Definitions 8 and 9]{saville2023} only one involves repeated
+applications of the object map. The others are thus easily translated. To avoid the
+repeated applications in the problematic case, we take inspiration from the definition
+of a strong relative monad in~\cite{tarmo}. The result is the rather unintuitive
+family of invertible 2-cells $\bicell q$ which will allow us to construct the usual
+pentagon in the case where $J$ is the identity.
+
+\begin{definition}\label{def:strong_inclusion_pseudomonad_structure}
+  A \emph{strong $J$-pseudomonad structure} consists of
+  \begin{enumerate}
+    \item a prestrong $J$-pseudomonad $T$;
+    \item for all $X,Y,Z\in\bicat{J}$, an invertible 2-cell
+      \begin{equation}\label{eq:strong_pseudomonad_p}
+        % https://q.uiver.app/?q=WzAsNSxbMCwwLCIoSlhcXHRpbWVzIEpZKVxcdGltZXMgVFoiXSxbMCwxLCJKWFxcdGltZXMoSllcXHRpbWVzIFRaKSJdLFsyLDAsIlQoKFhcXHRpbWVzIFkpXFx0aW1lcyBaKSJdLFsyLDEsIlQoWFxcdGltZXMoWVxcdGltZXMgWikpIl0sWzEsMSwiSlhcXHRpbWVzIFQoWVxcdGltZXMgWikiXSxbMSw0LCJcXGV0YV5cXGRhZ2dlciIsMl0sWzQsMywiXFxldGFeXFxkYWdnZXIiLDJdLFswLDEsIlxcYWxwaGEiLDJdLFswLDIsIlxcZXRhXlxcZGFnZ2VyIl0sWzIsMywiVFxcYWxwaGEiXSxbNyw5LCJcXG1hdGhiZiBwX3tYLFksWn0iLDEseyJzaG9ydGVuIjp7InNvdXJjZSI6MjAsInRhcmdldCI6MjB9fV1d
+        \begin{tikzcd}
+          {(JX\times JY)\times TZ} && {T((X\times Y)\times Z)} \\
+          {JX\times(JY\times TZ)} & {JX\times T(Y\times Z)} & {T(X\times(Y\times Z))}
+          \arrow["{\eta^\dagger}"', from=2-1, to=2-2]
+          \arrow["{\eta^\dagger}"', from=2-2, to=2-3]
+          \arrow[""{name=0, anchor=center, inner sep=0}, "\alpha"', from=1-1, to=2-1]
+          \arrow["{\eta^\dagger}", from=1-1, to=1-3]
+          \arrow[""{name=1, anchor=center, inner sep=0}, "T\alpha", from=1-3, to=2-3]
+          \arrow["{\mathbf p_{X,Y,Z}}"{description}, shorten <=29pt, shorten >=29pt, Rightarrow, from=0, to=1]
+        \end{tikzcd}
+      \end{equation}
+    \item for all invertible 2-cells
+      \begin{equation*}
+        % https://q.uiver.app/?q=WzAsMyxbMCwwLCJKV1xcdGltZXMgSlgiXSxbMiwwLCJKV1xcdGltZXMgVFkiXSxbMSwxLCJUKFdcXHRpbWVzIFkpIl0sWzEsMiwiXFxldGFeXFxkYWdnZXIiXSxbMCwxLCJKV1xcdGltZXMgZiJdLFswLDIsImciLDJdLFs1LDMsIlxcbWF0aGJmIHUiLDAseyJzaG9ydGVuIjp7InNvdXJjZSI6MjAsInRhcmdldCI6MjB9fV1d
+        \begin{tikzcd}
+          {JW\times JX} && {JW\times TY} \\
+                        & {T(W\times Y)}
+                        \arrow[""{name=0, anchor=center, inner sep=0}, "{\eta^\dagger}", from=1-3, to=2-2]
+                        \arrow["{JW\times f}", from=1-1, to=1-3]
+                        \arrow[""{name=1, anchor=center, inner sep=0}, "g"', from=1-1, to=2-2]
+                        \arrow["{\mathbf u}", shorten <=10pt, shorten >=10pt, Rightarrow, from=1, to=0]
+        \end{tikzcd}
+      \end{equation*}
+      an invertible 2-cell
+      \begin{equation}\label{eq:strong_pseudomonad_q}
+        % https://q.uiver.app/?q=WzAsNCxbMCwwLCJKV1xcdGltZXMgVFgiXSxbMywwLCJUKFdcXHRpbWVzIFgpIl0sWzAsMSwiSldcXHRpbWVzIFRZIl0sWzMsMSwiVChXXFx0aW1lcyBZKSJdLFswLDEsIlxcZXRhXlxcZGFnZ2VyIl0sWzIsMywiXFxldGFeXFxkYWdnZXIiLDJdLFsxLDMsImdeKiJdLFswLDIsIkpXXFx0aW1lcyBmXioiLDJdLFs3LDYsIlxcbWF0aGJmIHFfe1xcbWF0aGJmIHV9IiwxLHsic2hvcnRlbiI6eyJzb3VyY2UiOjIwLCJ0YXJnZXQiOjIwfX1dXQ==
+        \begin{tikzcd}
+          {JW\times TX} &&& {T(W\times X)} \\
+          {JW\times TY} &&& {T(W\times Y)}
+          \arrow["{\eta^\dagger}", from=1-1, to=1-4]
+          \arrow["{\eta^\dagger}"', from=2-1, to=2-4]
+          \arrow[""{name=0, anchor=center, inner sep=0}, "{g^*}", from=1-4, to=2-4]
+          \arrow[""{name=1, anchor=center, inner sep=0}, "{JW\times f^*}"', from=1-1, to=2-1]
+          \arrow["{\mathbf q_{\mathbf u}}"{description}, shorten <=23pt, shorten >=23pt, Rightarrow, from=1, to=0]
+        \end{tikzcd}
+      \end{equation}
+    \item for all $f:JW\times JX\to TY$ in $\bicat{C}$, an invertible 2-cell
+      \begin{equation}\label{eq:strong_pseudomonad_s}
+        % https://q.uiver.app/?q=WzAsMyxbMCwwLCJKV1xcdGltZXMgVFgiXSxbMiwxLCJUWSJdLFs0LDAsIlQoV1xcdGltZXMgWCkiXSxbMCwyLCJcXGV0YV5cXGRhZ2dlciJdLFsyLDEsImZeKiJdLFswLDEsImZeXFxkYWdnZXIiLDJdLFs1LDQsIlxcbWF0aGJmIHNfZiIsMCx7InNob3J0ZW4iOnsic291cmNlIjoyMCwidGFyZ2V0IjoyMH19XV0=
+        \begin{tikzcd}
+          {JW\times TX} &&&& {T(W\times X)} \\
+                        && TY
+                        \arrow["{\eta^\dagger}", from=1-1, to=1-5]
+                        \arrow[""{name=0, anchor=center, inner sep=0}, "{f^*}", from=1-5, to=2-3]
+                        \arrow[""{name=1, anchor=center, inner sep=0}, "{f^\dagger}"', from=1-1, to=2-3]
+                        \arrow["{\mathbf s_f}", shorten <=13pt, shorten >=13pt, Rightarrow, from=1, to=0]
+        \end{tikzcd}
+      \end{equation}
+  \end{enumerate}
+\end{definition}
+
+Let us now verify that it is indeed possible to obtain such a structure for the
+presheaf construction. Of particular interest to us is the structural 2-cells
+$\bicell q_{\bicell u}$ because they are different to all the others that we
+have seen so far.
+
+\begin{example}
+  We extend the prestrong presheaf construction as follows:
+  \begin{enumerate}
+    \item for all $X\in\scat X$, $Y\in\scat Y$, and $P\in\widehat{\scat Z}$,
+      $\rr{\bicell p_{\scat X,\scat Y,\scat Z}}_{X,Y,P}$ is the isomorphism of coends
+      \begin{align*}
+        &\int^{X',Y',Z'}\rr{\int^Z PZ\times\Hom(((X',Y'),Z'),((X,Y),Z))} \times \Hom(-,(X',(Y',Z'))) \\
+        &\cong \int^{Y',Z'}\rr{\int^Z PZ\times\Hom((Y',Z'),(Y,Z))} \times \Hom(-,(X,(Y',Z')))
+      \end{align*}
+      which may be obtained by composition of $\bicell l$ and $\bicell c$;\footnote{
+        Construction of $\bicell p$ in \href{https://q.uiver.app/?q=WzAsMTEsWzQsMCwiXFxpbnRee1gnLFknLFonfVxcbGVmdChcXGludF5aIFBaXFx0aW1lc1xcdGV4dHtIb219KCgoWCcsWScpLFonKSwoKFgsWSksWikpXFxyaWdodClcXHRpbWVzXFx0ZXh0e0hvbX0oLSxYJywoWScsWicpKSJdLFs0LDYsIlxcaW50XntZJyxaJ31cXGxlZnQoXFxpbnReWiBQWlxcdGltZXNcXHRleHR7SG9tfSgoWScsWicpLChZLFopKVxccmlnaHQpXFx0aW1lc1xcdGV4dHtIb219KC0sKFgsKFknLFonKSkpIl0sWzIsMCwiXFxpbnRee1gnfVxcbGVmdChcXGludF5aIFBaXFx0aW1lc1xcdGV4dHtIb219KCgoWCcsWScpLFonKSwoKFgsWSksWikpXFxyaWdodClcXHRpbWVzXFx0ZXh0e0hvbX0oLSwoWCcsKFknLFonKSkpIl0sWzIsNiwiXFxsZWZ0KFxcaW50XlpQWlxcdGltZXNcXHRleHR7SG9tfSgoWScsWicpLChZLFopKVxccmlnaHQpXFx0aW1lc1xcdGV4dHtIb219KC0sKFgsKFknLFonKSkpIl0sWzIsMiwiXFxpbnReWiBQWlxcdGltZXNcXGludF57WCd9XFx0ZXh0e0hvbX0oKChYJyxZJyksWicpLCgoWCxZKSxaKSlcXHRpbWVzXFx0ZXh0e0hvbX0oLSwoWCcsKFknLFonKSkpIl0sWzAsNiwiXFxsZWZ0KFBaXFx0aW1lc1xcdGV4dHtIb219KChZJyxaJyksKFksWikpXFxyaWdodClcXHRpbWVzXFx0ZXh0e0hvbX0oLSwoWCwoWScsWicpKSkiXSxbMCwyLCJQWlxcdGltZXNcXGludF57WCd9XFx0ZXh0e0hvbX0oKChYJyxZJyksWicpLCgoWCxZKSxaKSlcXHRpbWVzXFx0ZXh0e0hvbX0oLSwoWCcsKFknLFonKSkpIl0sWzIsMywiXFxpbnReWiBQWlxcdGltZXNcXGludF57WCd9KFxcdGV4dHtIb219KChZJyxaJyksKFksWikpXFx0aW1lc1xcdGV4dHtIb219KC0sKFgnLChZJyxaJykpKSlcXHRpbWVzXFx0ZXh0e0hvbX0oWCcsWCkiXSxbMiw1LCJcXGludF5aUFpcXHRpbWVzKFxcdGV4dHtIb219KChZJyxaJyksKFksWikpXFx0aW1lc1xcdGV4dHtIb219KC0sKFgsKFknLFonKSkpKSJdLFswLDMsIlBaXFx0aW1lc1xcaW50XntYJ31cXHRleHR7SG9tfSgoWScsWicpLChZLFopKVxcdGltZXNcXHRleHR7SG9tfSgtLChYJywoWScsWicpKSlcXHRpbWVzXFx0ZXh0e0hvbX0oWCcsWCkiXSxbMCw1LCJQWlxcdGltZXMoXFx0ZXh0e0hvbX0oKFknLFonKSwoWSxaKSlcXHRpbWVzXFx0ZXh0e0hvbX0oLSwoWCwoWScsWicpKSkpIl0sWzAsMSwiXFxtYXRoYmYgcCJdLFszLDEsInEiLDJdLFsyLDAsInEiXSxbMiw0LCJcXG1hdGhiZiBjXnstMX0iLDJdLFs2LDQsInEiXSxbNSwzLCJxXFx0aW1lc1xcdGV4dHtIb219KC0sKFgsKFknLFonKSkpIiwyXSxbNCw3LCJcXGNvbmciLDFdLFs3LDgsIlxcaW50XlpQWlxcdGltZXNcXG1hdGhiZiBsXnstMX0iLDFdLFs4LDMsIlxcY29uZyIsMV0sWzEwLDgsInEiLDFdLFs5LDcsInEiLDFdLFsxMCw1LCJcXGNvbmciLDFdLFs5LDEwLCJQWlxcdGltZXNcXG1hdGhiZiBsXnstMX0iLDFdLFs2LDksIlxcY29uZyIsMV1d}
+      {quiver}}
+    \item for all natural isomorphisms with components
+      \begin{align*}
+        \bicell u_{W,X} : G(W,X)\cong \int^Y (FX)Y\times\Hom(-,(W,Y))
+      \end{align*}
+      we have the natural isomorphism $\bicell q_{\bicell u}$ whose components are themselves
+      natural isomorphisms
+      \begin{align*}
+        &\int^Y \rr{\int^X PX\times(FX)Y}\times\Hom\rr{-,(W,Y)} \\
+        &\cong \int^{W',X'}\rr{\int^X PX\times\Hom((W',X'),(W,X))}\times G(W',X')(-)
+      \end{align*}
+      which are obtained by composing $\mathbf c$, $\mathbf l$, and  $\mathbf u$;\footnote{
+        Construction of $\bicell q$ in \href{
+        https://q.uiver.app/?q=WzAsMTAsWzMsMCwiXFxpbnReWVxcbGVmdChcXGludF5YIFBYXFx0aW1lcyhGWClZXFxyaWdodClcXHRpbWVzXFx0ZXh0e0hvbX0oLSwoVyxZKSkiXSxbMyw0LCJcXGludF57VycsWCd9XFxsZWZ0KFxcaW50XlggUFhcXHRpbWVzXFx0ZXh0e0hvbX0oKFcnLFgnKSwoVyxYKSlcXHJpZ2h0KVxcdGltZXMgRyhXJyxYJykoLSkiXSxbMiwwLCJcXGludF5YIFBYIFxcdGltZXNcXGludF5ZKEZYKVlcXHRpbWVzXFx0ZXh0e0hvbX0oLSwoVyxZKSkiXSxbMiw0LCJcXGludF5YIFBYXFx0aW1lc1xcaW50XntXJyxYJ31cXHRleHR7SG9tfSgoVycsWCcpLChXLFgpKVxcdGltZXMgRyhXJyxYJykoLSkiXSxbMCwwLCJQWCBcXHRpbWVzXFxpbnReWShGWClZXFx0aW1lc1xcdGV4dHtIb219KC0sKFcsWSkpIl0sWzAsNCwiUFhcXHRpbWVzXFxpbnRee1cnLFgnfVxcdGV4dHtIb219KChXJyxYJyksKFcsWCkpXFx0aW1lcyBHKFcnLFgnKSgtKSJdLFswLDEsIlBYXFx0aW1lcyBHKFcsWCkoLSkiXSxbMCwzLCJQWFxcdGltZXNcXGludF57VycsWCd9RyhXJyxYJykoLSlcXHRpbWVzXFx0ZXh0e0hvbX0oKFcnLFgnKSwoVyxYKSkiXSxbMiwxLCJcXGludF5YUFhcXHRpbWVzIEcoVyxYKSgtKSJdLFsyLDMsIlxcaW50XlhQWFxcdGltZXNcXGludF57VycsWCd9RyhXJyxYJykoLSlcXHRpbWVzXFx0ZXh0e0hvbX0oKFcnLFgnKSwoVyxYKSkiXSxbMCwxLCIoXFxtYXRoYmYgcV97XFxtYXRoYmYgdX0pX3tXLFB9Il0sWzMsMSwiXFxtYXRoYmYgYyIsMV0sWzAsMiwiXFxtYXRoYmYgY157LTF9IiwxXSxbNSwzLCJxIiwxXSxbNCwyLCJxIiwxXSxbNCw2LCJQWFxcdGltZXNcXG1hdGhiZiB1IiwxXSxbNiw3LCJQWFxcdGltZXNcXG1hdGhiZiBsIiwxXSxbNyw1LCJQWFxcdGltZXNcXGludFxcZ2FtbWEiLDFdLFs2LDgsInEiLDFdLFs3LDksInEiLDFdLFs5LDMsIlxcaW50XlggUFhcXHRpbWVzIFxcaW50XFxnYW1tYSIsMV0sWzIsOCwiXFxpbnReWCBQWFxcdGltZXNcXG1hdGhiZiB1IiwxXSxbOCw5LCJcXGludF5YIFBYXFx0aW1lc1xcbWF0aGJmIGwiLDFdXQ==}
+      {quiver}.}
+    \item for all $F:\scat W\times\scat X\to \widehat{\scat Y}$, the natural isomorphism
+      $\bicell s_F$ has as components further natural isomorphisms
+      \begin{align*}
+        &\int^X PX\times F(W,X)(-)\\
+        &\cong \int^X PX\times \int^{W',X'} F(W',X')(-)\times\Hom((W',X'),(W,X)) \\
+        &\cong \int^X PX\times \int^{W',X'} \Hom((W',X'),(W,X))\times F(W',X')(-) \\
+        &\cong \int^{W',X'}\rr{\int^X PX\times\Hom((W',X'),(W,X))}\times F(W',X')(-).
+      \end{align*}
+  \end{enumerate}
+\end{example}
+
+\section{Towards an induced strong pseudomonad}\label{sec:induced_strong_pseudomonad}
+
+The structure \ref{def:strong_inclusion_pseudomonad_structure} requires some further
+axioms to be useful. Ideally, we would like for the structural 2-cells
+to be coherent. However, proving such a result may be very difficult. A more attainable
+goal is to show that, in the case where the inclusion is the identity, we obtain a strong
+pseudomonad.
+
+We are not able to state any further axioms or prove any of the results above. Instead
+we are going to outline how one can obtain the structure of a strong pseudomonad.
+We begin by constructing the strength and proceed by adding the structural 2-cells that
+promote it to a strength of the induced pseudofunctor and subsequently the induced
+pseudomonad.
+
+Fix a strong $J$-pseudomonad structure $T$.
+
+We have already discussed how to obtain the 1-cells $JW\times TX\to T(W\times X)$ that
+resemble the components of a pseudonatural transformation. We are now able to extend this
+structure to include the naturality 2-cell. Combining these, we obtain the structure
+of a pseudonatural transformation.
+
+\begin{definition}\label{def:induced_strength}
+  The \emph{strength induced by $T$} consists of
+  \begin{enumerate}
+    \item for all $W,X\in\bicat{J}$, the 1-cell
+      \begin{equation}\label{eq:strong_inclusion_pseudomonad_induced_strength}
+        \sigma_{W,X} = \extend{\rr{\eta_{W\times X}}}{\dagger} : JW\times TX\to T(W\times X)
+      \end{equation}
+    \item for all $f:W\to W'$ and $g:X\to X'$ in $\bicat{J}$, the naturality 2-cell
+      \begin{align*}
+        \bicell n_{f,g} = \mathbf c\bullet(\mathbf rJ(f\times g))^\dagger\bullet\inv{\mathbf s}
+      \end{align*}
+      as in the diagram
+      \begin{equation}
+        % https://q.uiver.app/?q=WzAsNixbMCwyLCJKV1xcdGltZXMgVFgiXSxbMCw1LCJKVydcXHRpbWVzIFRYJyJdLFszLDAsIlQoV1xcdGltZXMgWCkiXSxbMywzLCJUKFcnXFx0aW1lcyBYJykiXSxbMCwwLCJKV1xcdGltZXMgVFgiXSxbMyw1LCJUKFcnXFx0aW1lcyBYJykiXSxbMiwzLCJUKGZcXHRpbWVzIGcpIiwxXSxbMCwxLCJKZlxcdGltZXMgVGciLDFdLFsxLDUsIlxcZXRhXlxcZGFnZ2VyIiwxXSxbMyw1LCIiLDEseyJsZXZlbCI6Miwic3R5bGUiOnsiaGVhZCI6eyJuYW1lIjoibm9uZSJ9fX1dLFs0LDIsIlxcZXRhXlxcZGFnZ2VyIiwxXSxbNCwzLCIoXFxldGEgKEpmXFx0aW1lcyBKZykpXlxcZGFnZ2VyIiwxXSxbMCw1LCIoXFxldGFeXFxkYWdnZXIgKEpmXFx0aW1lc1xcZXRhIEpnKSleXFxkYWdnZXIiLDFdLFs0LDAsIiIsMSx7ImxldmVsIjoyLCJzdHlsZSI6eyJoZWFkIjp7Im5hbWUiOiJub25lIn19fV0sWzExLDEyLCIoXFxtYXRoYmYgciAoSmZcXHRpbWVzIEpnKSleXFxkYWdnZXIiLDEseyJzaG9ydGVuIjp7InNvdXJjZSI6MjAsInRhcmdldCI6MjB9fV0sWzEyLDgsIlxcbWF0aGJmIGMiLDEseyJzaG9ydGVuIjp7InNvdXJjZSI6MjAsInRhcmdldCI6MjB9fV0sWzEwLDExLCJcXG1hdGhiZiBzXnstMX0iLDEseyJzaG9ydGVuIjp7InNvdXJjZSI6MzAsInRhcmdldCI6MzB9fV1d
+        \begin{tikzcd}
+          {JW\times TX} &&& {T(W\times X)} \\
+          \\
+          {JW\times TX} \\
+                        &&& {T(W'\times X')} \\
+                        \\
+          {JW'\times TX'} &&& {T(W'\times X')}
+          \arrow["{T(f\times g)}"{description}, from=1-4, to=4-4]
+          \arrow["{Jf\times Tg}"{description}, from=3-1, to=6-1]
+          \arrow[""{name=0, anchor=center, inner sep=0}, "{\eta^\dagger}"{description}, from=6-1, to=6-4]
+          \arrow[Rightarrow, no head, from=4-4, to=6-4]
+          \arrow[""{name=1, anchor=center, inner sep=0}, "{\eta^\dagger}"{description}, from=1-1, to=1-4]
+          \arrow[""{name=2, anchor=center, inner sep=0}, "{(\eta (Jf\times Jg))^\dagger}"{description}, from=1-1, to=4-4]
+          \arrow[""{name=3, anchor=center, inner sep=0}, "{(\eta^\dagger (Jf\times\eta Jg))^\dagger}"{description}, from=3-1, to=6-4]
+          \arrow[Rightarrow, no head, from=1-1, to=3-1]
+          \arrow["{(\mathbf r (Jf\times Jg))^\dagger}"{description}, shorten <=9pt, shorten >=9pt, Rightarrow, from=2, to=3]
+          \arrow["{\mathbf c}"{description}, shorten <=6pt, shorten >=6pt, Rightarrow, from=3, to=0]
+          \arrow["{\mathbf s^{-1}}"{description}, shorten <=10pt, shorten >=10pt, Rightarrow, from=1, to=2]
+        \end{tikzcd}
+      \end{equation}
+  \end{enumerate}
+\end{definition}
+
+With the axioms we have included so far, we are not able to prove that this is indeed
+a pseudonatural transformation. Further, we have not been able to identify any intuitive or obvious axioms that
+would achieve this goal.\footnote{For future reference, \href{https://q.uiver.app/?q=WzAsMjEsWzAsMCwiVChnXFx0aW1lcyBnJylUKGZcXHRpbWVzIGYnKVxcc2lnbWEiXSxbMCw3LCJUKGdmXFx0aW1lcyBnJ2YnKVxcc2lnbWEiXSxbMTQsNywiXFxzaWdtYShKKGdmKVxcdGltZXMgVChnJ2YnKSkiXSxbMTQsMCwiXFxzaWdtYShKKGdmKVxcdGltZXMgVGcnVGYnKSJdLFs3LDAsIlQoZ1xcdGltZXMgZycpXFxzaWdtYShKZlxcdGltZXMgVGYnKSJdLFsxLDYsIihcXGV0YSBKKGdmXFx0aW1lcyBnJ2YnKSlee1RcXGxhbWJkYX1cXGV0YV5UIl0sWzEsMSwiKFxcZXRhIEooZ1xcdGltZXMgZycpKV57VFxcbGFtYmRhfShcXGV0YSBKKGZcXHRpbWVzIGYnKSlee1RcXGxhbWJkYX1cXGV0YV5UIl0sWzEzLDEsIlxcZXRhXlQoSihnZilcXHRpbWVzIChcXGV0YSBKZylee1RcXGxhbWJkYX0oXFxldGEgSmYpXntUXFxsYW1iZGF9KSJdLFsxMyw2LCJcXGV0YV5UKEooZ2YpXFx0aW1lcyhcXGV0YSBKKGcnZicpKV57VFxcbGFtYmRhfSkiXSxbNywxLCIoXFxldGEgSihnXFx0aW1lcyBnJykpXntUXFxsYW1iZGF9XFxldGFeVChKZlxcdGltZXMgKFxcZXRhIEpmJylee1RcXGxhbWJkYX0pIl0sWzUsNiwiKFxcZXRhIEooZ2ZcXHRpbWVzIGcnZicpKV57VH0iXSxbOSw2LCIoXFxldGFeVChKKGdmKVxcdGltZXMoXFxldGEgSihnJ2YnKSkpKV5UIl0sWzMsMSwiKFxcZXRhIEooZ1xcdGltZXMgZycpKV57VFxcbGFtYmRhfShcXGV0YSBKKGZcXHRpbWVzIGYnKSleVCJdLFs1LDEsIihcXGV0YSBKKGdcXHRpbWVzIGcnKSlee1RcXGxhbWJkYX0oXFxldGFeVChKZlxcdGltZXMgXFxldGEgSmYnKSleVCJdLFs5LDEsIihcXGV0YSBKKGdcXHRpbWVzIGcnKSleVChKZlxcdGltZXMgKFxcZXRhIEpmJylee1RcXGxhbWJkYX0pIl0sWzExLDEsIihcXGV0YV5UKEpnXFx0aW1lcyBcXGV0YSBKZycpKV5UKEpmXFx0aW1lcyBcXGV0YSBKZicpXntUXFxsYW1iZGF9Il0sWzEzLDMsIlxcZXRhXlQoSihnZilcXHRpbWVzKChcXGV0YSBKZylee1RcXGxhbWJkYX1cXGV0YSBKZilee1RcXGxhbWJkYX0pIl0sWzEsNCwiKChcXGV0YSBKKGdcXHRpbWVzIGcnKSlee1RcXGxhbWJkYX1cXGV0YSBKKGZcXHRpbWVzIGYnKSlee1RcXGxhbWJkYX1cXGV0YV5UIl0sWzMsNCwiKChcXGV0YSBKKGdcXHRpbWVzIGcnKSlee1RcXGxhbWJkYX1cXGV0YSBKKGZcXHRpbWVzIGYnKSlee1R9Il0sWzYsNCwiKChcXGV0YSBKKGdcXHRpbWVzIGcnKSlee1RcXGxhbWJkYX1cXGV0YV5UIChKZlxcdGltZXMgXFxldGEgSmYnKSlee1R9Il0sWzksNCwiKChcXGV0YSBKKGdcXHRpbWVzIGcnKSleVChKZlxcdGltZXMgXFxldGEgSmYnKSleVCJdLFs0LDMsIlxcbWF0aGJmIG4oSmZcXHRpbWVzIFRmJykiLDFdLFswLDQsIlQoZ1xcdGltZXMgZycpXFxtYXRoYmYgbiIsMV0sWzAsMSwiXFxtYXRoYmYgZF57LTF9XFxzaWdtYSIsMV0sWzMsMiwiXFxzaWdtYShKKGdmKVxcdGltZXMgXFxtYXRoYmYgZF57LTF9KSIsMV0sWzEsMiwiXFxtYXRoYmYgbiIsMV0sWzAsNl0sWzEsNV0sWzMsN10sWzgsMl0sWzUsMTAsIlxcbWF0aGJmIHNeey0xfSIsMV0sWzEwLDExLCIoXFxtYXRoYmYgcihKKGdmKVxcdGltZXMgSihnJ2YnKSkpXlQiLDFdLFsxMSw4LCJcXG1hdGhiZiBjIiwxXSxbNiwxMiwiKFxcZXRhIEooZ1xcdGltZXMgZycpKV5UXFxtYXRoYmYgc157LTF9IiwxLHsiY3VydmUiOi0zfV0sWzEyLDEzLCIoXFxldGEgSihnXFx0aW1lcyBnJykpXntUXFxsYW1iZGF9KFxcbWF0aGJmIHIoSmZcXHRpbWVzIEpmJykpXlQiLDEseyJjdXJ2ZSI6LTN9XSxbMTMsOSwiKFxcZXRhIEooZ1xcdGltZXMgZycpKV57VFxcbGFtYmRhfVxcbWF0aGJmIGMiLDFdLFs5LDE0LCJcXG1hdGhiZiBzXnstMX0oSmZcXHRpbWVzIChcXGV0YSBKZicpXntUXFxsYW1iZGF9KSIsMSx7ImN1cnZlIjotM31dLFsxNCwxNSwiKFxcbWF0aGJmIHIoSmdcXHRpbWVzIEpnJykpXlQoSmZcXHRpbWVzIFxcZXRhIEpmJylee1RcXGxhbWJkYX0iLDEseyJjdXJ2ZSI6LTN9XSxbMTUsNywiXFxtYXRoYmYgYyhKZlxcdGltZXMgXFxldGEgSmYnKV57VFxcbGFtYmRhfSIsMSx7ImN1cnZlIjotM31dLFs2LDE3LCJcXG1hdGhiZiBtXnstMX1cXGV0YV5UIiwxXSxbMTcsNSwiKFxcbWF0aGJmIGVeey0xfSBKKGZcXHRpbWVzIGYnKSlee1RcXGxhbWJkYX1cXGV0YV5UIiwxXSxbNywxNiwiXFxldGFeVChKKGdmKVxcdGltZXMgXFxtYXRoYmYgbV57LTF9KSIsMV0sWzE2LDgsIlxcZXRhXlQoSihnZilcXHRpbWVzIChcXG1hdGhiZiBlXnstMX1KZilee1RcXGxhbWJkYX0pIiwxXSxbMTcsMTgsIlxcbWF0aGJmIHNeey0xfSIsMV0sWzE4LDEwLCIoXFxtYXRoYmYgZV57LTF9IEooZlxcdGltZXMgZicpKV5UIiwxXSxbNCw5XSxbMTgsMTksIigoXFxldGEgSihnXFx0aW1lcyBnJykpXntUXFxsYW1iZGF9XFxtYXRoYmYgckooZlxcdGltZXMgZicpKV5UIiwxXSxbMTksMjAsIihcXG1hdGhiZiBzXnstMX0oSmZcXHRpbWVzIFxcZXRhIEpmJykpXlQiLDFdLFsxMCwyMCwiKFxcbWF0aGJmIHJeey0xfSBKKGZcXHRpbWVzIGYnKSleVCIsMV0sWzE0LDIwLCJcXG1hdGhiZiBjXnstMX0iLDFdLFs0MCw0NCwiXFxtYXRoYmYgc1xcdGV4dHstbmF0fSIsMSx7InNob3J0ZW4iOnsic291cmNlIjoyMCwidGFyZ2V0IjoyMH0sInN0eWxlIjp7ImJvZHkiOnsibmFtZSI6Im5vbmUifSwiaGVhZCI6eyJuYW1lIjoibm9uZSJ9fX1dXQ==}
+{the diagram} that we require to commute}.
+
+\begin{example}
+  For the strong presheaf construction, the strength is given by
+  \begin{enumerate}
+    \item the functor $\sigma:\scat W\times\widehat{\scat X}\to\widehat{\scat W\times\scat X}$
+      acting on objects by
+      \begin{align*}
+        \sigma(W,P) = \int^X PX \times \Hom(-,(W,X));
+      \end{align*}
+    \item the natural transformation $\bicell n_{F,G}:JF\times \widehat{G}\to \widehat{F\times G}$
+      which has as components natural isomorphisms
+      \begin{align*}
+        &\int^{X',Y'}\rr{\int^Y PY\times\Hom((X',Y'),(X,Y))}\times\Hom(-,(FX',GY'))\\
+        &\cong \int^{Y'}\rr{\int^Y PY\times\Hom(Y',GY)}\times\Hom(-,(FX,Y')).
+      \end{align*}
+  \end{enumerate}
+\end{example}
+
+In order for a strong $J$-pseudomonad to induce a strong pseudomonad in the
+sense of~\cite{saville2023}, we require $J$ to be the identity. We describe how
+one obtains the appropriate structure:
+
+\begin{definition}\label{def:induced_strong_pseudomonad}
+  Let $J:\bicat C\to\bicat C$ be the identity and $T$ a strong $J$-pseudomonad structure.
+  The \emph{strong pseudomonad structure induced by $T$} consists of
+  \begin{enumerate}
+    \item the strength \ref{def:induced_strength};
+    \item for all $X\in\bicat{C}$, the invertible 2-cell $\bicell x_X=\bicell s_{\eta\lambda}\bullet \bicell l_X$;
+    \item for all $X,Y,Z\in\bicat{C}$, the invertible 2-cell $\bicell y_{X,Y,Z}=\bicell p_{X,Y,Z}$;
+    \item for all $X,Y\in\bicat{C}$, the invertible 2-cell $\bicell w_{X,Y}$ given by
+      \begin{equation}
+        % https://q.uiver.app/?q=WzAsNixbMCwwLCJXXFx0aW1lcyBUXjJYIl0sWzAsMSwiVChXXFx0aW1lcyBUWCkiXSxbMCwzLCJUXjIoV1xcdGltZXMgWCkiXSxbNywwLCJXXFx0aW1lcyBUWCJdLFs3LDEsIlQoV1xcdGltZXMgWCkiXSxbNywzLCJUKFdcXHRpbWVzIFgpIl0sWzAsMywiWFxcdGltZXMgXFx0ZXh0e2lkfV4qIiwxXSxbMyw0LCJcXGV0YV5cXGRhZ2dlciIsMV0sWzAsMSwiXFxldGFeXFxkYWdnZXIiLDFdLFsyLDUsIlxcdGV4dHtpZH1eKiIsMV0sWzQsNSwiIiwxLHsibGV2ZWwiOjIsInN0eWxlIjp7ImhlYWQiOnsibmFtZSI6Im5vbmUifX19XSxbMSw1LCIoXFxsYW1iZGFeXFxkYWdnZXIoMVxcdGltZXNcXGV0YVxcZXRhXlxcZGFnZ2VyKSleXFxkYWdnZXJcXGxhbWJkYV57LTF9IiwxXSxbMSwyLCIoXFxldGFcXGV0YV5cXGRhZ2dlcileKiIsMV0sWzEsNCwiKFxcZXRhXlxcZGFnZ2VyKV4qIiwxXSxbMTEsMTAsIihcXG1hdGhiZiByXnstMX0oMVxcdGltZXNcXGV0YV5cXGRhZ2dlcikpXlxcZGFnZ2VyXFxsYW1iZGFeey0xfSIsMCx7InNob3J0ZW4iOnsic291cmNlIjozMCwidGFyZ2V0IjozMH19XSxbMTIsMTEsIlxcbWF0aGJmIGNeey0xfSIsMix7InNob3J0ZW4iOnsic291cmNlIjozMCwidGFyZ2V0IjozMH19XSxbOCw3LCJcXG1hdGhiZiBxXnstMX0iLDEseyJzaG9ydGVuIjp7InNvdXJjZSI6MjAsInRhcmdldCI6MjB9fV1d
+        \begin{tikzcd}
+          {W\times T^2X} &&&&&&& {W\times TX} \\
+          {T(W\times TX)} &&&&&&& {T(W\times X)} \\
+          \\
+          {T^2(W\times X)} &&&&&&& {T(W\times X)}
+          \arrow["{X\times \text{id}^*}"{description}, from=1-1, to=1-8]
+          \arrow[""{name=0, anchor=center, inner sep=0}, "{\eta^\dagger}"{description}, from=1-8, to=2-8]
+          \arrow[""{name=1, anchor=center, inner sep=0}, "{\eta^\dagger}"{description}, from=1-1, to=2-1]
+          \arrow["{\text{id}^*}"{description}, from=4-1, to=4-8]
+          \arrow[""{name=2, anchor=center, inner sep=0}, Rightarrow, no head, from=2-8, to=4-8]
+          \arrow[""{name=3, anchor=center, inner sep=0}, "{(\lambda^\dagger(1\times\eta\eta^\dagger))^\dagger\lambda^{-1}}"{description}, from=2-1, to=4-8]
+          \arrow[""{name=4, anchor=center, inner sep=0}, "{(\eta\eta^\dagger)^*}"{description}, from=2-1, to=4-1]
+          \arrow["{(\eta^\dagger)^*}"{description}, from=2-1, to=2-8]
+          \arrow["{(\mathbf r^{-1}(1\times\eta^\dagger))^\dagger\lambda^{-1}}", shorten <=37pt, shorten >=37pt, Rightarrow, from=3, to=2]
+          \arrow["{\mathbf c^{-1}}"', shorten <=37pt, shorten >=37pt, Rightarrow, from=4, to=3]
+          \arrow["{\mathbf q^{-1}}"{description}, shorten <=49pt, shorten >=49pt, Rightarrow, from=1, to=0]
+        \end{tikzcd}
+      \end{equation}
+    \item for all $X,Y\in\bicat{C}$, the invertible 2-cell $\bicell z_{X,Y}=\inv{\bicell r}_\eta$.
+  \end{enumerate}
+\end{definition}
+
+Beyond the previously mentioned pseudonaturality, it is straightforward to postulate
+axioms that ensure the coherence axioms for strong pseudofunctors are satisfied.
+This is because none of these coherence axioms contain repeated applications of the
+pseudofunctor. Thus the notion generalises from endofunctors to arbitrary pseudofunctors.
+

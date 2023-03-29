@@ -1,0 +1,580 @@
+\chapter{1-categories}\label{sec:synthetic_measure_theory_and_presheaves}
+
+There are two purely categorical notions of integration that we are interested
+in: the integral arising from Kock's synthetic measure theory~\cite{kock2011}
+and coends as an integral of certain functors.
+
+We begin this chapter by revisiting some introductory category theory. We then
+proceed to define commutative monads, the backbone of synthetic measure theory.
+After that, we shift our attention to coends, outlining in what sense the coend
+of a functor may be thought of as an integral.
+
+\section{Categories, functors, and natural transformations}\label{sec:categories}
+
+This section presents standard constructions from the literature such as~\cite{maclane1997}.
+
+Recall that a category consists of objects, morphisms between objects, and a
+composition operation that is associative and has identities.
+
+Let $\cat{C}$ be a category. For objects $X,Y\in\cat{C}$ we denote by
+$\Hom_{\cat{C}}(X,Y)$ the class of all morphisms $X\to Y$ and by $\id_X$ the
+identity $X\to X$. Moreover, we will drop the composition $\circ$ and
+subscripts whenever it is convenient to do so. Such notational conventions will
+prove particularly useful when considering larger structures later on.
+
+One of the most important categories is \Set{} whose objects are sets and whose
+morphisms are functions. Composition is just the usual composition of functions
+and the identities are the usual identity functions.
+
+Each category $\cat{C}$ has a dual $\catop{C}$ called the opposite category.
+The objects of $\catop{C}$ are exactly the objects of $\cat{C}$ but the
+morphisms $Y\to X$ in $\catop{C}$ are exactly the morphisms $X\to Y$ in $\cat{C}$.
+Composition in $\catop{C}$ is the same as in $\cat{C}$.
+
+Given two categories $\cat{C}$ and $\cat{D}$, we have the product category
+$\cat{C}\times\cat{D}$ which has as objects all pairs $(X,Y)$ with $X\in\cat{C}$
+and $Y\in\cat{D}$ and hom-sets $\Hom((X,Y),(X',Y'))=\Hom(X,Y)\times\Hom(X',Y')$.
+Composition is defined pointwise so the identites are $(\id,\id)$.
+
+Functors are morphisms between categories. They act on objects and morphisms in
+a way that preserves identities and distributes over composition. One
+particularly important functor is $\Hom : \scatop{C}\times\scat{C}\to\Set$,
+where $\scatop C$ is the opposite category. It takes a pairs of objects in a small
+category to its hom-set and the action on morphisms is given by composition:
+$\Hom(f,g)(h) = ghf$. We may also fix an object $X\in\scat{C}$ to obtain the
+functors
+\begin{align*}
+  \Hom(X,-):\scat C\to\Set, \hs \Hom(-,X):\scatop C\to\Set.
+\end{align*}
+
+Let $F:\cat{C}\to\cat{D}$ and $G:\cat{D}\to\cat{E}$ be functors. The composite
+$GF:\cat{C}\to\cat{E}$ is defined as $GF = G(F-)$. We thus have the category
+$\CAT$ of all categories and all functors between them and its full subcategory
+$\Cat$ of small categories.
+
+Let $F,G:\cat{C}\to\cat{D}$ be parallel functors. A natural transformation $\phi
+: F \Rightarrow G$ consists of morphisms $\phi_X : FX \to GX$ in $\cat{D}$, for
+all $X\in\cat{C}$, that satisfy the naturality condition: for all $f:X\to Y$ in
+$\cat{C}$, $\phi_Y\circ Ff = Gf\circ \phi_X$.
+
+We can compose natural transformations $F\Rightarrow G$ and $G\Rightarrow H$ by
+composing the components. Thus, for all categories $\cat{C}$ and $\cat{D}$, we
+have the functor category $\bb{\cat{C},\cat{D}}$ with functors
+$\cat{C}\to\cat{D}$ as objects and natural transformations as morphisms.
+
+Consider functors $F,G:\cat{C}\to\bb{\cat{D},\cat{E}}$. A natural
+transformation $\phi : F\Rightarrow G$ has components $\phi_C : FC\to GC$ in
+$\bb{\cat{D},\cat{E}}$. This means that each $\phi_C$ is itself a natural
+transformation with components $(\phi_C)_D : (FC)D \to (GC)D$ in
+$\cat{E}$. Such functors and natural transformations will play a major role in
+later chapters. We will make sure to keep our notation precise to assist the
+reader in peeling back the various layers of indirection.
+
+\section{Cartesian structure}\label{sec:cartesian_categories}
+
+Now recall that the product of objects $X,Y\in\cat{C}$ is an object $X\times Y$
+together with morphisms $\pi_1 : X\times Y \to X$ and $\pi_2 : X\times Y \to
+Y$. It is universal in the sense that, for all other pairs of morphisms $f:W\to
+X$ and $g:W\to Y$, there is a unique morphism $\aa{f,g}:W\to X\times Y$ such
+that the following commutes:
+\begin{equation}\label{eq:product_diagram}
+  % https://q.uiver.app/?q=WzAsNCxbMiwwLCJXIl0sWzIsMSwiWFxcdGltZXMgWSJdLFswLDEsIlgiXSxbNCwxLCJZIl0sWzEsMywiXFxwaV8yIiwyXSxbMSwyLCJcXHBpXzEiXSxbMCwxLCJcXGxhbmdsZSBmLGdcXHJhbmdsZSIsMV0sWzAsMiwiZiIsMl0sWzAsMywiZyJdXQ==
+  \begin{tikzcd}
+  && W \\
+    X && {X\times Y} && Y
+    \arrow["{\pi_2}"', from=2-3, to=2-5]
+    \arrow["{\pi_1}", from=2-3, to=2-1]
+    \arrow["{\langle f,g\rangle}"{description}, from=1-3, to=2-3]
+    \arrow["f"', from=1-3, to=2-1]
+    \arrow["g", from=1-3, to=2-5]
+  \end{tikzcd}
+\end{equation}
+
+We say that a diagram commutes if every two paths from the same source to the
+same sink are equal. We will make heavy use of commutative diagrams, both as
+axioms that we postulate and as statements that we prove. In the latter case,
+the commutativity may be left implicit. Unfortunately, diagrams tend to get
+much more complex in later chapters. Therefore it will not be possible to write
+down every proof in full detail. We will, however, occasionally include links
+to quiver~\cite{quiver}, a graphical editor for commutative diagrams. For
+example, the diagram \ref{eq:product_diagram} corresponds to \href{
+  https://q.uiver.app/?q=WzAsNCxbMiwwLCJXIl0sWzIsMSwiWFxcdGltZXMgWSJdLFswLDEsIlgiXSxbNCwxLCJZIl0sWzEsMywiXFxwaV8yIiwyXSxbMSwyLCJcXHBpXzEiXSxbMCwxLCJcXGxhbmdsZSBmLGdcXHJhbmdsZSIsMV0sWzAsMiwiZiIsMl0sWzAsMywiZyJdXQ==
+}{this quiver link}. The purpose of these links is twofold: On the one hand
+they should serve as a useful guide through the less obvious proofs and on the
+other we hope that they may serve as resource for future reference. However, we
+believe that this report is entirely self-contained and therefore the reader is
+not required to engage with the quiver links whatsoever.
+
+We now take the product of morphisms $f:X\to X'$ and $g:Y\to Y'$ to be the
+morphism $f\times g:X\times X'\to Y\times Y'$ given by $f\times
+g=\aa{f\pi_1,g\pi_2}$. Thus we have a functor $\cat{C}\times\cat{C}\to\cat{C}$.
+It is important to realises that, in general, products are not unique.
+Fortunately, they are unique \emph{up to canonical isomorphism}. Therefore
+specifying such a product functor amounts to choosing a product for each pair
+of objects.
+
+As the product functor depends on the choice of products, we do not expect it to
+be associative or commutative in the strict sense. However, there are natural
+isomorphisms with components
+\begin{align}\label{eq:product_alpha_gamma}
+  \alpha_{X,Y,Z} : (X\times Y)\times Z \cong X\times (Y\times Z), \hs
+  \gamma_{X,Y} : X\times Y \cong Y\times X.
+\end{align}
+It is worth pointing out that $\gamma$ is its own inverse. That is,
+$\inv\gamma_{X,Y}=\gamma_{Y,X}$.
+
+An object $1\in\cat{C}$ is terminal if, for all $X\in\cat{C}$, there is a unique
+morphism $X\to 1$. It turns out that terminal objects are units for
+multiplication. That is, there is a natural isomorphism with components
+\begin{align*}
+  \lambda_X : 1\times X \cong X.
+\end{align*}
+
+Combining this with $\gamma$ from (\ref{eq:product_alpha_gamma}) yields the
+right unitor $\rho=\lambda\gamma:X\times 1\cong X$.
+
+To tie all of this together, a cartesian category is a category with a choice of
+all (binary) products and a distinguished terminal object.
+
+\begin{example}
+  Two particular cartesian structures are going to be of interest to us: on $\Set$
+  and on $\CAT$ (and thereby $\Cat$). In $\Set$, we take the product of two sets
+  to be the cartesian product with the usual projections $(x,y)\mapsto x$ and
+  $(x,y)\mapsto y$. The terminal object $1\in\Set$ is a distinguished singleton
+  $1=\cc{*}$. In $\CAT$, the product of categories $\cat{C}$ and $\cat{D}$ is the
+  product category $\cat{C}\times\cat{D}$ with the obvious projection functors and
+  the terminal category $\mathbb 1\in\CAT$ is a distinguished category with a
+  single object and a single (identity) morphism. Note that, for small categories
+  $\scat C$ and $\scat D$, $\scat C\times\scat D$ is small so $\Cat$ inherits the
+  cartesian structure.
+\end{example}
+
+\section{Monads}\label{sec:monads}
+
+Monads are central to the study of category theory. They arise naturally in practical settings,
+e.g.\ to model computation with side effects, as well as for theoretical
+purposes, e.g.\ monad algebras as a generalisation of algebraic theories.
+
+We adapt the no-iteration definition of a monad~\cite{marmolejo2010}
+because it more easily generalises to relative monads~\cite{altenkirch2015}.
+
+\begin{definition}\label{def:monad}
+  Let $\cat{C}$ be a category. A \emph{monad $T$ on $\cat{C}$} consists of
+  \begin{enumerate}
+    \item for all $X\in\cat{C}$, an object $TX\in\cat{C}$;
+    \item for all $X\in\cat{C}$, a morphism $\eta_X : X \to TX$ in $\cat{C}$;
+    \item for all $X,Y\in\cat{C}$, a map
+      \begin{align*}
+        \extend{\rr{-}}{*}_{X,Y}:\Hom\rr{X,TY}\to \Hom\rr{TX,TY}
+      \end{align*}
+  \end{enumerate}
+  such that, for all $X,Y,Z\in{\cat{C}}$, $f:X\to TY$, and $g:Y\to TZ$,
+  the following commute:
+  \begin{equation}
+    % https://q.uiver.app/?q=WzAsMixbMCwwLCJUWCJdLFsyLDAsIlRYIl0sWzAsMSwiXFxldGFeKiIsMix7ImN1cnZlIjozfV0sWzAsMSwiIiwwLHsiY3VydmUiOi0zLCJsZXZlbCI6Miwic3R5bGUiOnsiaGVhZCI6eyJuYW1lIjoibm9uZSJ9fX1dXQ==
+    \begin{tikzcd}
+      TX && TX
+      \arrow["{\eta^*}"', curve={height=18pt}, from=1-1, to=1-3]
+      \arrow[curve={height=-18pt}, Rightarrow, no head, from=1-1, to=1-3]
+    \end{tikzcd}
+    \hs
+    % https://q.uiver.app/?q=WzAsMyxbMCwwLCJYIl0sWzIsMCwiVFkiXSxbMiwyLCJUWSJdLFswLDEsIlxcZXRhIl0sWzEsMiwiZl4qIl0sWzAsMiwiZiIsMl1d
+    \begin{tikzcd}
+      X && TY \\
+      \\
+        && TY
+        \arrow["\eta", from=1-1, to=1-3]
+        \arrow["{f^*}", from=1-3, to=3-3]
+        \arrow["f"', from=1-1, to=3-3]
+    \end{tikzcd}
+    \hs
+    % https://q.uiver.app/?q=WzAsMyxbMCwwLCJUWCJdLFsyLDAsIlRZIl0sWzIsMiwiVFoiXSxbMCwxLCJmXioiXSxbMSwyLCJnXioiXSxbMCwyLCIoZ14qZileKiIsMl1d
+    \begin{tikzcd}
+      TX && TY \\
+      \\
+         && TZ
+         \arrow["{f^*}", from=1-1, to=1-3]
+         \arrow["{g^*}", from=1-3, to=3-3]
+         \arrow["{(g^*f)^*}"', from=1-1, to=3-3]
+    \end{tikzcd}
+  \end{equation}
+\end{definition}
+
+The double line in the first diagram refers to the identity $TX\to TX$.
+
+Let us now investigate the powerset monad which we touched on in chapter \ref{sec:introduction}.
+
+\begin{example}
+  The powerset construction $\P$ takes each set $X$ to its powerset $\P X$.
+  We add a monad structure like so: the unit map takes elements
+  to singletons, i.e. $\eta\rr{x}=\cc{x}$. The extension of a
+  function $f:X\to\P Y$ takes $A\in\P X$ to the union
+  $\extend{f}{T}\rr{A}=\bigcup \cc{f\rr{x} : x \in A}$.
+  This is known as the powerset monad.
+\end{example}
+
+Every monad $T$ on $\cat{C}$ gives rise to an endofunctor $\cat{C}\to\cat{C}$
+with object map $X\mapsto TX$ and morphism map $f\mapsto\extend{\rr{\eta
+f}}{T}$. We abuse notation and denote this endofunctor simply by $T$ and write
+$Tf:TX\to TY$, as usual. In the case of the powerset monad, the functorial
+action takes a function $f:X\to Y$ to the direct image map $A \mapsto
+\cc{f\rr{x} : x \in A}$.
+
+\section{Commutative monads}\label{sec:commutative_monads}
+
+Given that a monad is just a monoid in the category of
+endofunctors~\cite{maclane1997}, one might expect that the commutativity of a
+monad is related to the commutativity of the corresponding monoid. This is not
+the case. The commutativity required for synthetic measure theory refers to the
+strength of a monad. For our purposes, a monad is strong if it interacts well
+with the cartesian structure of the corresponding category.
+
+Fix a cartesian category $\cat{C}$.
+A strength $\sigma$ for a monad $T$ on $\cat{C}$ is a natural
+transformation with components
+\begin{align*}
+  \sigma_{X,Y}:X\times TY \to T\rr{X\times Y}
+\end{align*}
+following certain conditions. A strong monad is a monad $T$ equipped with a
+strength $\sigma$.
+
+Such a strong monad is then called commutative~\cite{kock1970}, if the costrength
+\begin{align*}
+  \tau_{X,Y}:TX\times Y\to T(X\times Y)
+\end{align*}
+given by the composite
+\begin{equation}
+  % https://q.uiver.app/?q=WzAsNCxbMCwwLCJUWFxcdGltZXMgWSJdLFsyLDAsIlQoWFxcdGltZXMgWSkiXSxbMCwxLCJZXFx0aW1lcyBUWCJdLFsyLDEsIlQoWVxcdGltZXMgWCkiXSxbMiwzLCJcXHNpZ21hIiwyXSxbMywxLCJUXFxnYW1tYSIsMl0sWzAsMiwiXFxnYW1tYSIsMl0sWzAsMSwiXFx0YXUiXV0=
+  \begin{tikzcd}
+    {TX\times Y} && {T(X\times Y)} \\
+    {Y\times TX} && {T(Y\times X)}
+    \arrow["\sigma"', from=2-1, to=2-3]
+    \arrow["T\gamma"', from=2-3, to=1-3]
+    \arrow["\gamma"', from=1-1, to=2-1]
+    \arrow["\tau", from=1-1, to=1-3]
+  \end{tikzcd}
+\end{equation}
+makes the diagram below commute:
+
+\begin{equation}\label{eq:commutative_monad}
+  % https://q.uiver.app/?q=WzAsNixbMCwwLCJUWFxcdGltZXMgVFkiXSxbMiwwLCJUKFRYXFx0aW1lcyBZKSJdLFs0LDAsIlReMihYXFx0aW1lcyBZKSJdLFs0LDEsIlQoWFxcdGltZXMgWSkiXSxbMiwxLCJUXjIoWFxcdGltZXMgWSkiXSxbMCwxLCJUKFhcXHRpbWVzIFRZKSJdLFswLDUsIlxcdGF1IiwyXSxbMCwxLCJcXHNpZ21hIl0sWzEsMiwiVFxcdGF1Il0sWzUsNCwiVFxcc2lnbWEiLDJdLFs0LDMsIlxcdGV4dHtpZH1eKiIsMl0sWzIsMywiXFx0ZXh0e2lkfV4qIl1d
+  \begin{tikzcd}
+    {TX\times TY} && {T(TX\times Y)} && {T^2(X\times Y)} \\
+    {T(X\times TY)} && {T^2(X\times Y)} && {T(X\times Y)}
+    \arrow["\tau"', from=1-1, to=2-1]
+    \arrow["\sigma", from=1-1, to=1-3]
+    \arrow["T\tau", from=1-3, to=1-5]
+    \arrow["T\sigma"', from=2-1, to=2-3]
+    \arrow["{\text{id}^*}"', from=2-3, to=2-5]
+    \arrow["{\text{id}^*}", from=1-5, to=2-5]
+  \end{tikzcd}
+\end{equation}
+
+\begin{example}
+  In the case of $\Set$, the product is the usual cartesian product of sets. The powerset
+  monad is a commutative monad with strength and costrength given by
+  $\sigma\rr{x,B}=\cc{x}\times B$ and $\tau\rr{A,y}=A\times\cc{y}$, respectively.
+\end{example}
+
+\section{Relative monads}
+
+This section closely follows~\cite{altenkirch2015}.
+
+In section~\ref{sec:monads}, we chose to present the no-iteration definition of
+a monad because it avoids repeated applications of the object map. This now
+leads to an obvious generalisation of monads that are functors
+$\cat{J}\to\cat{C}$ rather than endofunctors. We require another functor
+$\cat{J}\to\cat{C}$ to relate objects in $\cat{J}$ to those in the image of
+the relative monad. The resulting definition is remarkably similar to~\ref{def:monad}.
+
+\begin{definition}\label{def:relative_monad}
+  Let $J:\cat{J}\to\cat{C}$ be a functor. A \emph{relative monad $T$ over $J$}
+  consists of
+  \begin{enumerate}
+    \item for all $X\in\cat{J}$, an object $TX\in\cat{C}$;
+    \item for all $X\in\cat{J}$, a morphism $\eta_X : JX \to TX$ in $\cat{C}$;
+    \item for all $X,Y\in\cat{J}$, a map
+      \begin{align*}
+        \extend{\rr{-}}{*}_{X,Y}:\Hom\rr{JX,TY}\to \Hom\rr{TX,TY}
+      \end{align*}
+  \end{enumerate}
+  such that, for all $X,Y,Z\in{\cat{J}}$, $f:JX\to TY$, and $g:JY\to TZ$,
+  the following commute:
+  \begin{equation}
+    % https://q.uiver.app/?q=WzAsMixbMCwwLCJUWCJdLFsyLDAsIlRYIl0sWzAsMSwiXFxldGFeKiIsMix7ImN1cnZlIjozfV0sWzAsMSwiIiwwLHsiY3VydmUiOi0zLCJsZXZlbCI6Miwic3R5bGUiOnsiaGVhZCI6eyJuYW1lIjoibm9uZSJ9fX1dXQ==
+    \begin{tikzcd}
+      TX && TX
+      \arrow["{\eta^*}"', curve={height=18pt}, from=1-1, to=1-3]
+      \arrow[curve={height=-18pt}, Rightarrow, no head, from=1-1, to=1-3]
+    \end{tikzcd}
+    \hs
+    % https://q.uiver.app/?q=WzAsMyxbMCwwLCJKWCJdLFsyLDAsIlRZIl0sWzIsMiwiVFkiXSxbMCwxLCJcXGV0YSJdLFsxLDIsImZeKiJdLFswLDIsImYiLDJdXQ==
+    \begin{tikzcd}
+      JX && TY \\
+      \\
+         && TY
+         \arrow["\eta", from=1-1, to=1-3]
+         \arrow["{f^*}", from=1-3, to=3-3]
+         \arrow["f"', from=1-1, to=3-3]
+    \end{tikzcd}
+    \hs
+    % https://q.uiver.app/?q=WzAsMyxbMCwwLCJUWCJdLFsyLDAsIlRZIl0sWzIsMiwiVFoiXSxbMCwxLCJmXioiXSxbMSwyLCJnXioiXSxbMCwyLCIoZ14qZileKiIsMl1d
+    \begin{tikzcd}
+      TX && TY \\
+      \\
+         && TZ
+         \arrow["{f^*}", from=1-1, to=1-3]
+         \arrow["{g^*}", from=1-3, to=3-3]
+         \arrow["{(g^*f)^*}"', from=1-1, to=3-3]
+    \end{tikzcd}
+  \end{equation}
+\end{definition}
+
+\begin{example}
+  Let $T$ be a monad on $\cat{C}$. Then $T$ is a relative monad over the identity
+  $\cat{C}\to\cat{C}$. Moreover, for any functor $J:\cat{J}\to\cat{C}$, we have a
+  relative monad $T'$ over $J$ with object map $T'X = TJX$.
+\end{example}
+
+Our motivation for presenting this definition is the presheaf construction. It
+behaves like a relative monad $\Cat\to\CAT$ but fails to satisfy the axioms in
+the strict sense because coends, which we shall introduce next, are unique only
+up to isomorphism.
+
+While our definition of a monad is easy to generalise to the relative case, the
+same cannot be said for commutative monads. The axioms of strong and
+commutative monads involve repeated applications of the object map (see
+\ref{eq:commutative_monad}). We therefore have to find alternative conditions
+to impose. Fortunately,~\cite{tarmo} already contains the definition of a
+strong relative moand that we will make use of. However, we will encounter
+similar problems when identifying suitable coherence conditions in chapter~
+\ref{sec:strong_relative_pseudomonads}.
+
+\section{Coends}\label{sec:coends}
+
+Let us now turn our attention to the categorical integral that we are hoping to
+capture in a model of synthetic measure theory. There are two dual notions of an
+integral of a functor $\catop{C}\times\cat{C}\to\cat{D}$: ends and coends. We will
+focus on the latter because coends arise naturally when considering the Yoneda
+embedding, one of the most fundamental constructions in category theory.
+
+Rather than defining coends directly, we begin by defining a more general
+structure:
+
+\begin{definition}\label{def:cowedge}
+  Let $F:\catop{C}\times\cat{C}\to\cat{D}$ be a functor. A \emph{cowedge of $F$} consists of
+  \begin{enumerate}
+    \item an object $W\in\cat{D}$;
+    \item for all $X\in\cat{C}$, a morphism $w_X:F\rr{X,X}\to W$
+  \end{enumerate}
+  such that, for all $f:X\to Y$ in $\cat{C}$,
+  \begin{equation}\label{eq:cowedge_property}
+    % https://q.uiver.app/?q=WzAsNCxbMiwxLCJXIl0sWzAsMSwiRihYLFgpIl0sWzIsMCwiRihZLFkpIl0sWzAsMCwiRihZLFgpIl0sWzEsMCwiZV9YIiwyXSxbMiwwLCJlX1kiXSxbMywyLCJGKFksZikiXSxbMywxLCJGKGYsWCkiLDJdXQ==
+    \begin{tikzcd}
+      {F(Y,X)} && {F(Y,Y)} \\
+      {F(X,X)} && W
+      \arrow["{w_X}"', from=2-1, to=2-3]
+      \arrow["{w_Y}", from=1-3, to=2-3]
+      \arrow["{F(Y,f)}", from=1-1, to=1-3]
+      \arrow["{F(f,X)}"', from=1-1, to=2-1]
+    \end{tikzcd}
+  \end{equation}
+  Let $(W,w_X)$ and $(W',w'_X)$ be cowedges of $F$. A morphism $h:W\to W'$ is a morphism of
+  cowedges $(W,w_X)\to(W',w'_X)$ if, for all $X\in\cat{C}$, $hw_X=w'_X$.
+\end{definition}
+
+Examples of cowedges that are both interesting and specific are hard to come by.
+What the following lacks in specificity it makes up for in importance.
+
+\begin{example}\label{ex:cowedge}
+  Let $P:\catop{C}\to\Set$ be a functor and $W\in\cat{C}$ an object. Consider the functor
+  $\catop{C}\times\cat{C}\to\Set$ given by
+  \begin{align*}
+    Y,X \mapsto PY \times \Hom(W,X).
+  \end{align*}
+  and, for each $X\in\cat{C}$, the function
+  \begin{align*}
+    w_X : PX \times \Hom(W,X) \to PW
+  \end{align*}
+  given by $x,f\mapsto (Pf)(x)$. Now fix $f:W\to X$, $g:X\to Y$, and $y\in PY$.
+  Then
+  \begin{align*}
+    w(y,gf) = P(gf)(y) = PfPg(y) = w(Pg(y), f).
+  \end{align*}
+  I.e. the diagram
+  \begin{equation*}
+    % https://q.uiver.app/?q=WzAsNCxbMCwwLCJQWVxcdGltZXNcXHRleHR7SG9tfShXLFgpIl0sWzAsMSwiUFlcXHRpbWVzXFx0ZXh0e0hvbX0oVyxZKSJdLFszLDAsIlBYXFx0aW1lc1xcdGV4dHtIb219KFcsWCkiXSxbMywxLCJQVyJdLFswLDIsIlBnXFx0aW1lc1xcdGV4dHtIb219KFcsWCkiXSxbMCwxLCJQWVxcdGltZXNcXHRleHR7SG9tfShXLGcpIiwyXSxbMSwzLCJ3X1kiLDJdLFsyLDMsIndfWiJdXQ==
+    \begin{tikzcd}
+      {PY\times\text{Hom}(W,X)} &&& {PX\times\text{Hom}(W,X)} \\
+      {PY\times\text{Hom}(W,Y)} &&& PW
+      \arrow["{Pg\times\text{Hom}(W,X)}", from=1-1, to=1-4]
+      \arrow["{PY\times\text{Hom}(W,g)}"', from=1-1, to=2-1]
+      \arrow["{w_Y}"', from=2-1, to=2-4]
+      \arrow["{w_Z}", from=1-4, to=2-4]
+    \end{tikzcd}
+  \end{equation*}
+  commutes. Thus $(PW, w_X)$ is a cowedge.
+\end{example}
+
+We notice that, for any cowedge $(W,w_X)$, postcomposition with a morphism
+$f:W\to W'$ yields another cowedge $(W',fw_X)$, making $f$ into a cowedge
+homomorphism. Now a coend is an initial cowedge:
+
+\begin{definition}\label{def:coend}
+  Let $F:\catop{C}\times\cat{C}\to\cat{D}$ be a functor. A \emph{coend of $F$}
+  is a cowedge $(E,e_X)$ of $F$ such that, for all cowedges $(W,w_X)$ of $F$,
+  there exists a unique cowedge homomorphism $(E,e_X)\to(W,w_X)$.
+\end{definition}
+
+Coends are special colimits (see~\cite[Remark 1.2.3]{loregian2015}). So, while
+there is no guarantee that a particular functor has a coend, any two coends of
+the same functor are canonically isomorphic. This allows us to fix a choice of
+coends without loss of generality, just as we discussed for products.
+
+Observe a useful property of coends: Consider functors
+$F,G:\catop{C}\times\cat{C}\to\cat{D}$, a natural transformation
+$\phi:F\Rightarrow G$ between them, and assume that we have chosen coends of $F$
+and $G$. By precomposing the coend diagram of $G$ with $\phi$, we obtain a
+cowedge of $F$. Thus, for each choice of coends, there exists a unique cowedge
+homomorphism induced by $\phi$.
+
+Thus a choice of coends assigns objects to functors $\catop{C}\times\cat{C}\to\cat{D}$
+and morphisms to natural transformations between such functors. This
+observations suggests that one might want to think of coends as a functor
+$\bb{\catop{C}\times\cat{C},\cat{D}}\to\cat{D}$. There is one problem, however:
+just like measure theoretic integrals, statements about coends rely on their
+existence in the first place. Fortunately, all coends in this thesis will be of
+functors of the form $\scatop{C}\times\scat{C}\to\Set$ where $\scat C$ is
+small. As $\Set$ is cocomplete, all such coends exist and are indeed
+functorial. It is possible to construct coends in \Set{} explicitly by taking
+disjoint unions and quotienting them by a particular equivalence relation.
+Unfortunately, the resulting construction is far from being intuitive so we
+will not investigate it further.
+
+\begin{notation}
+  The notation that arises from the formal definition of coends does not scale
+  well to more complicated calculations. We improve it as follows:
+  \begin{itemize}
+    \item For a functor $F:\catop{C}\times\cat{C}\to\cat{D}$, we will denote the
+      object and morphism of a chosen coend by
+      \begin{align}\label{eq:coend_integral_notation}
+        \int^{C} F(C,C) \hs\text{and}\hs q_X:F(X,X)\to\int^C F(C,C).
+      \end{align}
+      Here the variable $C$ is bound by the integral. That is, the choice of
+      symbol is arbitrary.
+    \item For functors $F,G:\catop{C}\times\cat{C}\to\cat{D}$, a natural
+      transformation $\phi: F\Rightarrow G$, and choices of coends, we denote
+      the morphism of cowedges induced by $\phi$ by
+      \begin{equation}\label{eq:coend_natural_transformation}
+        \int^C \phi_{C,C} : \int^C F(C,C) \to \int^C G(C,C).
+      \end{equation}
+  \end{itemize}
+\end{notation}
+
+We already saw an example of a coend in \ref{ex:cowedge}. We establish the
+universality by constructing a cowedge homomorphism to the chosen coend.
+
+\begin{example}\label{ex:coend}
+  The cowedge in \ref{ex:cowedge} is a coend. To see this fix a choice of coend and
+  consider the morphism $h$ given by the composite
+  \begin{equation}
+    % https://q.uiver.app/?q=WzAsMyxbMCwwLCJQVyJdLFsyLDEsIlxcaW50XntDfSBQQ1xcdGltZXNcXHRleHR7SG9tfShXLEMpIl0sWzIsMCwiUFdcXHRpbWVzXFx0ZXh0e0hvbX0oVyxXKSJdLFswLDIsIlxcbGFuZ2xlIFBXLFxcRGVsdGFcXHRleHR7aWR9XFxyYW5nbGUiXSxbMiwxLCJxIl0sWzAsMSwiaCIsMl1d
+    \begin{tikzcd}
+      PW && {PW\times\text{Hom}(W,W)} \\
+         && {\int^{C} PC\times\text{Hom}(W,C)}
+         \arrow["{\langle PW,\Delta\text{id}\rangle}", from=1-1, to=1-3]
+         \arrow["q", from=1-3, to=2-3]
+         \arrow["h"', from=1-1, to=2-3]
+    \end{tikzcd}
+  \end{equation}
+  Here $\Delta\id$ is the constant function $x\mapsto \id$.
+  Now let $x\in PX$ and $f:W\to X$. Then
+  \begin{align*}
+    (h w)(x,f) = h(Pf(x))a = q(Pf(x),\id) = q(x,f).
+  \end{align*}
+  where the last equality holds due to~\ref{eq:cowedge_property}.
+  Thus the diagram
+  \begin{equation*}
+    % https://q.uiver.app/?q=WzAsMyxbMSwwLCJQVyJdLFsxLDEsIlxcaW50XkMgUENcXHRpbWVzXFx0ZXh0e0hvbX0oVyxDKSJdLFswLDAsIlBYXFx0aW1lc1xcdGV4dHtIb219KFcsWCkiXSxbMCwxLCJoIl0sWzIsMCwidyJdLFsyLDEsInEiLDJdXQ==
+    \begin{tikzcd}
+      {PX\times\text{Hom}(W,X)} & PW \\
+                                & {\int^C PC\times\text{Hom}(W,C)}
+                                \arrow["h", from=1-2, to=2-2]
+                                \arrow["w", from=1-1, to=1-2]
+                                \arrow["q"', from=1-1, to=2-2]
+    \end{tikzcd}
+  \end{equation*}
+  commutes, showing that $h$ is a cowedge homomorphism. By universality of the coend we conclude
+  that we have an isomorphism
+  \begin{align*}
+    h:PW\cong \int^C PC\times\Hom(W,C).
+  \end{align*}
+  This is sometimes referred to as the co-Yoneda lemma.
+\end{example}
+
+\section{Properties of coends}
+
+We are now in a position to make precise the functoriality of the coend:
+
+\begin{lemma}\label{lemma:functoriality_of_coends}
+  Let $\scat C$ be a small category.
+  Every choice of coends for all functors $\scatop{C}\times\scat{C}\to\Set$ induces
+  a functor $\bb{\scatop{C}\times\scat{C},\Set}\to\Set$ given by
+  \begin{align*}
+    F \mapsto \int^C F(C,C), \hs \phi \mapsto \int^C \phi_{C,C}.
+  \end{align*}
+  \begin{proof}
+    Fix $F,G,H:\scatop{C}\times\scat{C}\to\Set$. Consider natural
+    transformations $\phi:F\Rightarrow G$ and $\psi:G\Rightarrow H$. Now
+    \begin{align*}
+      \rr{\int^C \psi_{C,C}}\rr{\int^C \phi_{C,C}} = \int^C (\psi\phi)_{C,C}
+    \end{align*}
+    because both sides are cowedge homomorphisms
+    \begin{align*}
+      \int^C F(C,C) \to \int^C H(C,C).
+    \end{align*}
+    By universality of the coend on the left, this is unique.
+
+    Preservation of identities follows by a similar argument.
+  \end{proof}
+\end{lemma}
+
+While it is not at all obvious in what sense coends describe integration, we observe
+that they tend to behave like integrals in the analytic sense. For example, we have the
+following result about scalar multiplication:
+
+\begin{lemma}\label{lemma:scalar_multiplication_of_coends}
+  Let $F:\catop{C}\times\cat{C}\to\cat{D}$ be a functor where $\cat{D}$ is cartesian,
+  and let $D\in\cat{D}$. For any choice of coend of $F$, there is a canonical isomorphism
+  \begin{align*}
+    D\times \int^{C} F(C,C) \cong \int^{C} D\times F(C,C).
+  \end{align*}
+  \begin{proof}
+    We have a functor $D\times -:\cat{D}\to\cat{D}$ with inverse $\pi_2 \circ -$.
+    In particular, $D\times -$ is cocontinuous. By~\cite[Theorem 1.2.7]{loregian2015},
+    we have
+    \begin{align*}
+      (D\times -)\rr{\int^C F(C,C)} \cong \int^C (D\times -)F(C,C),
+    \end{align*}
+    as required.
+  \end{proof}
+\end{lemma}
+
+Due to the canonical isomorphism of products $A\times B\cong B\times A$,
+we immediately have a similar statement for scalar multiplication on the right.
+
+The final property that relates coends to conventional integrals is
+the Fubini rule:
+
+\begin{theorem}[{\cite[Theorem 1.3.1]{loregian2015}}]\label{thm:fubini}
+  Let $F:\catop{B}\times\cat{B}\times\catop{C}\times\cat{C}\to\cat{D}$ be a functor.
+  Then there are canonical isomorphisms
+  \begin{align*}
+    \int^{B}\int^{C} F(B,B,C,C)
+    \cong \int^{B,C} F(B,B,C,C)
+    \cong \int^{C}\int^{B} F(B,B,C,C).
+  \end{align*}
+  That is, if one of the coends above exists, so do the other and there are
+  unique isomorphisms of cowedges between them.
+\end{theorem}
+

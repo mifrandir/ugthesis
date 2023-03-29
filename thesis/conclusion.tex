@@ -1,0 +1,151 @@
+\chapter{Evaluation}
+
+It is now time to reflect on what we have and have not achieved. We begin
+by highlighting two alternative approaches that we could have taken to solve
+the problem. We then assess the quality of our results. Finally, we focus
+on the presentation of these results and the compromises involved.
+
+\section{Small presheaves instead of relative pseudomonads}\label{sec:small_presheaves}
+
+We worked towards extending synthetic measure theory to admit the presheaf
+construction as a model by generalising to relative pseudomonads. This has made
+it very difficult to develop the required theory but almost trivial to establish
+the model.
+
+While we believe that this path can lead to success, it may not be the simplest.
+In the early stages of this project we were aiming to restrict $\biCAT$ to a
+suitable cartesian closed 2-category on which the presheaf construction is a
+pseudomonad. We tried to work with small presheaves on locally presentable
+categories but this failed. After spending a significant amount of time with
+this approach, we decided that it would be safer to follow the potentially
+longer route of relative pseudomonads as it would allow us to make some progress
+rightaway.
+
+This does not mean, however, that it is impossible to restrict the presheaf
+construction and the underlying category appropriately so that generalising
+synthetic measure theory to pseudomonads is sufficient. In a sense, these
+considerations are likely to lead to an entirely new set of problems:
+formulating the theory would become signficantly easier, but constructing a
+non-trivial model would be difficult.
+
+\section{Strength as a natural transformation}
+
+The next thing that has to be criticised is our choice of changing the extension
+operator to incorporate strength, rather than adding the strength to a relative
+pseudomonad as a suitable pseudonatural transformation. Whether this approach is
+fruitful remains to be seen. However, there are several notable disadvantages.
+
+Firstly, it requires a certain amount of reinventing the wheel. Rather than
+sticking with the already established theory of relative pseudomonads, we had to
+rewrite the definition entirely. While the result is similar, a lot of time and
+effort went into making everything consistent. Given that we have not been able to
+reap the benefits of the new structure, it is unclear whether this detour will
+eventually pay off.
+
+Secondly, the new structure is in many ways less elegant than usual relative
+pseudomonads. For example, have a look a the 2-cell families $\bicell c$ and
+$\bicell m$ in the case of the presheaf construction. The former involves
+additional parts that are not required for the latter. This makes it more
+difficult to distinguish important details from the overall noise.
+
+\section{Quality of the definitions}
+
+Inspecting where the complexity is inspires confidence. This is because
+the largest diagrams arise whenever coends are involved. This is deceptive,
+however. Showing coend-related results has, for the most part, been a
+straightforward mechanical task. The vast majority of work went into the three
+core definitions \ref{def:prestrong_inclusion_pseudomonad_structure},
+\ref{def:prestrong_inclusion_pseudomonad_axioms}, and
+\ref{def:strong_inclusion_pseudomonad_structure}. The fact that all the
+developments related to our theory, in particular the proofs and the induced
+structures, are short and succinct suggests that we have indeed developed a
+suitable language to reason about strong relative pseudomonads.
+
+\section{Presentation}
+
+The complexity of the expressions has repeatedly led to diagrams whose width was
+several times what could fit the page. We have therefore not been able to
+include as much detail as we would have liked. This means that some proofs may
+be harder to follow than is appropriate. In any case, we do not expect anyone to
+be able to reconstruct every step of our developments without some pen and
+paper.
+
+This problem is not new to category theorists. There have been several
+approaches to deal with large diagrams that usually require even more notational
+shortcuts. See \cite{marmolejo2013} and \cite{saville2023} for some related
+examples. While this would have allowed us to condense more information onto the
+page, it would have also meant hiding a signficiant amount of complexity and
+thus required long explanations as to what is going on. We are doubtful whether
+this would have been possible within the scope of this report.
+
+To aid the reader we have decided to include quiver links to some particularly
+large diagrams. There are several reasons why this is not a solution that can be
+relied upon, though. Firstly, there is the technical problem that the content of
+those links is not strictly part of the report. Secondly, the quiver server
+will, eventually, go offline. If we were to rely on the service, then a
+significant part of the content would be lost. Of course, the latter problem
+may be solved by installing quiver locally.
+
+Machine verified proofs may be another way to maintain rigour while improving
+the presentation. This way we would be able to hide some technical details in the
+comforting knowledge that everything has been made to work as intended.
+Those who are interested would be welcome to read the corresponding source
+code. While this is in a sense the optimal solution it is also idealistic:
+formalising our work like this would vastly increase our time investment.
+This would be a particularly risky bet given that we have not been able
+to show that things are going to work out in the end.
+
+\section{Target audience}
+
+This report is supposed to be targeted towards undergraduate students. Meeting
+this requirement has been difficult. While there are a few courses that define
+categories, functors, and natural transformations, category theory is not taught
+at the university in its own right. This has led us to take some major
+shortcuts. For example, we would have liked to investigate our attempt at
+restricting our model as described in \ref{sec:small_presheaves}. Unfortunately,
+this would have required us to define locally presentable categories from the
+ground up which is impossible with the space that we are given.
+
+While this report may not provide a comprehensive introduction to category
+theory, it still offers valuable insights and contributions that can be
+understood by readers with varying degrees of knowledge in the subject. To
+fully comprehend the technical details of the report, only a basic understanding of
+category theory is required. As a result, undergraduate students with some
+familiarity with natural transformations should be able to understand almost
+all the technical details of our work. The only exceptions are more technical
+arguments such as the existence of coends in $\Set$, which have to be taken for
+granted. However, our explanations make it possible for readers without prior
+knowledge to follow the main ideas and results presented.
+
+\chapter{Future work}
+
+Given that we have not been able to establish the presheaf construction as a
+model of a generalised synthetic measure theory, a lot of future work remains.
+
+The first step should be to make sure that the induced strength is a
+pseudonatural transformation. It is hard to say how difficult a problem this
+would be, but more axioms related to the interplay of the strong structural
+2-cells $\bicell u$ and $\bicell s$ with their prestrong counterparts are
+required. Such axioms will certainly prove useful for later developments.
+
+Secondly, there is the problem of postulating axioms so that the induced strong
+pseudomonad satisfies the coherence conditions of a strong pseudomonad in the
+sense of \cite{saville2023}. This has the potential to be a lot of work: there
+are five axioms for which there are no obvious counterparts. The unusual 2-cell
+$\bicell q$ in \ref{def:strong_inclusion_pseudomonad_structure} is a good
+example of the ingenuity that might be required to make this work. It is
+safe to say that the notion of strength does not lend itself to being
+generalised to relative monads.
+
+Thirdly, once strong relative pseudomonads have been defined it is time for the
+most interesting part. Generalising synthetic measure theory. Studying the
+measure theory arising from the presheaf construction should be satisfying in
+its own right. After all, this is the motivation for this whole project. How
+difficult of a task this will end up being depends on the quality of the
+definitions obtained in the previous steps.
+
+Finally, formalising our theory in a theorem proving language seems like a
+logical extension. The axioms required to make a complete definition of a strong
+relative pseudomonad are bound to be complex and the addition of synthetic
+measure theory will not improve the situation. This means that it will become
+even harder to verify the correctness of the statements involved.

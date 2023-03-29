@@ -1,0 +1,128 @@
+% Historically a small number of students change the page layout,
+% often accidentally by including a package like geometry or fullpage.
+% Here we check if the basic page setup is correct. It does not
+% check all aspects of the style guide, or any page limits.
+%
+% Changing the style in a way that fools these simple checks is still not ok!
+% 
+\RequirePackage{printlen}
+\AtBeginDocument{%
+% To get the numbers below, include printlen package above and see lengths like this:
+%\printlength\oddsidemargin\\
+%\printlength\headheight\\
+%\printlength\textheight\\
+%\printlength\marginparsep\\
+%\printlength\footskip\\
+%\printlength\hoffset\\
+%\printlength\paperwidth\\
+%\printlength\topmargin\\
+%\printlength\headsep\\
+%\printlength\textwidth\\
+%\printlength\marginparwidth\\
+%\printlength\marginparpush\\
+%\printlength\voffset\\
+%\printlength\paperheight\\
+%\baselinestretch\\
+%\@thesispoints\\
+%
+\newif\ifmarginsmessedwith
+\marginsmessedwithfalse
+\ifdim\oddsidemargin=41.54103pt      \else oddsidemargin has been altered.\\ \marginsmessedwithtrue\fi
+\ifdim\headheight=12.0pt             \else headheight has been altered.\\ \marginsmessedwithtrue\fi
+\ifdim\textheight=674.33032pt        \else textheight has been altered.\\ \marginsmessedwithtrue\fi
+\ifdim\marginparsep=10.0pt           \else marginparsep has been altered.\\ \marginsmessedwithtrue\fi
+\ifdim\footskip=30.0pt               \else footskip has been altered.\\ \marginsmessedwithtrue\fi
+\ifdim\hoffset=0.0pt                 \else hoffset has been altered.\\ \marginsmessedwithtrue\fi
+\ifdim\paperwidth=597.50787pt        \else paperwidth has been altered.\\ \marginsmessedwithtrue\fi
+\ifdim\topmargin=-52.36449pt         \else topmargin has been altered.\\ \marginsmessedwithtrue\fi
+\ifdim\headsep=25.0pt                \else headsep has been altered.\\ \marginsmessedwithtrue\fi
+\ifdim\textwidth=412.56497pt         \else textwidth has been altered.\\ \marginsmessedwithtrue\fi
+\ifdim\marginparwidth=35.0pt         \else marginparwidth has been altered.\\ \marginsmessedwithtrue\fi
+\ifdim\marginparpush=7.0pt           \else marginparpush has been altered.\\ \marginsmessedwithtrue\fi
+\ifdim\voffset=0.0pt                 \else voffset has been altered.\\ \marginsmessedwithtrue\fi
+\ifdim\paperheight=845.04684pt       \else paperheight has been altered.\\ \marginsmessedwithtrue\fi
+\newcommand{\pts}[1]{#1pt}
+\ifdim\pts\baselinestretch = 1pt     \else linespacing has been altered.\\ \marginsmessedwithtrue\fi
+\ifdim\@thesispoints=12pt            \else font size has been altered.\\ \marginsmessedwithtrue\fi
+\ifmarginsmessedwith
+
+\textbf{\large \em The required page layout has been changed.}
+
+Please set up your document as in the example skeleton thesis document.
+Do not change the page layout, or include packages like geometry,
+savetrees, or fullpage, which change it for you.
+
+We're not able to reliably undo arbitrary changes to the style. Please remove
+the offending package(s), or layout-changing commands and try again. If you
+can't figure out the problem, try adding your \LaTeX\ code a part at a time
+to the example document.
+
+\fi}
+
+\RequirePackage{amsmath}
+\RequirePackage{amssymb}
+\RequirePackage{amsthm}
+\RequirePackage{thmtools}
+\RequirePackage{bbold}
+\RequirePackage{quiver}
+
+\newtheoremstyle{sltheorem} {}                % Space above
+{}                % Space below
+{\upshape}        % Theorem body font % (default is "\upshape")
+{}                % Indent amount
+{\bfseries}       % Theorem head font % (default is \mdseries)
+{.}               % Punctuation after theorem head % default: no punctuation
+{ }               % Space after theorem head
+{}                % Theorem head spec
+\theoremstyle{sltheorem}
+
+\declaretheorem[parent=chapter]{theorem}
+\declaretheorem[sibling=theorem]{lemma, corollary, conjecture, proposition}
+
+\declaretheoremstyle[
+]{definition}
+
+\declaretheorem[sibling=theorem, style=definition]{definition, example, remark, notation}
+
+% macros
+\newcommand{\declarecommand}[1]{\providecommand{#1}{}\renewcommand{#1}}
+
+\declarecommand{\P}{\mathcal{P}}
+
+\DeclareMathOperator{\Obj}{Obj}
+
+\declarecommand{\cc}[1]{\left\lbrace#1\right\rbrace}
+\declarecommand{\rr}[1]{\left(#1\right)}
+\declarecommand{\rb}[1]{\left(#1\right]}
+\declarecommand{\br}[1]{\left[#1\right)}
+\declarecommand{\aa}[1]{\left\langle{#1}\right\rangle}
+\declarecommand{\bb}[1]{\left[#1\right]}
+\declarecommand{\vv}[1]{\left\vert#1\right\vert}
+\declarecommand{\inv}[1]{{#1}^{-1}}
+
+\declarecommand{\hs}{\hspace{1cm}}
+
+\declarecommand{\ophelper}[1]{{#1}^\text{op}}
+\declarecommand{\cat}[1]{\mathcal{#1}}
+\declarecommand{\catop}[1]{\ophelper{\cat{#1}}}
+\declarecommand{\scat}[1]{\mathbb{#1}}
+\declarecommand{\scatop}[1]{\ophelper{\scat{#1}}}
+\declarecommand{\bicat}[1]{\mathbf{#1}}
+
+\declarecommand{\Set}{\textbf{Set}}
+\declarecommand{\Cat}{\textbf{Cat}}
+\declarecommand{\CAT}{\textbf{CAT}}
+\declarecommand{\biCat}{\textbf{2Cat}}
+\declarecommand{\biCAT}{\textbf{2CAT}}
+
+\DeclareMathOperator{\Hom}{Hom}
+\DeclareMathOperator{\id}{id}
+
+\declarecommand{\shorteq}{%
+  \settowidth{\@tempdima}{-}% Width of hyphen
+  \resizebox{\@tempdima}{\height}{=}%
+}
+\declarecommand{\extend}[2]{{#1}^{#2}}
+\declarecommand{\bicell}[1]{\mathbf{#1}}
+
+
