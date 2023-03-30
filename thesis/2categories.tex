@@ -325,10 +325,10 @@ that allows us to take products not just of objects but also of 1-cells and 2-ce
   \begin{align*}
     \text{id}_X\times \text{id}_{X'} = \aa{\pi_1,\pi_2} = \text{id}_{X\times X'}
   \end{align*}
-  where the last equality follows by the universal property of the product category.
-  Similarly, for 1-cells $(f,f'):(X,X')\to (Y,Y')$ and $(g,g'):(Y,Y')\to (Z,Z')$ in
-  $\bicat{C}\times\bicat{C}$, we notice $gf\times g'f' = \aa{gf\pi_1,g'f'\pi_2}$.
-  In the diagram
+  where the last equality follows from the isomorphism
+  (\ref{eq:cartesian_isomorphism}). Similarly, consider
+  $(f,f'):(X,X')\to(Y,Y')$ and $(g,g'):(Y,Y')\to(Z,Z')$ in
+  $\bicat{C}\times\bicat{C}$. In the diagram
   \begin{equation}
     % https://q.uiver.app/?q=WzAsOSxbMiwwLCJYXFx0aW1lcyBYJyJdLFsyLDEsIllcXHRpbWVzIFknIl0sWzIsMiwiWlxcdGltZXMgWiciXSxbNCwyLCJaJyJdLFs0LDEsIlknIl0sWzQsMCwiWCciXSxbMCwwLCJYIl0sWzAsMSwiWSJdLFswLDIsIloiXSxbNyw4LCJnIiwyXSxbNiw3LCJmIiwyXSxbNSw0LCJmJyJdLFs0LDMsImcnIl0sWzEsMiwiXFxsYW5nbGUgZ1xccGlfMSxnJ1xccGlfMlxccmFuZ2xlIiwyXSxbMCwxLCJcXGxhbmdsZSBmXFxwaV8xLGYnXFxwaV8yXFxyYW5nbGUiLDJdLFswLDYsIlxccGlfMSIsMl0sWzAsNSwiXFxwaV8yIl0sWzEsNywiXFxwaV8xIiwyXSxbMSw0LCJcXHBpXzIiXSxbMiw4LCJcXHBpXzEiLDJdLFsyLDMsIlxccGlfMiJdXQ==
     \begin{tikzcd}
@@ -349,17 +349,10 @@ that allows us to take products not just of objects but also of 1-cells and 2-ce
       \arrow["{\pi_2}", from=3-3, to=3-5]
     \end{tikzcd}
   \end{equation}
-  each tile commutes by definition of the product. Thus the whole square
-  commutes, proving the claim.
+  each tile commutes by (\ref{eq:cartesian_isomorphism}). Now notice $gf\times g'f' =
+  \aa{gf\pi_1,g'f'\pi_2}$. The claim then follows by the universal property of
+  the product.
 \end{example}
-
-There are two functors corresponding to a particular relative monad: on the one hand there
-is the functor that the monad is relative to and on the other we have the functor induced
-by the monad~\cite{altenkirch2015}. Similarly, a relative pseudomonad has two corresponding
-pseudofunctors. It is for this reason that we require two degrees of strictness: while
-the inclusion $\biCat\to\biCAT$ is a 2-functor, the pseudofunctor induced by the presheaf
-construction is not. To limit complexity, we aim to make use of the strictness of the former
-while allowing for the non-strictness of the latter.
 
 The presheaf construction gives rise to a pseudofunctor. We will show this in
 the next chapter (see \ref{prop:induced_pseudofunctor}). For now, let us
@@ -385,6 +378,15 @@ details:
       \end{align*}
   \end{enumerate}
 \end{example}
+
+There are two functors corresponding to a particular relative monad: on the one
+hand there is the functor that the monad is relative to and on the other we
+have the functor induced by the monad~\cite{altenkirch2015}. Similarly, a
+relative pseudomonad has two corresponding pseudofunctors. It is for this
+reason that we require two degrees of strictness: while the inclusion
+$\biCat\to\biCAT$ is a 2-functor, the pseudofunctor induced by the presheaf
+construction is not. To limit complexity, we aim to make use of the strictness
+of the former while allowing for the non-strictness of the latter.
 
 \section{Inclusions of cartesian 2-categories}
 
