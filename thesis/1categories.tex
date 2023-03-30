@@ -14,7 +14,9 @@ of a functor may be thought of as an integral.
 This section presents standard constructions from the literature such as~\cite{maclane1997}.
 
 Recall that a category consists of objects, morphisms between objects, and a
-composition operation that is associative and has identities.
+composition operation that is associative and has identities. We call a
+category small if its collection of objects is a set as opposed to a proper
+class.
 
 Let $\cat{C}$ be a category. For objects $X,Y\in\cat{C}$ we denote by
 $\Hom_{\cat{C}}(X,Y)$ the class of all morphisms $X\to Y$ and by $\id_X$ the
@@ -358,8 +360,7 @@ integral of a functor $\catop{C}\times\cat{C}\to\cat{D}$: ends and coends. We wi
 focus on the latter because coends arise naturally when considering the Yoneda
 embedding, one of the most fundamental constructions in category theory.
 
-Rather than defining coends directly, we begin by defining a more general
-structure:
+We begin by defining a more general structure:
 
 \begin{definition}\label{def:cowedge}
   Let $F:\catop{C}\times\cat{C}\to\cat{D}$ be a functor. A \emph{cowedge of $F$} consists of
@@ -431,7 +432,7 @@ there is no guarantee that a particular functor has a coend, any two coends of
 the same functor are canonically isomorphic. This allows us to fix a choice of
 coends without loss of generality, just as we discussed for products.
 
-Observe a useful property of coends: Consider functors
+Observe a useful property of coends: consider functors
 $F,G:\catop{C}\times\cat{C}\to\cat{D}$, a natural transformation
 $\phi:F\Rightarrow G$ between them, and assume that we have chosen coends of $F$
 and $G$. By precomposing the coend diagram of $G$ with $\phi$, we obtain a
