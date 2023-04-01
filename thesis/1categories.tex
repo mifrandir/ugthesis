@@ -30,8 +30,10 @@ and the identities are the usual identity functions.
 
 Each category $\cat{C}$ has a dual $\catop{C}$ called the opposite category.
 The objects of $\catop{C}$ are exactly the objects of $\cat{C}$ but the
-morphisms $Y\to X$ in $\catop{C}$ are exactly the morphisms $X\to Y$ in $\cat{C}$.
-Composition in $\catop{C}$ is the same as in $\cat{C}$.
+morphisms in $\catop{C}$ are reversed: each $X\to Y$ in $\cat{C}$
+corresponds to a morphism $Y\to X$ in $\catop{C}$. Composition in $\catop{C}$
+is the same as in $\cat{C}$. Despite their similarlities, $\cat{C}$ and
+$\catop{C}$ are distinct categories and, in general, not isomorphic.
 
 Given two categories $\cat{C}$ and $\cat{D}$, we have the product category
 $\cat{C}\times\cat{D}$ which has as objects all pairs $(X,Y)$ with $X\in\cat{C}$
@@ -52,13 +54,13 @@ functors
 Let $F:\cat{C}\to\cat{D}$ and $G:\cat{D}\to\cat{E}$ be functors. The composite
 $GF:\cat{C}\to\cat{E}$ is defined as $GF = G(F-)$. We thus have the category
 $\CAT$ of all categories and all functors between them and its full subcategory
-$\Cat$ of small categories.
+$\Cat$ of small categories. Note that some set theoretic considerations, such
+as the use of suitable universes, are required to avoid Russel's paradox.
 
 Let $F,G:\cat{C}\to\cat{D}$ be parallel functors. A natural transformation $\phi
 : F \Rightarrow G$ consists of morphisms $\phi_X : FX \to GX$ in $\cat{D}$, for
 all $X\in\cat{C}$, that satisfy the naturality condition: for all $f:X\to Y$ in
 $\cat{C}$, $\phi_Y\circ Ff = Gf\circ \phi_X$.
-
 We can compose natural transformations $F\Rightarrow G$ and $G\Rightarrow H$ by
 composing the components. Thus, for all categories $\cat{C}$ and $\cat{D}$, we
 have the functor category $\bb{\cat{C},\cat{D}}$ with functors
@@ -101,7 +103,7 @@ down every proof in full detail. We will, however, occasionally include links
 to quiver~\cite{quiver}, a graphical editor for commutative diagrams. For
 example, the diagram \ref{eq:product_diagram} corresponds to \href{
   https://q.uiver.app/?q=WzAsNCxbMiwwLCJXIl0sWzIsMSwiWFxcdGltZXMgWSJdLFswLDEsIlgiXSxbNCwxLCJZIl0sWzEsMywiXFxwaV8yIiwyXSxbMSwyLCJcXHBpXzEiXSxbMCwxLCJcXGxhbmdsZSBmLGdcXHJhbmdsZSIsMV0sWzAsMiwiZiIsMl0sWzAsMywiZyJdXQ==
-}{this quiver link}. The purpose of these links is twofold: On the one hand
+}{this quiver link}. The purpose of these links is twofold: on the one hand
 they should serve as a useful guide through the less obvious proofs and on the
 other we hope that they may serve as resource for future reference. However, we
 believe that this report is entirely self-contained and therefore the reader is
