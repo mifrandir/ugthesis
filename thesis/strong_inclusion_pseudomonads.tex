@@ -105,7 +105,7 @@ measure theory.
   \end{enumerate}
 \end{definition}
 
-We note that this extension operator is defined on a narrower selection of 1-cells
+We note that a priori this extension operator is defined on a narrower selection of 1-cells
 than the extension operator of a relative pseudomonad. This is only a temporary limitation.
 Using the left unitor $\lambda$, we obtain the usual extension functor
 \begin{align}\label{eq:relative_pseudomonad_extension}
@@ -140,8 +140,8 @@ Nonetheless, we define the entire structure in detail:
   The \emph{prestrong presheaf construction} consists of:
   \begin{enumerate}
     \item for all $\scat X\in\biCat$, the object $\widehat{\scat X}=\bb{\scatop X,\Set}$;
-    \item for all $\scat X\in\biCat$, the unit functor $\eta_{\scat X}$ given by
-      $\eta_{\scat X}(X) = \Hom\rr{-,X}$;
+    \item for all $\scat X\in\biCat$, the unit functor $\eta_{\scat X}$ given
+      by the Yoneda embedding $\eta_{\scat X}(X) = \Hom\rr{-,X}$;
     \item for all $\scat X,\scat Y\in\biCat$ and $\cat W\in\biCAT$, the extension functor
       $\extend{\rr{-}}{\dagger}_{\scat X,\scat Y,\cat W}$ given by
       \begin{enumerate}
@@ -188,7 +188,7 @@ Nonetheless, we define the entire structure in detail:
       $\rr{\bicell c_{F,G,I}}_{V,P}$ has as components the canonical cowedge
       isomorphisms given by
       \begin{equation*}
-        % https://q.uiver.app/?q=WzAsNixbMCwyLCJcXGludF5YIFBYXFx0aW1lc1xcaW50XlkgKEZYKVlcXHRpbWVzIEcoSVYsWSlaIl0sWzEsMiwiXFxpbnReWVxcbGVmdChcXGludF5YIFBYXFx0aW1lcyAoRlgpWVxccmlnaHQpXFx0aW1lcyBHKElWLFkpWiJdLFswLDEsIlBYXFx0aW1lcyBcXGludF5ZIChGWClZXFx0aW1lcyBHKElWLFkpWiJdLFswLDAsIlBYXFx0aW1lc1xcbGVmdCgoRlgpWVxcdGltZXMgRyhJVixZKVpcXHJpZ2h0KSJdLFsxLDAsIihQWFxcdGltZXMgKEZYKVkpXFx0aW1lcyBHKElWLFkpWiJdLFsxLDEsIlxcbGVmdChcXGludF5YIFBYXFx0aW1lcyAoRlgpWVxccmlnaHQpXFx0aW1lcyBHKElWLFkpWiJdLFswLDEsIigoXFxtYXRoYmYgY197RixHLEl9KV97VixQfSlfWiIsMSx7ImN1cnZlIjozfV0sWzIsMCwicSIsMl0sWzUsMSwicSJdLFszLDIsIlBYXFx0aW1lcyBxIiwyXSxbNCw1LCJxXFx0aW1lcyBHKElWLFkpKC0pIl0sWzMsNCwiXFxjb25nIiwxLHsiY3VydmUiOi0zfV1d
+        % https://q.uiver.app/#q=WzAsNixbMCwyLCJcXGludF5YIFBYXFx0aW1lc1xcaW50XlkgKEZYKVlcXHRpbWVzIEcoSVYsWSlaIl0sWzEsMiwiXFxpbnReWVxcbGVmdChcXGludF5YIFBYXFx0aW1lcyAoRlgpWVxccmlnaHQpXFx0aW1lcyBHKElWLFkpWiJdLFswLDEsIlBYXFx0aW1lcyBcXGludF5ZIChGWClZXFx0aW1lcyBHKElWLFkpWiJdLFswLDAsIlBYXFx0aW1lc1xcbGVmdCgoRlgpWVxcdGltZXMgRyhJVixZKVpcXHJpZ2h0KSJdLFsxLDAsIihQWFxcdGltZXMgKEZYKVkpXFx0aW1lcyBHKElWLFkpWiJdLFsxLDEsIlxcbGVmdChcXGludF5YIFBYXFx0aW1lcyAoRlgpWVxccmlnaHQpXFx0aW1lcyBHKElWLFkpWiJdLFswLDEsIigoXFxtYXRoYmYgY197RixHLEl9KV97VixQfSlfWiIsMSx7ImN1cnZlIjozfV0sWzIsMCwicSIsMl0sWzUsMSwicSJdLFszLDIsIlBYXFx0aW1lcyBxIiwyXSxbNCw1LCJxXFx0aW1lcyBHKElWLFkpWiJdLFszLDQsIlxcY29uZyIsMSx7ImN1cnZlIjotM31dXQ==
         \begin{tikzcd}
           {PX\times\left((FX)Y\times G(IV,Y)Z\right)} & {(PX\times (FX)Y)\times G(IV,Y)Z} \\
           {PX\times \int^Y (FX)Y\times G(IV,Y)Z} & {\left(\int^X PX\times (FX)Y\right)\times G(IV,Y)Z} \\
@@ -197,7 +197,7 @@ Nonetheless, we define the entire structure in detail:
           \arrow["q"', from=2-1, to=3-1]
           \arrow["q", from=2-2, to=3-2]
           \arrow["{PX\times q}"', from=1-1, to=2-1]
-          \arrow["{q\times G(IV,Y)(-)}", from=1-2, to=2-2]
+          \arrow["{q\times G(IV,Y)Z}", from=1-2, to=2-2]
           \arrow["\cong"{description}, curve={height=-18pt}, from=1-1, to=1-2]
         \end{tikzcd}
       \end{equation*}
@@ -238,7 +238,7 @@ $\bicell l$ in \ref{ex:coend}. For $\bicell r$, the proof is similar:
                                           & {\text{Hom}(X,X)\times F(W,X)Y} \\
                                           & {\int^{X'}\text{Hom}(X',X)\times F(W,X')Y}
                                           \arrow["{w(X')}", from=1-1, to=1-2]
-                                          \arrow["q"', curve={height=30pt}, from=1-1, to=3-2]
+                                          \arrow["q"', curve={height=60pt}, from=1-1, to=3-2]
                                           \arrow["q"', from=2-2, to=3-2]
                                           \arrow["{\langle \Delta\text{id},F(W,X)Y\rangle}"', from=1-2, to=2-2]
                                           \arrow["{((\mathbf r_F)_{W,X})_Y}", curve={height=-100pt}, from=1-2, to=3-2]
@@ -422,26 +422,26 @@ step is to verify that the presheaf construction remains a model.
       \item We note that
         \begin{equation*}
           % https://q.uiver.app/?q=WzAsNixbMCwwLCJGKFcsWClZIl0sWzEsMCwiRyhXLFgpWSJdLFswLDIsIlxcdGV4dHtIb219KFgsWClcXHRpbWVzIEYoVyxYKVkiXSxbMSwyLCJcXHRleHR7SG9tfShYLFgpXFx0aW1lcyBHKFcsWClZIl0sWzAsNCwiXFxpbnRee1gnfVxcdGV4dHtIb219KFgnLFgpXFx0aW1lcyBGKFcsWCcpWSJdLFsxLDQsIlxcaW50XntYJ30gXFx0ZXh0e0hvbX0oWCcsWClcXHRpbWVzIEYoVyxYJylZIl0sWzAsMSwiXFxsZWZ0KFxccGhpX3tXLFh9XFxyaWdodClfWSIsMV0sWzIsMywiXFx0ZXh0e0hvbX0oWCxYKVxcdGltZXMgXFxsZWZ0KFxccGhpX3tXLFh9XFxyaWdodClfWSIsMix7ImN1cnZlIjoyfV0sWzAsMiwiXFxsYW5nbGUgXFxEZWx0YVxcdGV4dHtpZH0sRihXLFgpWVxccmFuZ2xlIiwxXSxbMSwzLCJcXGxhbmdsZSBcXERlbHRhXFx0ZXh0e2lkfSxHKFcsWClZXFxyYW5nbGUiLDFdLFsyLDQsInEiLDFdLFszLDUsInEiLDFdLFs0LDUsIlxcaW50XntYJ31cXHRleHR7SG9tfShYJyxYKVxcdGltZXMgXFxsZWZ0KFxccGhpX3tXLFh9XFxyaWdodClfWSIsMix7ImN1cnZlIjoyfV0sWzEsNSwiXFxtYXRoYmYgciIsMSx7ImN1cnZlIjotNX1dLFswLDQsIlxcbWF0aGJmIHIiLDEseyJjdXJ2ZSI6NX1dLFs2LDcsIlxcbGFuZ2xlXFxEZWx0YVxcdGV4dHtpZH0sLVxccmFuZ2xlXFx0ZXh0ey1uYXR9IiwxLHsic2hvcnRlbiI6eyJzb3VyY2UiOjIwLCJ0YXJnZXQiOjIwfSwic3R5bGUiOnsiYm9keSI6eyJuYW1lIjoibm9uZSJ9LCJoZWFkIjp7Im5hbWUiOiJub25lIn19fV0sWzcsMTIsIiIsMSx7InNob3J0ZW4iOnsic291cmNlIjoyMCwidGFyZ2V0IjoyMH0sInN0eWxlIjp7ImJvZHkiOnsibmFtZSI6Im5vbmUifSwiaGVhZCI6eyJuYW1lIjoibm9uZSJ9fX1dLFsxMCwxNCwiXFxtYXRoYmYgclxcdGV4dHstZGVmfSIsMSx7InNob3J0ZW4iOnsic291cmNlIjoyMH0sInN0eWxlIjp7ImJvZHkiOnsibmFtZSI6Im5vbmUifSwiaGVhZCI6eyJuYW1lIjoibm9uZSJ9fX1dLFsxMywxMSwiXFxtYXRoYmYgclxcdGV4dHstZGVmfSIsMSx7InNob3J0ZW4iOnsidGFyZ2V0IjoyMH0sInN0eWxlIjp7ImJvZHkiOnsibmFtZSI6Im5vbmUifSwiaGVhZCI6eyJuYW1lIjoibm9uZSJ9fX1dXQ==
-\begin{tikzcd}
-	{F(W,X)Y} & {G(W,X)Y} \\
-	\\
-	{\text{Hom}(X,X)\times F(W,X)Y} & {\text{Hom}(X,X)\times G(W,X)Y} \\
-	\\
-	{\int^{X'}\text{Hom}(X',X)\times F(W,X')Y} & {\int^{X'} \text{Hom}(X',X)\times F(W,X')Y}
-	\arrow[""{name=0, anchor=center, inner sep=0}, "{\left(\phi_{W,X}\right)_Y}"{description}, from=1-1, to=1-2]
-	\arrow[""{name=1, anchor=center, inner sep=0}, "{\text{Hom}(X,X)\times \left(\phi_{W,X}\right)_Y}"', curve={height=20pt}, from=3-1, to=3-2]
-	\arrow["{\langle \Delta\text{id},F(W,X)Y\rangle}"{description}, from=1-1, to=3-1]
-	\arrow["{\langle \Delta\text{id},G(W,X)Y\rangle}"{description}, from=1-2, to=3-2]
-	\arrow[""{name=2, anchor=center, inner sep=0}, "q"{description}, from=3-1, to=5-1]
-	\arrow[""{name=3, anchor=center, inner sep=0}, "q"{description}, from=3-2, to=5-2]
-	\arrow[""{name=4, anchor=center, inner sep=0}, "{\int^{X'}\text{Hom}(X',X)\times \left(\phi_{W,X}\right)_Y}"', curve={height=20pt}, from=5-1, to=5-2]
-	\arrow[""{name=5, anchor=center, inner sep=0}, "{\mathbf r}"{description}, curve={height=-100pt}, from=1-2, to=5-2]
-	\arrow[""{name=6, anchor=center, inner sep=0}, "{\mathbf r}"{description}, curve={height=100pt}, from=1-1, to=5-1]
-	\arrow["{\langle\Delta\text{id},-\rangle\text{-nat}}"{description}, draw=none, from=0, to=1]
-	\arrow[draw=none, from=1, to=4]
-	\arrow["{\mathbf r\text{-def}}"{description}, draw=none, from=2, to=6]
-	\arrow["{\mathbf r\text{-def}}"{description}, draw=none, from=5, to=3]
-\end{tikzcd}
+          \begin{tikzcd}
+            {F(W,X)Y} & {G(W,X)Y} \\
+            \\
+            {\text{Hom}(X,X)\times F(W,X)Y} & {\text{Hom}(X,X)\times G(W,X)Y} \\
+            \\
+            {\int^{X'}\text{Hom}(X',X)\times F(W,X')Y} & {\int^{X'} \text{Hom}(X',X)\times F(W,X')Y}
+            \arrow[""{name=0, anchor=center, inner sep=0}, "{\left(\phi_{W,X}\right)_Y}"{description}, from=1-1, to=1-2]
+            \arrow[""{name=1, anchor=center, inner sep=0}, "{\text{Hom}(X,X)\times \left(\phi_{W,X}\right)_Y}"', curve={height=20pt}, from=3-1, to=3-2]
+            \arrow["{\langle \Delta\text{id},F(W,X)Y\rangle}"{description}, from=1-1, to=3-1]
+            \arrow["{\langle \Delta\text{id},G(W,X)Y\rangle}"{description}, from=1-2, to=3-2]
+            \arrow[""{name=2, anchor=center, inner sep=0}, "q"{description}, from=3-1, to=5-1]
+            \arrow[""{name=3, anchor=center, inner sep=0}, "q"{description}, from=3-2, to=5-2]
+            \arrow[""{name=4, anchor=center, inner sep=0}, "{\int^{X'}\text{Hom}(X',X)\times \left(\phi_{W,X}\right)_Y}"', curve={height=20pt}, from=5-1, to=5-2]
+            \arrow[""{name=5, anchor=center, inner sep=0}, "{\mathbf r}"{description}, curve={height=-100pt}, from=1-2, to=5-2]
+            \arrow[""{name=6, anchor=center, inner sep=0}, "{\mathbf r}"{description}, curve={height=100pt}, from=1-1, to=5-1]
+            \arrow["{\langle\Delta\text{id},-\rangle\text{-nat}}"{description}, draw=none, from=0, to=1]
+            \arrow[draw=none, from=1, to=4]
+            \arrow["{\mathbf r\text{-def}}"{description}, draw=none, from=2, to=6]
+            \arrow["{\mathbf r\text{-def}}"{description}, draw=none, from=5, to=3]
+          \end{tikzcd}
         \end{equation*}
         commutes due to (\ref{eq:coend_natural_transformation}) on the right. This shows naturality
         of $\bicell r$.

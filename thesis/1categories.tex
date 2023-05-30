@@ -15,7 +15,7 @@ This section presents standard constructions from the literature such as~\cite{m
 
 Recall that a category consists of objects, morphisms between objects, and a
 composition operation that is associative and has identities. We call a
-category small if its collection of objects is a set as opposed to a proper
+category small if its collection of morphisms is a set as opposed to a proper
 class.
 
 Let $\cat{C}$ be a category. For objects $X,Y\in\cat{C}$ we denote by
@@ -33,7 +33,8 @@ The objects of $\catop{C}$ are exactly the objects of $\cat{C}$ but the
 morphisms in $\catop{C}$ are reversed: each $X\to Y$ in $\cat{C}$
 corresponds to a morphism $Y\to X$ in $\catop{C}$. Composition in $\catop{C}$
 is the same as in $\cat{C}$. Despite their similarlities, $\cat{C}$ and
-$\catop{C}$ are distinct categories and, in general, not isomorphic.
+$\catop{C}$ are distinct categories and, in general, neither isomorphic
+nor equivalent.
 
 Given two categories $\cat{C}$ and $\cat{D}$, we have the product category
 $\cat{C}\times\cat{D}$ which has as objects all pairs $(X,Y)$ with $X\in\cat{C}$
@@ -43,7 +44,7 @@ Composition is defined pointwise so the identites are $(\id,\id)$.
 Functors are morphisms between categories. They act on objects and morphisms in
 a way that preserves identities and distributes over composition. One
 particularly important functor is $\Hom : \scatop{C}\times\scat{C}\to\Set$,
-where $\scatop C$ is the opposite category. It takes a pairs of objects in a small
+where $\scatop C$ is the opposite category. It takes a pairs of objects in a locally small
 category to its hom-set and the action on morphisms is given by composition:
 $\Hom(f,g)(h) = ghf$. We may also fix an object $X\in\scat{C}$ to obtain the
 functors
@@ -100,7 +101,7 @@ axioms that we postulate and as statements that we prove. In the latter case,
 the commutativity may be left implicit. Unfortunately, diagrams tend to get
 much more complex in later chapters. Therefore it will not be possible to write
 down every proof in full detail. We will, however, occasionally include links
-to quiver~\cite{quiver}, a graphical editor for commutative diagrams. For
+to quiver\footnote{\url{https://github.com/varkor/quiver}}, a graphical editor for commutative diagrams. For
 example, the diagram \ref{eq:product_diagram} corresponds to \href{
   https://q.uiver.app/?q=WzAsNCxbMiwwLCJXIl0sWzIsMSwiWFxcdGltZXMgWSJdLFswLDEsIlgiXSxbNCwxLCJZIl0sWzEsMywiXFxwaV8yIiwyXSxbMSwyLCJcXHBpXzEiXSxbMCwxLCJcXGxhbmdsZSBmLGdcXHJhbmdsZSIsMV0sWzAsMiwiZiIsMl0sWzAsMywiZyJdXQ==
 }{this quiver link}. The purpose of these links is twofold: on one hand they
@@ -157,7 +158,7 @@ all (binary) products and a distinguished terminal object.
 
 Monads are central to the study of category theory. They arise naturally in practical settings,
 e.g.\ to model computation with side effects, as well as for theoretical
-purposes, e.g.\ monad algebras as a generalisation of algebraic theories.
+purposes, e.g.\ as a generalisation of algebraic theories.
 
 We adapt the no-iteration definition of a monad~\cite{marmolejo2010}
 because it more easily generalises to relative monads~\cite{altenkirch2015}.
@@ -166,8 +167,8 @@ because it more easily generalises to relative monads~\cite{altenkirch2015}.
   Let $\cat{C}$ be a category. A \emph{monad $T$ on $\cat{C}$} consists of
   \begin{enumerate}
     \item for all $X\in\cat{C}$, an object $TX\in\cat{C}$;
-    \item for all $X\in\cat{C}$, a morphism $\eta_X : X \to TX$ in $\cat{C}$;
-    \item for all $X,Y\in\cat{C}$, a map
+    \item for all $X\in\cat{C}$, a unit morphism $\eta_X : X \to TX$ in $\cat{C}$;
+    \item for all $X,Y\in\cat{C}$, an extension map
       \begin{align*}
         \extend{\rr{-}}{*}_{X,Y}:\Hom\rr{X,TY}\to \Hom\rr{TX,TY}
       \end{align*}
@@ -296,8 +297,8 @@ the relative monad. The resulting definition is remarkably similar to~\ref{def:m
   consists of
   \begin{enumerate}
     \item for all $X\in\cat{J}$, an object $TX\in\cat{C}$;
-    \item for all $X\in\cat{J}$, a morphism $\eta_X : JX \to TX$ in $\cat{C}$;
-    \item for all $X,Y\in\cat{J}$, a map
+    \item for all $X\in\cat{J}$, a unit morphism $\eta_X : JX \to TX$ in $\cat{C}$;
+    \item for all $X,Y\in\cat{J}$, an extension map
       \begin{align*}
         \extend{\rr{-}}{*}_{X,Y}:\Hom\rr{JX,TY}\to \Hom\rr{TX,TY}
       \end{align*}
@@ -386,7 +387,7 @@ We begin by defining a more general structure:
   cowedges $(W,w_X)\to(W',w'_X)$ if, for all $X\in\cat{C}$, $hw_X=w'_X$.
 \end{definition}
 
-Examples of cowedges that are both interesting and specific are hard to come by.
+Examples of cowedges that are both interesting and concrete are hard to come by.
 What the following lacks in specificity it makes up for in importance.
 
 \begin{example}\label{ex:cowedge}
@@ -542,20 +543,20 @@ We are now in a position to make precise the functoriality of the coend:
   \end{proof}
 \end{lemma}
 
-While it is not at all obvious in what sense coends describe integration, we observe
-that they tend to behave like integrals in the analytic sense. For example, we have the
-following result about scalar multiplication:
+While it is not at all obvious in what sense coends describe integration, we
+observe that they tend to behave like integrals in the usual sense. For
+example, we have the following result about scalar multiplication:
 
 \begin{lemma}\label{lemma:scalar_multiplication_of_coends}
-  Let $F:\catop{C}\times\cat{C}\to\cat{D}$ be a functor where $\cat{D}$ is cartesian,
-  and let $D\in\cat{D}$. For any choice of coend of $F$, there is a canonical isomorphism
+  Let $F:\catop{C}\times\cat{C}\to\Set$ be a functor
+  and let $D\in\Set$. For any choice of coend of $F$, there is a canonical isomorphism
   \begin{align*}
     D\times \int^{C} F(C,C) \cong \int^{C} D\times F(C,C).
   \end{align*}
   \begin{proof}
-    We have a functor $D\times -:\cat{D}\to\cat{D}$ with inverse $\pi_2 \circ -$.
-    In particular, $D\times -$ is cocontinuous. By~\cite[Theorem 1.2.7]{loregian2015},
-    we have
+    Note that the functor $D\times -:\Set\to\Set$ is left adjoint to
+    $-^D:\Set\to\Set$. In particular, $D\times -$ is cocontinuous.
+    By~\cite[Theorem 1.2.7]{loregian2015}, we have
     \begin{align*}
       (D\times -)\rr{\int^C F(C,C)} \cong \int^C (D\times -)F(C,C),
     \end{align*}
@@ -577,7 +578,7 @@ the Fubini rule:
     \cong \int^{B,C} F(B,B,C,C)
     \cong \int^{C}\int^{B} F(B,B,C,C).
   \end{align*}
-  That is, if one of the coends above exists, so do the other and there are
+  That is, if one of the objects above exists, so do the other and there are
   unique isomorphisms of cowedges between them.
 \end{theorem}
 
